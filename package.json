@@ -1,0 +1,25 @@
+{
+  "name": "nn-stack",
+  "type": "module",
+  "version": "1.0.0",
+  "scripts": {
+    "dev": "pnpm -r dev",
+    "deploy:dev": "pnpm run -r deploy:dev",
+    "deploy:prod": "pnpm run -r deploy:prod",
+    "destroy:dev": "pnpm run -r destroy:dev",
+    "destroy:prod": "pnpm run -r destroy:prod",
+    "deploy": "pnpm run -r deploy",
+    "destroy": "pnpm run -r destroy",
+    "lint": "biome lint --write",
+    "format": "biome format --write"
+  },
+  "description": "",
+  "keywords": [],
+  "author": "nshen<nshen121@gmail.com>",
+  "license": "MIT",
+  "packageManager": "pnpm@10.16.1",
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.6",
+    "typescript": "^5.9.3"
+  }
+}

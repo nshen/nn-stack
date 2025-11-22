@@ -1,0 +1,16 @@
+{
+  "name": "@nn-stack/api-contract",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/index.ts",
+  "scripts": {
+    "lint": "biome check."
+  },
+  "keywords": [],
+  "author": "nshen<nshen121@gmail.com>",
+  "license": "MIT",
+  "packageManager": "pnpm@10.16.1",
+  "dependencies": {
+    "zod": "^4.1.12"
+  }
+}
