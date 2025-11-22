@@ -1,0 +1,33 @@
+{
+  "name": "@nn-stack/api",
+  "version": "1.0.0",
+  "description": "",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "types": "./dist/*.d.ts",
+      "default": "./src/*.ts"
+    }
+  },
+  "type": "module",
+  "scripts": {
+    "lint": "biome check ."
+  },
+  "keywords": [],
+  "author": "nshen<nshen121@gmail.com>",
+  "license": "MIT",
+  "packageManager": "pnpm@10.16.1",
+  "dependencies": {
+    "@orpc/server": "catalog:",
+    "zod": "catalog:"
+  },
+  "devDependencies": {
+    "@nn-stack/config": "workspace:*",
+    "@cloudflare/workers-types": "catalog:",
+    "alchemy": "catalog:",
+    "typescript": "catalog:"
+  }
+}

@@ -14,13 +14,16 @@
     "format": "biome format --write"
   },
   "dependencies": {
-    "hono": "^4.10.6"
+    "@nn-stack/api": "workspace:*",
+    "@orpc/server": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@cloudflare/workers-types": "^4.20251121.0",
     "@nn-stack/config": "workspace:*",
-    "alchemy": "0.77.5",
-    "typescript": "^5.9.3"
+    "@cloudflare/workers-types": "catalog:",
+    "alchemy": "catalog:",
+    "typescript": "catalog:"
   },
   "packageManager": "pnpm@10.16.1"
 }

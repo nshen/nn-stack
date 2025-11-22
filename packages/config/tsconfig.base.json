@@ -5,7 +5,7 @@
     "skipLibCheck": true,
     "esModuleInterop": true,
     "target": "ESNext",
-    "moduleResolution": "Bundler",
+    "moduleResolution": "bundler",
     "module": "ESNext",
     "forceConsistentCasingInFileNames": true,
     "isolatedModules": true,
