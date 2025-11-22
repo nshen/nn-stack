@@ -1,0 +1,34 @@
+{
+  "name": "@nn-stack/web",
+  "type": "module",
+  "scripts": {
+    "dev": "alchemy dev",
+    "build": "next build",
+    "deploy:dev": "alchemy deploy --stage dev",
+    "deploy:prod": "alchemy deploy --stage prod",
+    "destroy:dev": "alchemy destroy --stage dev",
+    "destroy:prod": "alchemy destroy --stage prod",
+    "deploy": "alchemy deploy",
+    "destroy": "alchemy destroy",
+    "lint": "biome lint --write",
+    "format": "biome format --write",
+    "start": "next start"
+  },
+  "dependencies": {
+    "@opennextjs/cloudflare": "^1.12.0",
+    "next": "^15.5.6",
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "^2.3.5",
+    "@cloudflare/workers-types": "^4.20251121.0",
+    "@nn-stack/config": "workspace:*",
+    "@types/node": "^24.10.1",
+    "@types/react": "^19.2.5",
+    "@types/react-dom": "^19.2.3",
+    "alchemy": "0.77.5",
+    "typescript": "^5.9.3",
+    "wrangler": "^4.47.0"
+  }
+}
