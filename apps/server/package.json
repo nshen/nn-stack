@@ -1,0 +1,26 @@
+{
+  "name": "@nn-stack/server",
+  "type": "module",
+  "main": "src/index.ts",
+  "scripts": {
+    "dev": "alchemy dev",
+    "deploy:dev": "alchemy deploy --stage dev",
+    "deploy:prod": "alchemy deploy --stage prod",
+    "destroy:dev": "alchemy destroy --stage dev",
+    "destroy:prod": "alchemy destroy --stage prod",
+    "deploy": "alchemy deploy",
+    "destroy": "alchemy destroy",
+    "lint": "biome lint --write",
+    "format": "biome format --write"
+  },
+  "dependencies": {
+    "hono": "^4.10.6"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20251121.0",
+    "@nn-stack/config": "workspace:*",
+    "alchemy": "0.77.5",
+    "typescript": "^5.9.3"
+  },
+  "packageManager": "pnpm@10.16.1"
+}
