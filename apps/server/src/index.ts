@@ -7,8 +7,11 @@ import { RPCHandler } from '@orpc/server/fetch';
 import { onError } from '@orpc/server';
 // routes
 import { appRouter } from '@nn-stack/api';
+import { createContext } from '@nn-stack/api/context';
 
-const app = new Hono();
+import type { server } from '../alchemy.run';
+
+const app = new Hono<{ Bindings:(typeof server.Env) }>();
 app.use(logger());
 
 app.use(
@@ -31,9 +34,10 @@ export const rpcHandler = new RPCHandler(appRouter, {
 });
 
 app.use('/rpc/*', async (c, next) => {
+  const context = await createContext(c);
   const { matched, response } = await rpcHandler.handle(c.req.raw, {
     prefix: '/rpc',
-    context: {}, // Provide initial context if needed
+    context,
   });
 
   if (matched) {
@@ -44,7 +48,7 @@ app.use('/rpc/*', async (c, next) => {
 });
 
 app.get('/', (c) => {
-  return c.text('Hello nn stack!');
+  return c.text('Hello nn stack server!');
 });
 
 export default app;

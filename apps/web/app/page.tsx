@@ -3,7 +3,8 @@ import { orpc } from '@/lib/orpc';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Home() {
-  const healthCheck = useQuery(orpc.healthCheck.queryOptions());
+  const healthCheck = useQuery(orpc.healthCheck.connection.queryOptions());
+  const kvCheck = useQuery(orpc.healthCheck.kv.queryOptions());
 
   return (
     // Centering the content, adding gaps, and ensuring it grows
@@ -36,6 +37,19 @@ export default function Home() {
               {healthCheck.isLoading
                 ? 'Checking...'
                 : healthCheck.data
+                  ? 'Connected & Healthy'
+                  : 'Disconnected'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div
+              className={`h-2.5 w-2.5 rounded-full ${kvCheck.isLoading ? 'animate-pulse bg-gray-400' : kvCheck.data ? 'bg-green-500' : 'bg-red-500'}`}
+            />
+            <span className="text-sm text-gray-500">
+              {kvCheck.isLoading
+                ? 'Checking...'
+                : kvCheck.data
                   ? 'Connected & Healthy'
                   : 'Disconnected'}
             </span>

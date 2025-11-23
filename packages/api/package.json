@@ -22,7 +22,8 @@
   "packageManager": "pnpm@10.16.1",
   "dependencies": {
     "@orpc/server": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "hono": "catalog:"
   },
   "devDependencies": {
     "@nn-stack/config": "workspace:*",
