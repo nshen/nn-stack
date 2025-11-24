@@ -1,8 +1,5 @@
-import { Context } from './context';
-import { RouterClient, os } from '@orpc/server';
+import { RouterClient } from '@orpc/server';
 import { connection,kv } from './health-check';
-
-export const o = os.$context<Context>();
 
 export const appRouter = {
   healthCheck: {

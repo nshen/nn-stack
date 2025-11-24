@@ -1,4 +1,7 @@
-import { o } from './index';
+import { os } from '@orpc/server';
+import { Context } from './context';
+
+export const o = os.$context<Context>();
 
 export const connection = o.handler(({ context }) => {
   console.log('Env: ', context.env);
