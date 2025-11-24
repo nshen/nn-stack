@@ -5,7 +5,7 @@ import { logger } from 'hono/logger';
 // orpc
 import { RPCHandler } from '@orpc/server/fetch';
 import { onError } from '@orpc/server';
-// routes
+// api routes
 import { appRouter } from '@nn-stack/api';
 import { createContext } from '@nn-stack/api/context';
 
@@ -24,7 +24,7 @@ app.use(
   }),
 );
 
-// orpc
+// orpc handler
 export const rpcHandler = new RPCHandler(appRouter, {
   interceptors: [
     onError((error: unknown) => {
