@@ -1,10 +1,11 @@
 import { RouterClient } from '@orpc/server';
-import { connection,kv } from './health-check';
+import { connection,db,kv } from './health-check';
 
 export const appRouter = {
   healthCheck: {
     connection,
     kv,
+    db
   },
 };
 

@@ -12,3 +12,6 @@ export const kv = o.handler(({ context }) => {
   return context.env.KV || null;
 });
 
+export const db = o.handler(({ context }) => {
+  return context.env.DB || null;
+});

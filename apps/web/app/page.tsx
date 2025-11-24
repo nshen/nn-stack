@@ -4,8 +4,9 @@ import { useQuery } from '@tanstack/react-query';
 import { Button } from '@nn-stack/ui/components/button';
 
 export default function Home() {
-  const healthCheck = useQuery(orpc.healthCheck.connection.queryOptions());
+  const connectionCheck = useQuery(orpc.healthCheck.connection.queryOptions());
   const kvCheck = useQuery(orpc.healthCheck.kv.queryOptions());
+  const dbCheck = useQuery(orpc.healthCheck.db.queryOptions());
 
   return (
     // Centering the content, adding gaps, and ensuring it grows
@@ -39,12 +40,12 @@ export default function Home() {
           <h2 className="text-xl font-semibold text-gray-800">API Status</h2>
           <div className="flex items-center gap-3">
             <div
-              className={`h-2.5 w-2.5 rounded-full ${healthCheck.isLoading ? 'animate-pulse bg-gray-400' : healthCheck.data ? 'bg-green-500' : 'bg-red-500'}`}
+              className={`h-2.5 w-2.5 rounded-full ${connectionCheck.isLoading ? 'animate-pulse bg-gray-400' : connectionCheck.data ? 'bg-green-500' : 'bg-red-500'}`}
             />
             <span className="text-sm text-gray-500">
-              {healthCheck.isLoading
-                ? 'Checking...'
-                : healthCheck.data
+              {connectionCheck.isLoading
+                ? 'Checking connection...'
+                : connectionCheck.data
                   ? 'Connected & Healthy'
                   : 'Disconnected'}
             </span>
@@ -56,9 +57,22 @@ export default function Home() {
             />
             <span className="text-sm text-gray-500">
               {kvCheck.isLoading
-                ? 'Checking...'
+                ? 'Checking KV...'
                 : kvCheck.data
                   ? 'KV & Healthy'
+                  : 'Disconnected'}
+            </span>
+          </div>
+
+          <div className="flex items-center gap-3">
+            <div
+              className={`h-2.5 w-2.5 rounded-full ${dbCheck.isLoading ? 'animate-pulse bg-gray-400' : dbCheck.data ? 'bg-green-500' : 'bg-red-500'}`}
+            />
+            <span className="text-sm text-gray-500">
+              {dbCheck.isLoading
+                ? 'Checking D1...'
+                : dbCheck.data
+                  ? 'D1 & Healthy'
                   : 'Disconnected'}
             </span>
           </div>

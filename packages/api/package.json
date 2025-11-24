@@ -22,12 +22,13 @@
   "packageManager": "pnpm@10.16.1",
   "dependencies": {
     "@orpc/server": "catalog:",
-    "zod": "catalog:",
-    "hono": "catalog:"
+    "drizzle-orm": "^0.44.7",
+    "hono": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@nn-stack/config": "workspace:*",
     "@cloudflare/workers-types": "catalog:",
+    "@nn-stack/config": "workspace:*",
     "alchemy": "catalog:",
     "typescript": "catalog:"
   }

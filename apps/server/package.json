@@ -11,18 +11,22 @@
     "deploy": "alchemy deploy",
     "destroy": "alchemy destroy",
     "lint": "biome lint --write",
-    "format": "biome format --write"
+    "format": "biome format --write",
+    "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
     "@nn-stack/api": "workspace:*",
     "@orpc/server": "catalog:",
+    "drizzle-orm": "^0.44.7",
     "hono": "catalog:",
     "zod": "catalog:"
   },
   "devDependencies": {
-    "@nn-stack/config": "workspace:*",
     "@cloudflare/workers-types": "catalog:",
+    "@nn-stack/config": "workspace:*",
+    "@types/node": "catalog:",
     "alchemy": "catalog:",
+    "drizzle-kit": "^0.31.7",
     "typescript": "catalog:"
   },
   "packageManager": "pnpm@10.16.1"
