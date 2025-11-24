@@ -14,7 +14,7 @@
     "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
-      "@nn-stack/ui/*": ["../../packages/ui/src/*"]
+      "@nn-stack/ui/*": ["./src/*"]
     },
     "types": ["@cloudflare/workers-types", "./env.d.ts"]
   },

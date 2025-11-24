@@ -1,6 +1,7 @@
 'use client';
 import { orpc } from '@/lib/orpc';
 import { useQuery } from '@tanstack/react-query';
+import { Button } from '@nn-stack/ui/components/button';
 
 export default function Home() {
   const healthCheck = useQuery(orpc.healthCheck.connection.queryOptions());
@@ -9,15 +10,22 @@ export default function Home() {
   return (
     // Centering the content, adding gaps, and ensuring it grows
     <main className="w-full max-w-4xl mx-auto p-8 flex-grow flex flex-col items-center justify-center gap-y-12">
-      
       {/* Header Section */}
       <div className="text-center space-y-4">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tighter">
-          Welcome to <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-emerald-500">nn-stack!</span>
+          Welcome to{' '}
+          <span className="text-transparent bg-clip-text bg-gradient-to-r from-sky-500 to-emerald-500">
+            nn-stack!
+          </span>
         </h1>
         <p className="text-lg text-gray-600">
           A Next.js application deployed to Cloudflare Workers using{' '}
-          <a href="https://alchemy.run" target="_blank" rel="noopener noreferrer" className="text-sky-600 font-medium hover:underline">
+          <a
+            href="https://alchemy.run"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-sky-600 font-medium hover:underline"
+          >
             Alchemy
           </a>
           .
@@ -50,7 +58,7 @@ export default function Home() {
               {kvCheck.isLoading
                 ? 'Checking...'
                 : kvCheck.data
-                  ? 'Connected & Healthy'
+                  ? 'KV & Healthy'
                   : 'Disconnected'}
             </span>
           </div>
@@ -71,7 +79,7 @@ export default function Home() {
 
       {/* Footer */}
       <footer className="mt-auto pt-8 text-center text-gray-500 text-sm">
-        <div className="border-t w-full mb-4"/>
+        <div className="border-t w-full mb-4" />
         <p>
           Learn more:{' '}
           <a

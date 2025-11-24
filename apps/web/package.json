@@ -16,13 +16,15 @@
   },
   "dependencies": {
     "@nn-stack/api": "workspace:*",
+    "@nn-stack/ui": "workspace:*",
     "@opennextjs/cloudflare": "catalog:",
     "@orpc/client": "catalog:",
     "@orpc/tanstack-query": "catalog:",
     "@tailwindcss/postcss": "catalog:",
     "@tanstack/react-query": "catalog:",
+    "lucide-react": "catalog:",
     "next": "catalog:",
-    "postcss": "^8.5.6",
+    "postcss": "catalog:",
     "react": "catalog:",
     "react-dom": "catalog:",
     "tailwindcss": "catalog:"
