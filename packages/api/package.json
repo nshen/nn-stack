@@ -24,7 +24,8 @@
     "@orpc/server": "catalog:",
     "drizzle-orm": "^0.44.7",
     "hono": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "@nn-stack/db":"workspace:*"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "catalog:",

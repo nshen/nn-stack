@@ -1,5 +1,6 @@
-import { RouterClient } from '@orpc/server';
+import type { RouterClient } from '@orpc/server';
 import { connection,db,kv } from './health-check';
+import { usersApi } from './users';
 
 export const appRouter = {
   healthCheck: {
@@ -7,6 +8,7 @@ export const appRouter = {
     kv,
     db
   },
+  users: usersApi,
 };
 
 export type AppRouter = typeof appRouter;
