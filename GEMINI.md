@@ -11,15 +11,17 @@ nn-stack/
 │   └── web/        # Frontend Next.js application
 └── packages/
     ├── api/        # Shared API interfaces (orpc)
+    ├── db/         # Drizzle database
     ├── config/     # Common configurations
     └── ui/         # Shadcn UI components
 ```
 
-- **`apps/server`**: A backend application responsible for API services. It uses `hono`, `zod`, and `@orpc/server`. Deployment is handled via `alchemy.run`.
+- **`apps/server`**: A backend application uses `hono` and `@orpc/server`. Automatically handle APIs defined in `packages/api`. Deployment is handled via `alchemy.run`.
 - **`apps/web`**: A frontend web application built with Next.js. It interacts with the backend services. Deployment is handled via `alchemy.run`.
-- **`packages/api`**: A shared package defining the API interfaces and types. Uses `orpc` to implement end-to-end type-safe APIs, shared between web and server.
+- **`packages/api`**: A shared package defining the API interfaces and types. Uses `orpc` to implement end-to-end type-safe APIs, validate by using zod, shared between web and server.
 - **`packages/config`**: A shared package for common configurations.
 - **`packages/ui`**: Original `shadcn` UI components will be installed here for use by other packages. These components should not be modified.
+- **`packages/db`**: Code related to Drizzle Cloudflare D1 database, including schema definitions for database tables.��
 
 ## Tech Stack
 
@@ -104,9 +106,10 @@ This project uses `alchemy` for deployment.
 - **Monorepo Management**: pnpm workspaces are used to manage multiple packages within a single repository.
 - **Code Style**: Enforced by Biome (linting and formatting).
 - **API Definition**: The `@nn-stack/api` package defines the shared API contracts.
+- **Database Schema Definition**: The `@nn-stack/db/src/schema.ts` file is used to define the d1 database table structure.
 - **UI Components**: Reusable UI components are developed in the `@nn-stack/ui` package.
 
-# Web Development Rules
+## Web Development Rules
 
 Must comply with Next.js best practices
 
@@ -122,6 +125,7 @@ Must comply with Next.js best practices
 - All text in the interface should be in English
 - If importing other components, use `@/` absolute path imports
 - Note that all code comments should be in English. Don't write obviously meaningless comments, and don't easily delete existing comments in the code
+- Avoid using the any type in TypeScript.
 
 ## Output Requirements
 
@@ -135,9 +139,25 @@ Must comply with Next.js best practices
 - Complex JSX pages need English comments. If Chinese comments are encountered, change them to English
 - You can try to remind users to optimize meaningless `useMemo` and `useCallback` in the code
 
-# API Development Rules
+## `@nn-stack/ui` package rules
 
-APIs are based on ORPC and React Query, should comply with their best practices
+- You can only install shadcn component by using `pnpm dlx shadcn@latest add` command in `@nn-stack/ui` folder, for example: `pnpm dlx shadcn@latest add alert`.
+- Never modify code in `@nn-stack/ui`
 
-API entry point is in `apps/packages/api/src/index.ts`
+
+## API Development Rules
+
+Before starting actual development, make sure to understand the latest versions of `Tanstack Query`, `Drizzle`, `Zod` v4 and `ORPC`. Feel free to use the context7 MCP server to query the latest documentation.
+
+APIs development are based on [ORPC With Tanstack Query Integration](https://orpc.dev/docs/integrations/tanstack-query), should comply with their best practices
+
+API development should be end-to-end type safe.
+
+On the server side, use ORPC to define server APIs in the `@nn-stack/packages/api/src` subdirectory, and import them into the API entry point.
+
+The API entry point is located at `apps/packages/api/src/index.ts`.
+
+On the client side, use TanStack React Query in `@nn-stack/apps/web` to call the corresponding APIs, for example:
+
+`const connectionCheck = useQuery(orpc.healthCheck.connection.queryOptions());`
 
