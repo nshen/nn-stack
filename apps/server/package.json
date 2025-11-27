@@ -11,8 +11,7 @@
     "deploy": "alchemy deploy",
     "destroy": "alchemy destroy",
     "lint": "biome lint --write",
-    "format": "biome format --write",
-    "db:generate": "drizzle-kit generate"
+    "format": "biome format --write"
   },
   "dependencies": {
     "@nn-stack/api": "workspace:*",
