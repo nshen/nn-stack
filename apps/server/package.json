@@ -3,7 +3,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "alchemy dev",
+    "dev": "alchemy dev --env-file .dev.env",
     "deploy:dev": "alchemy deploy --stage dev",
     "deploy:prod": "alchemy deploy --stage prod",
     "destroy:dev": "alchemy destroy --stage dev",
