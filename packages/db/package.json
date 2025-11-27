@@ -16,8 +16,8 @@
   },
   "packageManager": "pnpm@10.16.1",
   "dependencies": {
-    "drizzle-kit": "^0.31.7",
-    "drizzle-orm": "^0.44.7"
+    "drizzle-kit": "catalog:",
+    "drizzle-orm": "catalog:"
   },
   "devDependencies": {
     "@types/node": "catalog:"

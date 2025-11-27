@@ -16,7 +16,7 @@
   "dependencies": {
     "@nn-stack/api": "workspace:*",
     "@orpc/server": "catalog:",
-    "drizzle-orm": "^0.44.7",
+    "drizzle-orm": "catalog:",
     "hono": "catalog:",
     "zod": "catalog:"
   },
@@ -25,7 +25,7 @@
     "@nn-stack/config": "workspace:*",
     "@types/node": "catalog:",
     "alchemy": "catalog:",
-    "drizzle-kit": "^0.31.7",
+    "drizzle-kit": "catalog:",
     "typescript": "catalog:"
   },
   "packageManager": "pnpm@10.16.1"
