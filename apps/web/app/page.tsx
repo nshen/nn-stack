@@ -1,7 +1,6 @@
 'use client';
 import { orpc } from '@/lib/orpc';
 import { useQuery } from '@tanstack/react-query';
-import { Button } from '@nn-stack/ui/components/button';
 
 export default function Home() {
   const connectionCheck = useQuery(orpc.healthCheck.connection.queryOptions());
