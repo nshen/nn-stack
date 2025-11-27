@@ -1,0 +1,25 @@
+{
+  "name": "@nn-stack/db",
+  "type": "module",
+  "exports": {
+    ".": {
+      "default": "./src/index.ts"
+    },
+    "./*": {
+      "default": "./src/*.ts"
+    }
+  },
+  "scripts": {
+    "lint": "biome lint --write",
+    "format": "biome format --write",
+    "db:generate": "drizzle-kit generate"
+  },
+  "packageManager": "pnpm@10.16.1",
+  "dependencies": {
+    "drizzle-kit": "^0.31.7",
+    "drizzle-orm": "^0.44.7"
+  },
+  "devDependencies": {
+    "@types/node": "catalog:"
+  }
+}
