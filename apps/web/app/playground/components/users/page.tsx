@@ -1,6 +1,6 @@
 'use client';
 
-import { useMutation, useQueryClient } from '@tanstack/react-query';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { orpc } from '@/lib/orpc';
 import { useState } from 'react';
 import { Button } from '@nn-stack/ui/components/button';
@@ -12,13 +12,14 @@ export default function UsersPlayground() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  const createUserMutation = useMutation(
-    orpc.users.createUser.mutationOptions({
-      onSuccess: () => {
-        queryClient.invalidateQueries({ queryKey: ['users'] });
-      },
-    }),
-  );
+  const { data: users, isLoading: isLoadingUsers } = useQuery(orpc.users.getUsers.queryOptions());
+
+  const createUserMutation = useMutation({
+    ...orpc.users.createUser.mutationOptions(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: orpc.users.getUsers.queryKey() });
+    },
+  });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -73,6 +74,22 @@ export default function UsersPlayground() {
           </pre>
         </div>
       )}
+
+      <div className="mt-8">
+        <h2 className="text-2xl font-bold mb-4">All Users</h2>
+        {isLoadingUsers ? (
+          <p>Loading users...</p>
+        ) : (
+          <ul className="space-y-2">
+            {users?.map((user) => (
+              <li key={user.id} className="p-2 border rounded-md">
+                <p className="font-semibold">{user.name}</p>
+                <p className="text-sm text-gray-500">{user.email}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </div>
     </div>
   );
 }
