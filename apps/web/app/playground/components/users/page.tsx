@@ -12,18 +12,35 @@ export default function UsersPlayground() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
 
-  const { data: users, isLoading: isLoadingUsers } = useQuery(orpc.users.getUsers.queryOptions());
+  const { data: users, isLoading: isLoadingUsers } = useQuery(
+    orpc.users.getUsers.queryOptions(),
+  );
 
   const createUserMutation = useMutation({
     ...orpc.users.createUser.mutationOptions(),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orpc.users.getUsers.queryKey() });
+      queryClient.invalidateQueries({
+        queryKey: orpc.users.getUsers.queryKey(),
+      });
+    },
+  });
+
+  const deleteUserMutation = useMutation({
+    ...orpc.users.deleteUser.mutationOptions(),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: orpc.users.getUsers.queryKey(),
+      });
     },
   });
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     createUserMutation.mutate({ name, email });
+  };
+
+  const handleDelete = (id: number) => {
+    deleteUserMutation.mutate({ id });
   };
 
   return (
@@ -82,9 +99,28 @@ export default function UsersPlayground() {
         ) : (
           <ul className="space-y-2">
             {users?.map((user) => (
-              <li key={user.id} className="p-2 border rounded-md">
-                <p className="font-semibold">{user.name}</p>
-                <p className="text-sm text-gray-500">{user.email}</p>
+              <li
+                key={user.id}
+                className="p-2 border rounded-md flex justify-between items-center"
+              >
+                <div>
+                  <p className="font-semibold">{user.name}</p>
+                  <p className="text-sm text-gray-500">{user.email}</p>
+                </div>
+                <Button
+                  variant="destructive"
+                  size="sm"
+                  onClick={() => handleDelete(user.id)}
+                  disabled={
+                    deleteUserMutation.isPending &&
+                    deleteUserMutation.variables?.id === user.id
+                  }
+                >
+                  {deleteUserMutation.isPending &&
+                  deleteUserMutation.variables?.id === user.id
+                    ? 'Deleting...'
+                    : 'Delete'}
+                </Button>
               </li>
             ))}
           </ul>
