@@ -20,6 +20,7 @@
     "drizzle-orm": "catalog:"
   },
   "devDependencies": {
+    "@biomejs/biome": "catalog:",
     "@types/node": "catalog:"
   }
 }
