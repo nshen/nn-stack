@@ -43,4 +43,39 @@ export const usersApi = {
         .returning();
       return deletedUser;
     }),
+  updateUser: o
+    .input(
+      z.object({
+        id: z.number(),
+        name: z.string().optional(),
+        email: z.email().optional(),
+      }),
+    )
+    .handler(async ({ context, input }) => {
+      const { id, ...updateData } = input;
+
+      if (updateData.email) {
+        const existingUser = await context.DB.select()
+          .from(users)
+          .where(eq(users.email, updateData.email))
+          .get();
+        if (existingUser && existingUser.id !== id) {
+          throw new ORPCError('CONFLICT', {
+            message: 'Email already in use.',
+          });
+        }
+      }
+
+      if (Object.keys(updateData).length === 0) {
+        throw new ORPCError('BAD_REQUEST', {
+          message: 'No fields to update.',
+        });
+      }
+
+      const [updatedUser] = await context.DB.update(users)
+        .set(updateData)
+        .where(eq(users.id, id))
+        .returning();
+      return updatedUser;
+    }),
 };

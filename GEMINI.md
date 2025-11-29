@@ -112,7 +112,7 @@ For local development, we use `.dev.env` in `apps/web` and `apps/server` respect
 
 ### Database
 
-- **Define Schema**: We use Drizzle together with the D1 database, so we use the `drizzle-orm/sqlite-core` package to define the table schema. The schema definition file is saved in `packages/db/src/schema.ts`.
+- **Define Schema**: We use Drizzle together with the D1 database, so we use the `drizzle-orm/sqlite-core` package to define the table schema, Be sure to import the type correctly. The schema definition file is saved in `packages/db/src/schema.ts`.
 - **Generate Migrations**: After changing schemas in `packages/db/src/schema.ts`, run `pnpm run db:generate` from the `packages/db` directory to generate migrations.
 - **Apply Migrations**: Since we use Alchemy.run to compile and run the program, when `pnpm dev` is executed, migrations are automatically applied in the local environment. When deploying, migrations are also automatically applied to the production environment.��
 
@@ -134,7 +134,7 @@ Must comply with Next.js Hono oRPC best practices
 - If the page needs UI components, don't use native browser components. Must develop based on Shadcn UI components, imported from `@nn-stack/ui`. Restore the design to the maximum extent possible. If there are issues, you can use Shadcn's MCP tool.
 - Only use tailwindcss V4 for styling. CSS inline styles are not allowed. Follow tailwindcss v4 built-in responsive design rules and mobile-first principles.
 - If there are multiple ways to implement layout, prefer using grid or the most concise implementation method
-- When components need icons, only use icons provided in `lucide-react`.
+- When components need icons, only use icons provided in `lucide-react`, no SVG allowed.
 - If interaction with the backend is needed, use TanStack Query V5. Try not to use React Context API
 - Don't over-optimize, don't add meaningless `useMemo` and `useCallback`, especially don't add `useMemo` to data returned by Tanstack Query API hooks
 - All text in the interface should be in English
@@ -195,6 +195,7 @@ To ensure a high-quality, professional, and consistent user interface, all UI de
 ## `@nn-stack/ui` package rules
 
 - You can only install shadcn component by using `pnpm dlx shadcn@latest add <component> -c packages/ui` command in root folder, `-c packages/ui` means install the component into `@nn-stack/ui` , for example: `pnpm dlx shadcn@latest add checkbox -c packages/ui`.
+- Note: use `shadcn@latest`, not `shadcn-ui@latest`
 - Never modify code in `@nn-stack/ui`
 
 When a page in `apps/web` needs a UI component:
@@ -205,9 +206,11 @@ When a page in `apps/web` needs a UI component:
 
 ## API Development Rules
 
-Before starting actual development, make sure to understand the latest versions of `Tanstack Query`, `Drizzle`, `Zod` v4 and `ORPC`. Feel free to use the context7 MCP server to query the latest documentation.
+Before starting actual development, make sure to understand the latest versions of `Tanstack Query`, `Drizzle`, `Zod` v4 and `oRPC`. Feel free to use the context7 MCP server to query the latest documentation.
 
-API development should be end-to-end type safe.
+API development is end-to-end type safe by using oRPC.
+
+In general, there is no need to modify the hono code in `@nn-stack/apps/server`, because hono has already integrated oRPC. You only need to create the corresponding oRPC API.
 
 On the server side, use ORPC to define server APIs in the `@nn-stack/packages/api/src` subdirectory, and import them into the API entry point.
 
