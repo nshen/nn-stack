@@ -10,8 +10,8 @@
     "destroy:prod": "pnpm run -r destroy:prod",
     "deploy": "pnpm run -r deploy",
     "destroy": "pnpm run -r destroy",
-    "lint": "biome lint --write",
-    "format": "biome format --write"
+    "lint": "pnpm run -r lint",
+    "format": "pnpm run -r format"
   },
   "description": "",
   "keywords": [],

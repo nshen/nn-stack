@@ -1,0 +1,20 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1764212058584,
+      "tag": "0000_dapper_silverclaw",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1764322261321,
+      "tag": "0001_typical_fantastic_four",
+      "breakpoints": true
+    }
+  ]
+}

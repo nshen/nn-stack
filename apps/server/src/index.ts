@@ -11,7 +11,7 @@ import { createContext } from '@nn-stack/api/context';
 
 import type { server } from '../alchemy.run';
 
-const app = new Hono<{ Bindings:(typeof server.Env) }>();
+const app = new Hono<{ Bindings: typeof server.Env }>();
 app.use(logger());
 
 app.use(

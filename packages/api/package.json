@@ -14,7 +14,8 @@
   },
   "type": "module",
   "scripts": {
-    "lint": "biome check ."
+    "lint": "biome lint --write",
+    "format": "biome format --write"
   },
   "keywords": [],
   "author": "nshen<nshen121@gmail.com>",
@@ -24,9 +25,11 @@
     "@orpc/server": "catalog:",
     "drizzle-orm": "^0.44.7",
     "hono": "catalog:",
-    "zod": "catalog:"
+    "zod": "catalog:",
+    "@nn-stack/db": "workspace:*"
   },
   "devDependencies": {
+    "@biomejs/biome": "catalog:",
     "@cloudflare/workers-types": "catalog:",
     "@nn-stack/config": "workspace:*",
     "alchemy": "catalog:",

@@ -3,7 +3,7 @@
   "type": "module",
   "main": "src/index.ts",
   "scripts": {
-    "dev": "alchemy dev",
+    "dev": "alchemy dev --env-file .dev.env",
     "deploy:dev": "alchemy deploy --stage dev",
     "deploy:prod": "alchemy deploy --stage prod",
     "destroy:dev": "alchemy destroy --stage dev",
@@ -11,13 +11,12 @@
     "deploy": "alchemy deploy",
     "destroy": "alchemy destroy",
     "lint": "biome lint --write",
-    "format": "biome format --write",
-    "db:generate": "drizzle-kit generate"
+    "format": "biome format --write"
   },
   "dependencies": {
     "@nn-stack/api": "workspace:*",
     "@orpc/server": "catalog:",
-    "drizzle-orm": "^0.44.7",
+    "drizzle-orm": "catalog:",
     "hono": "catalog:",
     "zod": "catalog:"
   },
@@ -26,8 +25,9 @@
     "@nn-stack/config": "workspace:*",
     "@types/node": "catalog:",
     "alchemy": "catalog:",
-    "drizzle-kit": "^0.31.7",
-    "typescript": "catalog:"
+    "drizzle-kit": "catalog:",
+    "typescript": "catalog:",
+    "@biomejs/biome": "catalog:"
   },
   "packageManager": "pnpm@10.16.1"
 }
