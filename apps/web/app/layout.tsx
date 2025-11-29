@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import { Geist, Geist_Mono } from 'next/font/google';
 import Providers from '@/lib/providers';
 import '@nn-stack/ui/styles/globals.css';
-import './globals.css'
+import './globals.css';
 
 export const metadata: Metadata = {
   title: 'Next.js on Cloudflare Workers',

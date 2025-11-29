@@ -15,7 +15,7 @@ export const queryClient = new QueryClient({
       //     },
       //   },
       // });
-      console.error(error.message)
+      console.error(error.message);
     },
   }),
 });
@@ -36,4 +36,3 @@ export const link = new RPCLink({
 export const client: AppRouterClient = createORPCClient(link);
 
 export const orpc = createTanstackQueryUtils(client);
-

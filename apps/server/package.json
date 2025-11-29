@@ -26,7 +26,8 @@
     "@types/node": "catalog:",
     "alchemy": "catalog:",
     "drizzle-kit": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "@biomejs/biome": "catalog:"
   },
   "packageManager": "pnpm@10.16.1"
 }

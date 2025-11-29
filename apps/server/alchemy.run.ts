@@ -17,12 +17,13 @@ await Exec('db-generate', {
 const DB = await D1Database('DB', {
   name: `${app.name}-db-${app.stage}`,
   migrationsDir: '../../packages/db/migrations/',
+  jurisdiction: 'default',
 });
 
 export const server = await Worker('server', {
   entrypoint: 'src/index.ts',
   compatibility: 'node',
-  compatibilityFlags:['enable_request_signal'],
+  compatibilityFlags: ['enable_request_signal'],
   bindings: {
     CORS_ORIGIN: process.env.CORS_ORIGIN || '',
     KV,
