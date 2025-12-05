@@ -20,19 +20,18 @@
   "keywords": [],
   "author": "nshen<nshen121@gmail.com>",
   "license": "MIT",
-  "packageManager": "pnpm@10.16.1",
   "dependencies": {
-    "@orpc/server": "1.11.3",
-    "drizzle-orm": "^0.44.7",
-    "hono": "^4.10.6",
-    "zod": "^4.1.12",
-    "@nn-stack/db": "workspace:*"
+    "@nn-stack/db": "workspace:*",
+    "@orpc/server": "1.12.2",
+    "drizzle-orm": "^0.45.0",
+    "hono": "^4.10.7",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.5",
-    "@cloudflare/workers-types": "^4.20251121.0",
+    "@biomejs/biome": "^2.3.8",
+    "@cloudflare/workers-types": "^4.20251205.0",
     "@nn-stack/config": "workspace:*",
-    "alchemy": "^0.77.5",
+    "alchemy": "^0.80.1",
     "typescript": "^5.9.3"
   }
 }
