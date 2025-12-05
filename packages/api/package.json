@@ -22,17 +22,17 @@
   "license": "MIT",
   "packageManager": "pnpm@10.16.1",
   "dependencies": {
-    "@orpc/server": "catalog:",
+    "@orpc/server": "1.11.3",
     "drizzle-orm": "^0.44.7",
-    "hono": "catalog:",
-    "zod": "catalog:",
+    "hono": "^4.10.6",
+    "zod": "^4.1.12",
     "@nn-stack/db": "workspace:*"
   },
   "devDependencies": {
-    "@biomejs/biome": "catalog:",
-    "@cloudflare/workers-types": "catalog:",
+    "@biomejs/biome": "^2.3.5",
+    "@cloudflare/workers-types": "^4.20251121.0",
     "@nn-stack/config": "workspace:*",
-    "alchemy": "catalog:",
-    "typescript": "catalog:"
+    "alchemy": "^0.77.5",
+    "typescript": "^5.9.3"
   }
 }
