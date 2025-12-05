@@ -14,13 +14,12 @@
     "format": "biome format --write",
     "db:generate": "drizzle-kit generate"
   },
-  "packageManager": "pnpm@10.16.1",
   "dependencies": {
-    "drizzle-kit": "^0.31.7",
-    "drizzle-orm": "^0.44.7"
+    "drizzle-kit": "^0.31.8",
+    "drizzle-orm": "^0.45.0"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.5",
+    "@biomejs/biome": "^2.3.8",
     "@types/node": "24.10.1"
   }
 }
