@@ -4,78 +4,6 @@ settings:
   autoInstallPeers: true
   excludeLinksFromLockfile: false
 
-catalogs:
-  default:
-    '@biomejs/biome':
-      specifier: ^2.3.5
-      version: 2.3.7
-    '@cloudflare/workers-types':
-      specifier: ^4.20251121.0
-      version: 4.20251121.0
-    '@opennextjs/cloudflare':
-      specifier: ^1.12.0
-      version: 1.13.1
-    '@orpc/client':
-      specifier: ^1.11.3
-      version: 1.11.3
-    '@orpc/server':
-      specifier: 1.11.3
-      version: 1.11.3
-    '@orpc/tanstack-query':
-      specifier: ^1.11.3
-      version: 1.11.3
-    '@tailwindcss/postcss':
-      specifier: ^4.1.17
-      version: 4.1.17
-    '@tanstack/react-query':
-      specifier: ^5.90.10
-      version: 5.90.10
-    '@types/node':
-      specifier: 24.10.1
-      version: 24.10.1
-    '@types/react':
-      specifier: ^19.2.5
-      version: 19.2.6
-    '@types/react-dom':
-      specifier: ^19.2.3
-      version: 19.2.3
-    alchemy:
-      specifier: ^0.77.5
-      version: 0.77.5
-    drizzle-kit:
-      specifier: ^0.31.7
-      version: 0.31.7
-    drizzle-orm:
-      specifier: ^0.44.7
-      version: 0.44.7
-    hono:
-      specifier: ^4.10.6
-      version: 4.10.6
-    lucide-react:
-      specifier: ^0.554.0
-      version: 0.554.0
-    next:
-      specifier: ^15.5.6
-      version: 15.5.6
-    postcss:
-      specifier: ^8.5.6
-      version: 8.5.6
-    react:
-      specifier: ^19.2.0
-      version: 19.2.0
-    react-dom:
-      specifier: ^19.2.0
-      version: 19.2.0
-    tailwindcss:
-      specifier: ^4.1.17
-      version: 4.1.17
-    typescript:
-      specifier: ^5.9.3
-      version: 5.9.3
-    zod:
-      specifier: ^4.1.12
-      version: 4.1.13
-
 importers:
 
   .: {}
@@ -86,38 +14,38 @@ importers:
         specifier: workspace:*
         version: link:../../packages/api
       '@orpc/server':
-        specifier: 'catalog:'
+        specifier: 1.11.3
         version: 1.11.3(ws@8.18.3)
       drizzle-orm:
-        specifier: 'catalog:'
+        specifier: ^0.44.7
         version: 0.44.7(@cloudflare/workers-types@4.20251121.0)
       hono:
-        specifier: 'catalog:'
+        specifier: ^4.10.6
         version: 4.10.6
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.1.12
         version: 4.1.13
     devDependencies:
       '@biomejs/biome':
-        specifier: 'catalog:'
+        specifier: ^2.3.5
         version: 2.3.7
       '@cloudflare/workers-types':
-        specifier: 'catalog:'
+        specifier: ^4.20251121.0
         version: 4.20251121.0
       '@nn-stack/config':
         specifier: workspace:*
         version: link:../../packages/config
       '@types/node':
-        specifier: 'catalog:'
+        specifier: 24.10.1
         version: 24.10.1
       alchemy:
-        specifier: 'catalog:'
+        specifier: ^0.77.5
         version: 0.77.5(@aws-sdk/client-dynamodb@3.936.0)(@aws-sdk/client-lambda@3.938.0)(@aws-sdk/client-s3@3.937.0)(@aws-sdk/client-sqs@3.936.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.13.1(wrangler@4.50.0(@cloudflare/workers-types@4.20251121.0)))(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20251121.0))(workerd@1.20251118.0)(wrangler@4.50.0(@cloudflare/workers-types@4.20251121.0))
       drizzle-kit:
-        specifier: 'catalog:'
+        specifier: ^0.31.7
         version: 0.31.7
       typescript:
-        specifier: 'catalog:'
+        specifier: ^5.9.3
         version: 5.9.3
 
   apps/web:
@@ -129,62 +57,62 @@ importers:
         specifier: workspace:*
         version: link:../../packages/ui
       '@opennextjs/cloudflare':
-        specifier: 'catalog:'
+        specifier: ^1.12.0
         version: 1.13.1(wrangler@4.50.0(@cloudflare/workers-types@4.20251121.0))
       '@orpc/client':
-        specifier: 'catalog:'
+        specifier: ^1.11.3
         version: 1.11.3
       '@orpc/tanstack-query':
-        specifier: 'catalog:'
+        specifier: ^1.11.3
         version: 1.11.3(@orpc/client@1.11.3)(@tanstack/query-core@5.90.10)
       '@tailwindcss/postcss':
-        specifier: 'catalog:'
+        specifier: ^4.1.17
         version: 4.1.17
       '@tanstack/react-query':
-        specifier: 'catalog:'
+        specifier: ^5.90.10
         version: 5.90.10(react@19.2.0)
       lucide-react:
-        specifier: 'catalog:'
+        specifier: ^0.554.0
         version: 0.554.0(react@19.2.0)
       next:
-        specifier: 'catalog:'
+        specifier: ^15.5.6
         version: 15.5.6(react-dom@19.2.0(react@19.2.0))(react@19.2.0)
       postcss:
-        specifier: 'catalog:'
+        specifier: ^8.5.6
         version: 8.5.6
       react:
-        specifier: 'catalog:'
+        specifier: ^19.2.0
         version: 19.2.0
       react-dom:
-        specifier: 'catalog:'
+        specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
       tailwindcss:
-        specifier: 'catalog:'
+        specifier: ^4.1.17
         version: 4.1.17
     devDependencies:
       '@biomejs/biome':
-        specifier: 'catalog:'
+        specifier: ^2.3.5
         version: 2.3.7
       '@cloudflare/workers-types':
-        specifier: 'catalog:'
+        specifier: ^4.20251121.0
         version: 4.20251121.0
       '@nn-stack/config':
         specifier: workspace:*
         version: link:../../packages/config
       '@types/node':
-        specifier: 'catalog:'
+        specifier: 24.10.1
         version: 24.10.1
       '@types/react':
-        specifier: 'catalog:'
+        specifier: ^19.2.5
         version: 19.2.6
       '@types/react-dom':
-        specifier: 'catalog:'
+        specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.6)
       alchemy:
-        specifier: 'catalog:'
+        specifier: ^0.77.5
         version: 0.77.5(@aws-sdk/client-dynamodb@3.936.0)(@aws-sdk/client-lambda@3.938.0)(@aws-sdk/client-s3@3.937.0)(@aws-sdk/client-sqs@3.936.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.13.1(wrangler@4.50.0(@cloudflare/workers-types@4.20251121.0)))(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20251121.0))(workerd@1.20251118.0)(wrangler@4.50.0(@cloudflare/workers-types@4.20251121.0))
       typescript:
-        specifier: 'catalog:'
+        specifier: ^5.9.3
         version: 5.9.3
 
   packages/api:
@@ -193,32 +121,32 @@ importers:
         specifier: workspace:*
         version: link:../db
       '@orpc/server':
-        specifier: 'catalog:'
+        specifier: 1.11.3
         version: 1.11.3(ws@8.18.3)
       drizzle-orm:
         specifier: ^0.44.7
         version: 0.44.7(@cloudflare/workers-types@4.20251121.0)
       hono:
-        specifier: 'catalog:'
+        specifier: ^4.10.6
         version: 4.10.6
       zod:
-        specifier: 'catalog:'
+        specifier: ^4.1.12
         version: 4.1.13
     devDependencies:
       '@biomejs/biome':
-        specifier: 'catalog:'
+        specifier: ^2.3.5
         version: 2.3.7
       '@cloudflare/workers-types':
-        specifier: 'catalog:'
+        specifier: ^4.20251121.0
         version: 4.20251121.0
       '@nn-stack/config':
         specifier: workspace:*
         version: link:../config
       alchemy:
-        specifier: 'catalog:'
+        specifier: ^0.77.5
         version: 0.77.5(@aws-sdk/client-dynamodb@3.936.0)(@aws-sdk/client-lambda@3.938.0)(@aws-sdk/client-s3@3.937.0)(@aws-sdk/client-sqs@3.936.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.13.1(wrangler@4.50.0(@cloudflare/workers-types@4.20251121.0)))(drizzle-orm@0.44.7(@cloudflare/workers-types@4.20251121.0))(workerd@1.20251118.0)(wrangler@4.50.0(@cloudflare/workers-types@4.20251121.0))
       typescript:
-        specifier: 'catalog:'
+        specifier: ^5.9.3
         version: 5.9.3
 
   packages/config: {}
@@ -226,17 +154,17 @@ importers:
   packages/db:
     dependencies:
       drizzle-kit:
-        specifier: 'catalog:'
+        specifier: ^0.31.7
         version: 0.31.7
       drizzle-orm:
-        specifier: 'catalog:'
+        specifier: ^0.44.7
         version: 0.44.7(@cloudflare/workers-types@4.20251121.0)
     devDependencies:
       '@biomejs/biome':
-        specifier: 'catalog:'
+        specifier: ^2.3.5
         version: 2.3.7
       '@types/node':
-        specifier: 'catalog:'
+        specifier: 24.10.1
         version: 24.10.1
 
   packages/ui:
@@ -266,16 +194,16 @@ importers:
         specifier: ^0.554.0
         version: 0.554.0(react@19.2.0)
       react:
-        specifier: 'catalog:'
+        specifier: ^19.2.0
         version: 19.2.0
       react-dom:
-        specifier: 'catalog:'
+        specifier: ^19.2.0
         version: 19.2.0(react@19.2.0)
       tailwind-merge:
         specifier: ^3.4.0
         version: 3.4.0
       tailwindcss:
-        specifier: 'catalog:'
+        specifier: ^4.1.17
         version: 4.1.17
       tw-animate-css:
         specifier: ^1.4.0
@@ -285,10 +213,10 @@ importers:
         specifier: workspace:*
         version: link:../config
       '@types/react':
-        specifier: 'catalog:'
+        specifier: ^19.2.5
         version: 19.2.6
       '@types/react-dom':
-        specifier: 'catalog:'
+        specifier: ^19.2.3
         version: 19.2.3(@types/react@19.2.6)
 
 packages:
@@ -3411,6 +3339,7 @@ packages:
   next@15.5.6:
     resolution: {integrity: sha512-zTxsnI3LQo3c9HSdSf91O1jMNsEzIXDShXd4wVdg9y5shwLqBXi4ZtUUJyB86KGVSJLZx0PFONvO54aheGX8QQ==}
     engines: {node: ^18.18.0 || ^19.8.0 || >= 20.0.0}
+    deprecated: This version has a security vulnerability. Please upgrade to a patched version. See https://nextjs.org/blog/CVE-2025-66478 for more details.
     hasBin: true
     peerDependencies:
       '@opentelemetry/api': ^1.1.0
@@ -4071,7 +4000,7 @@ snapshots:
       '@aws-crypto/sha256-js': 3.0.0
       '@aws-crypto/supports-web-crypto': 3.0.0
       '@aws-crypto/util': 3.0.0
-      '@aws-sdk/types': 3.398.0
+      '@aws-sdk/types': 3.936.0
       '@aws-sdk/util-locate-window': 3.893.0
       '@aws-sdk/util-utf8-browser': 3.259.0
       tslib: 1.14.1
@@ -4089,7 +4018,7 @@ snapshots:
   '@aws-crypto/sha256-js@3.0.0':
     dependencies:
       '@aws-crypto/util': 3.0.0
-      '@aws-sdk/types': 3.398.0
+      '@aws-sdk/types': 3.936.0
       tslib: 1.14.1
 
   '@aws-crypto/sha256-js@5.2.0':
@@ -4108,7 +4037,7 @@ snapshots:
 
   '@aws-crypto/util@3.0.0':
     dependencies:
-      '@aws-sdk/types': 3.398.0
+      '@aws-sdk/types': 3.936.0
       '@aws-sdk/util-utf8-browser': 3.259.0
       tslib: 1.14.1
 
