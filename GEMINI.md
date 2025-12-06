@@ -137,6 +137,7 @@ Must comply with Next.js Hono oRPC best practices
 - When components need icons, only use icons provided in `lucide-react`, no SVG allowed.
 - If interaction with the backend is needed, use TanStack Query V5. Try not to use React Context API
 - Don't over-optimize, don't add meaningless `useMemo` and `useCallback`, especially don't add `useMemo` to data returned by Tanstack Query API hooks
+- The `cn` utility function must be imported from `@nn-stack/ui/lib/utils`. Do not create a local `lib/utils.ts` or import from `@/lib/utils`.
 - All text in the interface should be in English
 - If importing other components, use `@/` absolute path imports
 - Note that all code comments should be in English. Don't write obviously meaningless comments, and don't easily delete existing comments in the code
