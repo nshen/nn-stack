@@ -51,6 +51,14 @@ export default function Home() {
             <Server size={16} />
             API Server
           </Link>
+          <Link
+            href="https://github.com/nshen/nn-stack"
+            target="_blank"
+            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-muted"
+          >
+            <Github size={16} />
+            GitHub
+          </Link>
         </div>
       </div>
 
@@ -119,15 +127,6 @@ export default function Home() {
           </span>{' '}
           to start building your app.
         </p>
-
-        <Link
-          href="https://github.com/nshen/nn-stack"
-          target="_blank"
-          className="group flex items-center gap-2 text-muted-foreground hover:text-foreground transition-colors pb-2"
-        >
-          <Github className="w-4 h-4" />
-          <span className="text-sm">Star on GitHub</span>
-        </Link>
       </div>
     </main>
   );
