@@ -190,7 +190,7 @@ To ensure a high-quality, professional, and consistent user interface, all UI de
   - For example, when generating a `Login` component, it should be saved as `apps/web/components/login/index.tsx`
 - Also generate usage examples of the component in the `apps/web/app/playground/components/` folder under the corresponding `component name`
   - For example, when generating a `Login` component, it should be saved as `apps/web/app/playground/components/login/page.tsx`
-- Complex JSX pages need English comments. If Chinese comments are encountered, change them to English
+- **Complex JSX Comments**: Complex JSX structures MUST have English comments to clearly separate and identify different UI sections. This makes it easier for humans to visually distinguish blocks (e.g., `{/* Header Section */}`, `{/* Main Content */}`). All comments must be in English.
 - You can try to remind users to optimize meaningless `useMemo` and `useCallback` in the code
 
 ## `@nn-stack/ui` package rules
