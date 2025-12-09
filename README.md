@@ -11,7 +11,7 @@ NN-Stack is an opinionated **Full Stack Starter Kit** built for **Cloudflare's E
 - **Zero Cost**: Runs 100% on Cloudflare (Workers + D1). $0/month for most hobby/startup apps.
 - **End-to-End Type Safety**: Shared Zod schemas + ORPC. Frontend calls backend like a local function.
 - **Infrastructure from Code**: Powered by **Alchemy.run**. No `wrangler.toml`. Just TypeScript.
-- **AI-First Workflow**: Optimized for LLMs. Includes `GEMINI.md` context file for instant agent onboarding.
+- **AI-First Workflow**: Optimized for LLMs. Includes [GEMINI.md](./GEMINI.md) context file for instant agent onboarding.
   - Prompt Example: "Read GEMINI.md, then create a todos table and expose a getTodos API."
 
 ---
@@ -126,7 +126,7 @@ NN-Stack 是一套**有主见（Opinionated）的全栈 Starter Kit**，专为 *
 - **零成本**: 100% 运行在 Cloudflare (Workers + D1) 上。绝大多数个人项目/初创应用 $0/月。
 - **端到端类型安全**: 共享 Zod Schema + ORPC。前端调用后端就像调用本地函数一样。
 - **基础设施即代码**: 由 **Alchemy.run** 驱动。告别 `wrangler.toml`。只写 TypeScript。
-- **AI 优先工作流**: 为 LLM 优化。内置 `GEMINI.md` 上下文文件，AI 助手开箱即用。
+- **AI 优先工作流**: 为 LLM 优化。内置 [GEMINI.md](./GEMINI.md) 上下文文件，AI 助手开箱即用。
   - Prompt 示例: "阅读 GEMINI.md，然后在创建 todos 表并暴露一个 getTodos API。"
 
 ---
