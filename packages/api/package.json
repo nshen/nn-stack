@@ -23,15 +23,15 @@
   "dependencies": {
     "@nn-stack/db": "workspace:*",
     "@orpc/server": "1.12.2",
-    "drizzle-orm": "^0.45.0",
-    "hono": "^4.10.7",
+    "drizzle-orm": "^0.45.1",
+    "hono": "^4.10.8",
     "zod": "^4.1.12"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
-    "@cloudflare/workers-types": "^4.20251205.0",
+    "@cloudflare/workers-types": "^4.20251212.0",
     "@nn-stack/config": "workspace:*",
-    "alchemy": "^0.80.1",
+    "alchemy": "^0.81.1",
     "typescript": "^5.9.3"
   }
 }

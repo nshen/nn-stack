@@ -16,7 +16,7 @@
   },
   "dependencies": {
     "drizzle-kit": "^0.31.8",
-    "drizzle-orm": "^0.45.0"
+    "drizzle-orm": "^0.45.1"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.3.8",
