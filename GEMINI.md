@@ -141,7 +141,22 @@ Must comply with Next.js Hono oRPC best practices
 - All text in the interface should be in English
 - If importing other components, use `@/` absolute path imports
 - Note that all code comments should be in English. Don't write obviously meaningless comments, and don't easily delete existing comments in the code
-- Avoid using the any type in TypeScript.
+- **No `any` Type**: The usage of `any` is strictly prohibited. Use `unknown` with type narrowing, or define explicit interfaces/types. If a library type is difficult to access, define a local compatible interface. Do not use `as any` casting.
+- **Error Handling Best Practices**: In `try-catch` blocks, the catch variable is `unknown` by default. Do not cast it to `any`.
+  - Use `if (error instanceof Error)` to narrow the type before accessing `.message`.
+  - If the error structure is unknown, fallback to a generic error message.
+  - Example:
+    ```typescript
+    try {
+      // ...
+    } catch (error: unknown) {
+      if (error instanceof Error) {
+        console.error(error.message);
+      } else {
+        console.error("An unknown error occurred");
+      }
+    }
+    ```
 
 ## UI/UX Design Principles (from Refactoring UI)
 
