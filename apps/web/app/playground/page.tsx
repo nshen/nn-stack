@@ -9,7 +9,7 @@ import {
   Component,
 } from 'lucide-react';
 import Link from 'next/link';
-import { type LucideIcon } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 export default function PlaygroundPage() {
   return (

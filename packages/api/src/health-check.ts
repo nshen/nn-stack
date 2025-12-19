@@ -9,9 +9,15 @@ export const connection = o.handler(({ context }) => {
 });
 
 export const kv = o.handler(({ context }) => {
-  return context.env.KV || null;
+  if (!context.env.KV) {
+    throw new Error('KV not found');
+  }
+  return 'OK';
 });
 
 export const db = o.handler(({ context }) => {
-  return context.env.DB || null;
+  if (!context.env.DB) {
+    throw new Error('DB not found');
+  }
+  return 'OK';
 });
