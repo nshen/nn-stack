@@ -7,6 +7,6 @@ export const web = await Nextjs('web', {
   name: `${app.name}-web-${app.stage}`,
 });
 
-console.log({ url: web.url });
+console.log({ web: web.url });
 
 await app.finalize();

@@ -34,6 +34,6 @@ export const server = await Worker('server', {
   },
 });
 
-console.log({ url: server.url });
+console.log({ server: server.url });
 
 await app.finalize();
