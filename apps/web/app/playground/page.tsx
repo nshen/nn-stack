@@ -2,8 +2,6 @@
 
 import { cn } from '@nn-stack/ui/lib/utils';
 import {
-  ArrowLeft,
-  FlaskConical,
   Users,
   HardDrive,
   LayoutTemplate,
@@ -14,69 +12,34 @@ import type { LucideIcon } from 'lucide-react';
 
 export default function PlaygroundPage() {
   return (
-    <main className="w-full max-w-5xl mx-auto px-4 py-12 flex flex-col gap-12">
-      {/* Header */}
-      <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4 pb-6 border-b border-border/40">
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight text-foreground flex items-center gap-2">
-            <FlaskConical className="w-6 h-6" />
-            Playground
-          </h1>
-          <p className="text-muted-foreground">
-            Component demos and integration patterns.
-          </p>
-        </div>
-        <div className="flex items-center gap-3">
-          <Link
-            href="/"
-            className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-muted"
-          >
-            <ArrowLeft size={16} />
-            Back to Console
-          </Link>
-        </div>
-      </div>
-
-      {/* Examples Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-        <ExampleCard
-          title="User Management"
-          description="CRUD operations with Zod validation and ORPC."
-          href="/playground/components/users"
-          icon={Users}
-        />
-        <ExampleCard
-          title="R2 Storage"
-          description="Direct S3-compatible file uploads with progress tracking."
-          href="/playground/components/r2-upload"
-          icon={HardDrive}
-        />
-        <ExampleCard
-          title="Todo List"
-          description="Interactive task list with optimistic updates."
-          href="#"
-          icon={LayoutTemplate}
-          disabled
-        />
-        <ExampleCard
-          title="Form Components"
-          description="Shadcn UI form elements showcase."
-          href="#"
-          icon={Component}
-          disabled
-        />
-      </div>
-
-      {/* Hint */}
-      <div className="mt-auto pt-6 border-t border-border/40 text-center">
-        <p className="text-xs text-muted-foreground font-mono">
-          Add new examples in{' '}
-          <span className="bg-muted px-1 py-0.5 rounded text-foreground">
-            apps/web/app/playground/
-          </span>
-        </p>
-      </div>
-    </main>
+    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+      <ExampleCard
+        title="User Management"
+        description="CRUD operations with Zod validation and ORPC."
+        href="/playground/components/users"
+        icon={Users}
+      />
+      <ExampleCard
+        title="R2 Storage"
+        description="Direct S3-compatible file uploads with progress tracking."
+        href="/playground/components/r2-upload"
+        icon={HardDrive}
+      />
+      <ExampleCard
+        title="Todo List"
+        description="Interactive task list with optimistic updates."
+        href="#"
+        icon={LayoutTemplate}
+        disabled
+      />
+      <ExampleCard
+        title="Form Components"
+        description="Shadcn UI form elements showcase."
+        href="#"
+        icon={Component}
+        disabled
+      />
+    </div>
   );
 }
 

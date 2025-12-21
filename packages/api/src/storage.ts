@@ -56,19 +56,33 @@ export const storageApi = {
       return presignedUrls;
     }),
 
-  list: o.handler(async ({ context }) => {
-    if (!context.env.BUCKET) {
-      throw new ORPCError('PRECONDITION_FAILED', {
-        message: 'R2 Storage is not configured on the server.',
-      });
-    }
-    const list = await context.env.BUCKET.list();
-    return list.objects.map((obj) => ({
-      key: obj.key,
-      size: obj.size,
-      uploadedAt: obj.uploaded.toISOString(),
-    }));
-  }),
+  list: o
+    .output(
+      z.array(
+        z.object({
+          key: z.string(),
+          size: z.number(),
+          uploadedAt: z.string(),
+          url: z.string().nullable(),
+        }),
+      ),
+    )
+    .handler(async ({ context }) => {
+      if (!context.env.BUCKET) {
+        throw new ORPCError('PRECONDITION_FAILED', {
+          message: 'R2 Storage is not configured on the server.',
+        });
+      }
+      const list = await context.env.BUCKET.list();
+      const publicDomain = context.env.R2_PUBLIC_DOMAIN;
+      
+      return list.objects.map((obj) => ({
+        key: obj.key,
+        size: obj.size,
+        uploadedAt: obj.uploaded.toISOString(),
+        url: publicDomain ? `https://${publicDomain}/${obj.key}` : null,
+      }));
+    }),
 
   delete: o
     .input(

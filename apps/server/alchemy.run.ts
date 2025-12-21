@@ -70,6 +70,7 @@ export const server = await Worker('server', {
   compatibilityFlags: ['enable_request_signal'],
   bindings: {
     CORS_ORIGIN: process.env.CORS_ORIGIN || '',
+    R2_PUBLIC_DOMAIN: BUCKET.devDomain || '',
     KV,
     DB,
     ...(hasR2Keys

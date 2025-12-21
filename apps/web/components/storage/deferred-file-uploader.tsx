@@ -8,7 +8,18 @@ import { Button } from '@nn-stack/ui/components/button';
 import { Progress } from '@nn-stack/ui/components/progress';
 import { Card, CardContent } from '@nn-stack/ui/components/card';
 import { Alert, AlertTitle, AlertDescription } from '@nn-stack/ui/components/alert';
-import { X, Upload, FileIcon, Trash2, Loader2, CheckCircle, AlertCircle } from 'lucide-react';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from '@nn-stack/ui/components/alert-dialog';
+import { toast } from '@nn-stack/ui/components/sonner';
+import { X, Upload, FileIcon, Trash2, Loader2, CheckCircle, AlertCircle, ExternalLink } from 'lucide-react';
 import { cn } from '@nn-stack/ui/lib/utils';
 import Image from 'next/image';
 import { uploadFile } from '@/lib/upload';
@@ -23,9 +34,12 @@ interface FileWithPreview {
   progress: number;
 }
 
+const MAX_FILE_SIZE = 1 * 1024 * 1024; // 1MB
+
 export function DeferredFileUploader() {
   const [files, setFiles] = useState<FileWithPreview[]>([]);
   const [isUploading, setIsUploading] = useState(false);
+  const [fileToDelete, setFileToDelete] = useState<string | null>(null);
   const queryClient = useQueryClient();
 
   // Fetch existing files
@@ -40,8 +54,20 @@ export function DeferredFileUploader() {
   const deleteMutation = useMutation(orpc.storage.delete.mutationOptions({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: orpc.storage.list.key() });
+      toast.success('File deleted successfully');
+    },
+    onError: (error) => {
+      toast.error(`Failed to delete file: ${error.message}`);
     }
   }));
+
+  const handleDownload = (url: string | null) => {
+    if (url) {
+      window.open(url, '_blank');
+    } else {
+      toast.error('File URL is not available.');
+    }
+  };
 
   const onDrop = useCallback((acceptedFiles: File[]) => {
     const newFiles = acceptedFiles.map((file) => ({
@@ -56,10 +82,21 @@ export function DeferredFileUploader() {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
+    onDropRejected: (fileRejections) => {
+      for (const rejection of fileRejections) {
+        const isTooLarge = rejection.errors.some((e) => e.code === 'file-too-large');
+        if (isTooLarge) {
+          toast.error(`File ${rejection.file.name} is too large. Max size is 1MB.`);
+        } else {
+          toast.error(`File ${rejection.file.name} was rejected: ${rejection.errors[0]?.message}`);
+        }
+      }
+    },
     accept: {
       'image/*': [],
       'application/pdf': [],
     },
+    maxSize: MAX_FILE_SIZE,
     disabled: !!fetchError, // Disable dropzone on error
   });
 
@@ -73,9 +110,14 @@ export function DeferredFileUploader() {
     });
   };
 
-  const handleDeleteRemote = async (key: string) => {
-    if (confirm('Are you sure you want to delete this file?')) {
-      await deleteMutation.mutateAsync({ key });
+  const handleDeleteRemote = (key: string) => {
+    setFileToDelete(key);
+  };
+
+  const confirmDelete = async () => {
+    if (fileToDelete) {
+      await deleteMutation.mutateAsync({ key: fileToDelete });
+      setFileToDelete(null);
     }
   };
 
@@ -116,11 +158,13 @@ export function DeferredFileUploader() {
               );
             });
 
-            setFiles((prev) =>
-              prev.map((f) =>
-                f.id === fileItem.id ? { ...f, status: 'success', progress: 100 } : f
-              )
-            );
+            setFiles((prev) => {
+              const file = prev.find((f) => f.id === fileItem.id);
+              if (file) {
+                URL.revokeObjectURL(file.preview);
+              }
+              return prev.filter((f) => f.id !== fileItem.id);
+            });
           } catch (error) {
             console.error('Upload failed for', fileItem.file.name, error);
             setFiles((prev) =>
@@ -179,7 +223,7 @@ export function DeferredFileUploader() {
           <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
           <p className="text-lg font-medium">Drag & drop files here, or click to select</p>
           <p className="text-sm text-muted-foreground mt-1">
-            Support for images and PDF. Files are queued before uploading.
+            Support for images and PDF (max 1MB). Files are queued before uploading.
           </p>
         </div>
 
@@ -220,8 +264,8 @@ export function DeferredFileUploader() {
                     </div>
                     
                     <div className="flex-1 min-w-0 space-y-2">
-                      <div className="flex items-start justify-between">
-                        <div>
+                      <div className="flex items-start justify-between gap-2">
+                        <div className="min-w-0 flex-1">
                           <p className="font-medium truncate text-sm" title={file.file.name}>
                             {file.file.name}
                           </p>
@@ -232,7 +276,7 @@ export function DeferredFileUploader() {
                         <Button
                           variant="ghost"
                           size="icon"
-                          className="h-6 w-6 text-muted-foreground hover:text-destructive"
+                          className="h-6 w-6 shrink-0 text-muted-foreground hover:text-destructive"
                           onClick={() => removeFile(file.id)}
                           disabled={file.status === 'uploading' || file.status === 'success'}
                         >
@@ -276,14 +320,21 @@ export function DeferredFileUploader() {
               <Card key={file.key}>
                 <CardContent className="p-4">
                   <div className="flex items-start justify-between gap-2">
-                    <div className="min-w-0">
-                      <p className="font-medium text-sm truncate" title={file.key}>
-                        {file.key}
-                      </p>
+                    <button
+                      type="button"
+                      className="min-w-0 cursor-pointer group text-left flex-1" 
+                      onClick={() => handleDownload(file.url)}
+                    >
+                      <div className="flex items-center gap-2 min-w-0">
+                        <p className="font-medium text-sm truncate group-hover:text-primary group-hover:underline flex-1 min-w-0" title={file.key}>
+                          {file.key}
+                        </p>
+                        <ExternalLink className="h-3 w-3 shrink-0 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
+                      </div>
                       <p className="text-xs text-muted-foreground">
                         {(file.size / 1024).toFixed(1)} KB • {new Date(file.uploadedAt).toLocaleDateString()}
                       </p>
-                    </div>
+                    </button>
                     <Button
                       variant="destructive"
                       size="icon"
@@ -298,10 +349,33 @@ export function DeferredFileUploader() {
               </Card>
             ))}
           </div>
-        ) : (
-          <p className="text-muted-foreground text-center py-8">No files uploaded yet.</p>
-        )}
-      </div>
-    </div>
-  );
-}
+                ) : (
+                  <p className="text-muted-foreground text-center py-8">No files uploaded yet.</p>
+                )}
+              </div>
+        
+              <AlertDialog open={!!fileToDelete} onOpenChange={(open) => !open && setFileToDelete(null)}>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete the file
+                      <span className="font-medium text-foreground mx-1">{fileToDelete}</span>
+                      from the storage.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={confirmDelete}
+                      className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
+                    >
+                      {deleteMutation.isPending ? 'Deleting...' : 'Delete'}
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+          );
+        }
+        
