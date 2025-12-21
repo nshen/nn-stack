@@ -5,6 +5,7 @@ import {
   ArrowLeft,
   FlaskConical,
   Users,
+  HardDrive,
   LayoutTemplate,
   Component,
 } from 'lucide-react';
@@ -43,6 +44,12 @@ export default function PlaygroundPage() {
           description="CRUD operations with Zod validation and ORPC."
           href="/playground/components/users"
           icon={Users}
+        />
+        <ExampleCard
+          title="R2 Storage"
+          description="Direct S3-compatible file uploads with progress tracking."
+          href="/playground/components/r2-upload"
+          icon={HardDrive}
         />
         <ExampleCard
           title="Todo List"

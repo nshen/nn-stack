@@ -22,6 +22,8 @@
   "author": "nshen<nshen121@gmail.com>",
   "license": "MIT",
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.956.0",
+    "@aws-sdk/s3-request-presigner": "^3.956.0",
     "@nn-stack/db": "workspace:*",
     "@orpc/server": "1.12.2",
     "drizzle-orm": "^0.45.1",
