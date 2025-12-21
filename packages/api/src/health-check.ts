@@ -1,4 +1,4 @@
-import { os } from '@orpc/server';
+import { os, ORPCError } from '@orpc/server';
 import type { Context } from './context';
 
 export const o = os.$context<Context>();
@@ -10,14 +10,21 @@ export const connection = o.handler(({ context }) => {
 
 export const kv = o.handler(({ context }) => {
   if (!context.env.KV) {
-    throw new Error('KV not found');
+    throw new ORPCError('NOT_FOUND', { message: 'KV not found' });
   }
   return 'OK';
 });
 
 export const db = o.handler(({ context }) => {
   if (!context.env.DB) {
-    throw new Error('DB not found');
+    throw new ORPCError('NOT_FOUND', { message: 'DB not found' });
+  }
+  return 'OK';
+});
+
+export const r2 = o.handler(({ context }) => {
+  if (!context.env.BUCKET) {
+    throw new ORPCError('NOT_FOUND', { message: 'Missing server env: `R2_ACCESS_KEY_ID` and/or `R2_SECRET_ACCESS_KEY`.' });
   }
   return 'OK';
 });

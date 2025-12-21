@@ -13,9 +13,15 @@ import {
   Code,
   Globe,
   Github,
+  HardDrive,
 } from 'lucide-react';
 import Link from 'next/link';
 import { orpc } from '@/lib/orpc';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from '@nn-stack/ui/components/tooltip';
 import { useQuery } from '@tanstack/react-query';
 
 export default function Home() {
@@ -85,6 +91,12 @@ export default function Home() {
             description="Serverless SQLite Edge DB"
             queryKey="db"
             icon={Database}
+          />
+          <StatusCheckCard
+            title="R2 Storage"
+            description="Object Storage"
+            queryKey="r2"
+            icon={HardDrive}
           />
         </div>
       </section>
@@ -168,7 +180,7 @@ function StatusCheckCard({
 }: {
   title: string;
   description: string;
-  queryKey: 'connection' | 'kv' | 'db';
+  queryKey: 'connection' | 'kv' | 'db' | 'r2';
   icon: LucideIcon;
 }) {
   const query = useQuery(orpc.healthCheck[queryKey].queryOptions());
@@ -187,31 +199,40 @@ function StatusCheckCard({
         </div>
       </div>
 
-      <div
-        className={cn(
-          'flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border transition-colors',
-          query.isLoading
-            ? 'bg-muted text-muted-foreground border-transparent'
-            : query.isError || !query.data
-              ? 'bg-red-500/10 text-red-600 border-red-200/50'
-              : 'bg-emerald-500/10 text-emerald-600 border-emerald-200/50',
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <div
+            className={cn(
+              'flex items-center gap-1.5 text-xs font-medium px-2.5 py-1 rounded-full border transition-colors',
+              query.isLoading
+                ? 'bg-muted text-muted-foreground border-transparent'
+                : query.isError || !query.data
+                  ? 'bg-red-500/10 text-red-600 border-red-200/50'
+                  : 'bg-emerald-500/10 text-emerald-600 border-emerald-200/50',
+            )}
+          >
+            {query.isLoading ? (
+              <Loader2 size={12} className="animate-spin" />
+            ) : query.isError || !query.data ? (
+              <CircleAlert size={12} />
+            ) : (
+              <Check size={12} />
+            )}
+            <span className="capitalize">
+              {query.isLoading
+                ? 'Checking'
+                : query.isError || !query.data
+                  ? 'Error'
+                  : 'Healthy'}
+            </span>
+          </div>
+        </TooltipTrigger>
+        {query.isError && (
+          <TooltipContent>
+            <p className="text-xs">{query.error.message}</p>
+          </TooltipContent>
         )}
-      >
-        {query.isLoading ? (
-          <Loader2 size={12} className="animate-spin" />
-        ) : query.isError || !query.data ? (
-          <CircleAlert size={12} />
-        ) : (
-          <Check size={12} />
-        )}
-        <span className="capitalize">
-          {query.isLoading
-            ? 'Checking'
-            : query.isError || !query.data
-              ? 'Error'
-              : 'Healthy'}
-        </span>
-      </div>
+      </Tooltip>
     </div>
   );
 }
