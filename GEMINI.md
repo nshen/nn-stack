@@ -110,6 +110,16 @@ For local development, we use `.dev.env` in `apps/web` and `apps/server` respect
 - **`apps/web/.dev.env`**: `NEXT_PUBLIC_SERVER_URL=http://localhost:4000` (Points to the local Hono server).
 - **`apps/server/.dev.env`**: `CORS_ORIGIN=http://localhost:3000,http://localhost:3001` (Allows requests from the local Next.js app).
 
+**Important Note on Adding New Environment Variables:**
+
+1.  **Do NOT manually edit `env.d.ts`**: These files are auto-generated based on the bindings and configurations in `alchemy.run.ts`.
+2.  **Edit `apps/server/alchemy.run.ts` for server or edit `apps/web/alchemy.run.ts`** for client: To add a new environment variable or binding:
+    - Locate the `bindings` object within the `Worker` configuration.
+    - Add your new variable there (e.g., `MY_VAR: process.env.MY_VAR || ''`).
+    - If using `process.env`, ensure the variable is defined in `apps/server/.dev.env` or `apps/web/.dev.env`for local development.
+3.  **Run Dev Server**: Starting the development server (`pnpm dev`) will automatically regenerate `apps/server/env.d.ts` to reflect your changes, providing type safety.
+4.  Update `.env.example` to add an example
+
 ### Database
 
 - **Define Schema**: We use Drizzle together with the D1 database, so we use the `drizzle-orm/sqlite-core` package to define the table schema, Be sure to import the type correctly. The schema definition file is saved in `packages/db/src/schema.ts`.
