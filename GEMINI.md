@@ -230,6 +230,10 @@ When a page in `apps/web` needs a UI component:
 2. If it does not exist, use the command `pnpm dlx shadcn@latest add <component> -c packages/ui` to add it to the ui package.
 3. Finally, import and use it from `@nn-stack/ui` in the code of `apps/web`.
 
+### Component Specific Rules
+
+- **Dialog Width**: `DialogContent` component in `@packages/ui` has a default `sm:max-w-lg` class. To set a wider width (e.g., `max-w-4xl`), you MUST add the `sm:` prefix (e.g., `sm:max-w-4xl`) to override the default behavior.
+
 ## API Development Rules
 
 Before starting actual development, make sure to understand the latest versions of `Tanstack Query`, `Drizzle`, `Zod` v4 and `oRPC`. Feel free to use the context7 MCP server to query the latest documentation.
