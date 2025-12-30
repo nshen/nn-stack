@@ -4,11 +4,11 @@
   "main": "src/index.ts",
   "scripts": {
     "dev": "alchemy dev --env-file .dev.env",
-    "deploy:dev": "alchemy deploy --stage dev",
-    "deploy:prod": "alchemy deploy --stage prod",
+    "deploy:dev": "alchemy deploy --stage dev --env-file .env",
+    "deploy:prod": "alchemy deploy --stage prod --env-file .env",
+    "deploy": "alchemy deploy --env-file .env",
     "destroy:dev": "alchemy destroy --stage dev",
     "destroy:prod": "alchemy destroy --stage prod",
-    "deploy": "alchemy deploy",
     "destroy": "alchemy destroy",
     "lint": "biome lint --write",
     "format": "biome format --write"
@@ -25,7 +25,7 @@
     "@cloudflare/workers-types": "^4.20251212.0",
     "@nn-stack/config": "workspace:*",
     "@types/node": "24.10.1",
-    "alchemy": "^0.81.1",
+    "alchemy": "^0.82.2",
     "drizzle-kit": "^0.31.8",
     "typescript": "^5.9.3"
   }

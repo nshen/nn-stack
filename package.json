@@ -19,6 +19,6 @@
   "license": "MIT",
   "packageManager": "pnpm@10.24.0",
   "devDependencies": {
-    "alchemy": "^0.81.1"
+    "alchemy": "^0.82.2"
   }
 }

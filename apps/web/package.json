@@ -4,11 +4,11 @@
   "scripts": {
     "dev": "alchemy dev --env-file .dev.env",
     "build": "next build",
-    "deploy:dev": "alchemy deploy --stage dev",
-    "deploy:prod": "alchemy deploy --stage prod",
+    "deploy:dev": "alchemy deploy --stage dev --env-file .env",
+    "deploy:prod": "alchemy deploy --stage prod --env-file .env",
+    "deploy": "alchemy deploy --env-file .env",
     "destroy:dev": "alchemy destroy --stage dev",
     "destroy:prod": "alchemy destroy --stage prod",
-    "deploy": "alchemy deploy",
     "destroy": "alchemy destroy",
     "lint": "biome lint --write",
     "format": "biome format --write",
@@ -37,7 +37,7 @@
     "@types/node": "25.0.3",
     "@types/react": "^19.2.7",
     "@types/react-dom": "^19.2.3",
-    "alchemy": "^0.81.4",
+    "alchemy": "^0.82.2",
     "typescript": "^5.9.3"
   }
 }
