@@ -3,6 +3,7 @@ import { connection, db, kv, r2 } from './health-check';
 import { usersApi } from './users';
 import { todosApi } from './todos';
 import { storageApi } from './storage';
+import { planetApi } from './planet';
 
 export const appRouter = {
   healthCheck: {
@@ -14,6 +15,7 @@ export const appRouter = {
   users: usersApi,
   todos: todosApi,
   storage: storageApi,
+  planet: planetApi,
 };
 
 export type AppRouter = typeof appRouter;

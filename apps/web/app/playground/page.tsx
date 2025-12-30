@@ -6,6 +6,7 @@ import {
   HardDrive,
   LayoutTemplate,
   Component,
+  Server,
 } from 'lucide-react';
 import Link from 'next/link';
 import type { LucideIcon } from 'lucide-react';
@@ -24,6 +25,12 @@ export default function PlaygroundPage() {
         description="Direct S3-compatible file uploads with progress tracking."
         href="/playground/components/r2-upload"
         icon={HardDrive}
+      />
+      <ExampleCard
+        title="Server Side Rendering"
+        description="Demonstrates dynamic SSR data fetching and prefetching."
+        href="/playground/ssr"
+        icon={Server}
       />
       <ExampleCard
         title="Todo List"
