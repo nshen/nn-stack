@@ -28,6 +28,7 @@ const DB = await D1Database('DB', {
   name: `${app.name}-db-${app.stage}`,
   migrationsDir: '../../packages/db/migrations/',
   jurisdiction: 'default',
+  adopt: true,
 });
 
 const hasR2Keys =
@@ -46,9 +47,9 @@ const BUCKET = await R2Bucket('BUCKET', {
   cors: [
     {
       allowed: {
-        origins: (process.env.CORS_ORIGIN || 'http://localhost:3000').split(
-          ',',
-        ),
+        origins: (process.env.CORS_ORIGIN || 'http://localhost:3000')
+          .split(',')
+          .map((o) => o.trim()),
         methods: ['GET', 'POST', 'PUT', 'DELETE', 'HEAD'],
         headers: ['*'],
       },
