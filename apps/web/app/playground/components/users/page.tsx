@@ -15,6 +15,7 @@ import {
   DialogTitle,
 } from '@nn-stack/ui/components/dialog';
 import { Card, CardContent } from '@nn-stack/ui/components/card';
+import { SourceCodeButton } from '@/components/source-code-button';
 
 type User = {
   id: number;
@@ -94,7 +95,17 @@ export default function UsersPlayground() {
   };
 
   return (
-    <div className="space-y-8">
+    <div className="max-w-4xl mx-auto p-6 space-y-8">
+      <div className="flex items-start justify-between">
+        <div>
+          <h1 className="text-2xl font-semibold tracking-tight">User Management</h1>
+          <p className="text-muted-foreground mt-2">
+            CRUD operations with Zod validation and ORPC.
+          </p>
+        </div>
+        <SourceCodeButton path="apps/web/app/playground/components/users/page.tsx" />
+      </div>
+
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
         {/* List Section */}
         <div className="space-y-4">
