@@ -1,5 +1,6 @@
 html,
 body {
+  scrollbar-gutter: stable;
   font-family:
     var(--font-geist-sans), "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
     "SimHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
