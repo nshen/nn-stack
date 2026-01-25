@@ -125,6 +125,14 @@ For local development, we use `.dev.env` in `apps/web` and `apps/server` respect
 - **Define Schema**: We use Drizzle together with the D1 database, so we use the `drizzle-orm/sqlite-core` package to define the table schema, Be sure to import the type correctly. The schema definition file is saved in `packages/db/src/schema.ts`.
 - **Generate Migrations**: After changing schemas in `packages/db/src/schema.ts`, run `pnpm run db:generate` from the `packages/db` directory to generate migrations.
 - **Apply Migrations**: Since we use Alchemy.run to compile and run the program, when `pnpm dev` is executed, migrations are automatically applied in the local environment. When deploying, migrations are also automatically applied to the production environment.��
+- **Drizzle Usage**: Drizzle has two modes: Relational Query API (`db.query...`) and SQL-like API (`db.select()...`). **We ONLY use the SQL-like API** (`db.select().from(table).where(...)`). Do NOT use the Relational Query API.
+
+### Drizzle Kit Workflow
+
+- **Custom SQL Migrations**: When you need to write manual SQL (e.g., for data migration, cleaning, or complex operations not supported by the schema builder), you **MUST** follow this workflow:
+  1.  Run `pnpm exec drizzle-kit generate --custom --name=<migration_name>` (in the `packages/db` directory) to generate an empty migration file. This ensures the migration is correctly registered in the `_journal.json`.
+  2.  Populate the generated `.sql` file with your custom SQL commands.
+  3.  **NEVER** manually create a `.sql` file in the migrations folder or manually edit `_journal.json`.
 
 ## Web Development Conventions
 
@@ -227,10 +235,10 @@ To ensure a high-quality, professional, and consistent user interface, all UI de
 ### UI Component Imports
 
 When importing Shadcn UI components from `@nn-stack/ui` in `apps/web`:
+
 - **Correct**: `import { Button } from '@nn-stack/ui/components/button'`
 - **Incorrect**: `import { Button } from '@nn-stack/ui/button'`
 - The `tsconfig.json` path mapping `@nn-stack/ui/*` points to `packages/ui/src/*`, and components are located in `packages/ui/src/components/`.
-
 
 When a page in `apps/web` needs a UI component:
 
