@@ -224,6 +224,14 @@ To ensure a high-quality, professional, and consistent user interface, all UI de
 - Note: use `shadcn@latest`, not `shadcn-ui@latest`
 - Never modify code in `@nn-stack/ui`
 
+### UI Component Imports
+
+When importing Shadcn UI components from `@nn-stack/ui` in `apps/web`:
+- **Correct**: `import { Button } from '@nn-stack/ui/components/button'`
+- **Incorrect**: `import { Button } from '@nn-stack/ui/button'`
+- The `tsconfig.json` path mapping `@nn-stack/ui/*` points to `packages/ui/src/*`, and components are located in `packages/ui/src/components/`.
+
+
 When a page in `apps/web` needs a UI component:
 
 1. First, check if it exists in `@nn-stack/ui`.
