@@ -76,6 +76,7 @@ if (hasR2Keys) {
 }
 
 export const server = await Worker('server', {
+  name: `${app.name}-${app.stage}`,
   entrypoint: 'src/index.ts',
   compatibility: 'node',
   compatibilityFlags: ['enable_request_signal'],
