@@ -1,0 +1,86 @@
+name: Deploy Application
+
+# This workflow handles automated deployment for nn-stack.
+# It supports two environments: 'dev' branch to 'dev' stage, and 'main' branch to 'prod' stage.
+# 
+# SETUP INSTRUCTIONS:
+# To enable automated deployment, add the following secrets to your GitHub repository:
+# (Settings -> Secrets and variables -> Actions -> New repository secret)
+#
+# 1. CLOUDFLARE_API_TOKEN: 
+#    - You can use `pnpm dlx alchemy util create-cloudflare-token` to generate a token that mirrors your current profile's permissions, or `pnpm dlx alchemy util create-cloudflare-token --god-token` for a token with full access.
+#
+# 2. ALCHEMY_STATE_TOKEN: 
+#    - How to get: Generate a random string. 
+#    - openssl rand -hex 32
+#
+# 3. CLOUDFLARE_EMAIL: 
+#    - Your Cloudflare account login email.
+#
+# 4. ENV_SERVER_DEV / ENV_SERVER_PROD: 
+#    - How to get: The full content of your apps/server/.env file for each stage.
+#
+# 5. ENV_WEB_DEV / ENV_WEB_PROD: 
+#    - How to get: The full content of your apps/web/.env file for each stage.
+
+on:
+  push:
+    branches:
+      - main
+      - dev
+
+concurrency: 
+  group: deploy-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          run_install: false
+          
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: "pnpm"
+          
+      - name: Install dependencies
+        run: pnpm install
+        
+      - name: Inject Environment Files (Dev)
+        if: github.ref == 'refs/heads/dev'
+        run: |
+          echo "${{ secrets.ENV_SERVER_DEV }}" > apps/server/.env
+          echo "${{ secrets.ENV_WEB_DEV }}" > apps/web/.env
+
+      - name: Inject Environment Files (Prod)
+        if: github.ref == 'refs/heads/main'
+        run: |
+          echo "${{ secrets.ENV_SERVER_PROD }}" > apps/server/.env
+          echo "${{ secrets.ENV_WEB_PROD }}" > apps/web/.env
+        
+      - name: Deploy to Dev
+        if: github.ref == 'refs/heads/dev'
+        run: pnpm run deploy:dev
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          ALCHEMY_STATE_TOKEN: ${{ secrets.ALCHEMY_STATE_TOKEN }}
+
+      - name: Deploy to Prod
+        if: github.ref == 'refs/heads/main'
+        run: pnpm run deploy:prod
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          CLOUDFLARE_EMAIL: ${{ secrets.CLOUDFLARE_EMAIL }}
+          ALCHEMY_STATE_TOKEN: ${{ secrets.ALCHEMY_STATE_TOKEN }}

@@ -5,13 +5,23 @@ import {
   Worker,
   D1Database,
   R2Bucket,
-  AccountId,
+  AccountId
 } from 'alchemy/cloudflare';
+
+import { CloudflareStateStore } from 'alchemy/state';
 
 const accountId = await AccountId();
 console.log('Your Cloudflare Account ID is:', accountId);
 
-const app = await alchemy('nn-stack');
+// Use CloudflareStateStore only if CLOUDFLARE_API_TOKEN is present (e.g., in CI/CD)
+// This allows the template to work out-of-the-box for local users.
+const stateStore = process.env.CLOUDFLARE_API_TOKEN
+  ? (scope: any) => new CloudflareStateStore(scope)
+  : undefined;
+
+const app = await alchemy('nn-stack-server', {
+  stateStore,
+});
 
 // Create a KV namespace
 const KV = await KVNamespace('KV', {
