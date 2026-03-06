@@ -87,7 +87,9 @@ pnpm alchemy login
 
 ### 4. Deployment
 
-Deploy everything to Cloudflare's global network with a single command.
+Deploy everything to Cloudflare's global network.
+
+#### Manual Deployment
 
 ```bash
 # Deploy to Development environment
@@ -106,6 +108,21 @@ pnpm run deploy:dev
 # Deploy to Production environment
 pnpm run deploy:prod
 ```
+
+#### Automated CI/CD Deployment
+
+This project includes a fully configured GitHub Actions workflow (`.github/workflows/deploy.yml`) for automated CI/CD. It supports two completely isolated environments, providing a safe and professional deployment strategy:
+
+- **`dev` branch** automatically deploys to the **Development** environment (e.g., [https://nn-stack-web-dev.nshen.workers.dev](https://nn-stack-web-dev.nshen.workers.dev)). Use this for testing and staging.
+- **`main` branch** automatically deploys to the **Production** environment (e.g., [https://nn-stack-web-prod.nshen.workers.dev](https://nn-stack-web-prod.nshen.workers.dev)). Use this for your live, user-facing application.
+
+To enable automated deployment, add the following **Repository Secrets** in your GitHub repository (*Settings -> Secrets and variables -> Actions -> New repository secret*):
+
+1. **`CLOUDFLARE_API_TOKEN`**: Your Cloudflare API Token. Generate one mirroring your permissions by running: `pnpm dlx alchemy util create-cloudflare-token`.
+2. **`ALCHEMY_STATE_TOKEN`**: A random 32-character hex string for Alchemy state management. Generate via: `openssl rand -hex 32`.
+3. **`CLOUDFLARE_EMAIL`**: Your Cloudflare account login email.
+4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: The full content of your `apps/server/.env` file for the respective environment. This injects your backend environment variables securely.
+5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: The full content of your `apps/web/.env` file for the respective environment. This injects your frontend environment variables securely.
 
 ---
 
@@ -202,7 +219,9 @@ pnpm alchemy login
 
 ### 4. 部署
 
-一条命令将所有应用部署到 Cloudflare 全球网络。
+将所有应用部署到 Cloudflare 全球网络。
+
+#### 手动部署
 
 ```bash
 # 部署到开发环境 (Development)
@@ -221,6 +240,21 @@ pnpm run deploy:dev
 # 部署到生产环境 (Production)
 pnpm run deploy:prod
 ```
+
+#### 自动化 CI/CD 部署
+
+本项目包含一个配置完整的 GitHub Actions 工作流 (`.github/workflows/deploy.yml`) 用于自动 CI/CD。它支持两个完全隔离的环境，提供了安全、专业的部署策略优势：
+
+- **`dev` 分支** 自动部署到 **开发环境 (Development)**（例如：[https://nn-stack-web-dev.nshen.workers.dev](https://nn-stack-web-dev.nshen.workers.dev)）。用于测试和预发布。
+- **`main` 分支** 自动部署到 **生产环境 (Production)**（例如：[https://nn-stack-web-prod.nshen.workers.dev](https://nn-stack-web-prod.nshen.workers.dev)）。用于正式的线上应用。
+
+要启用自动部署，请在您的 GitHub 仓库中添加以下 **Repository Secrets** (*Settings -> Secrets and variables -> Actions -> New repository secret*)：
+
+1. **`CLOUDFLARE_API_TOKEN`**: Cloudflare API 令牌。运行 `pnpm dlx alchemy util create-cloudflare-token` 生成一个包含当前权限的令牌。
+2. **`ALCHEMY_STATE_TOKEN`**: 用于 Alchemy 状态管理的随机字符串。可通过 `openssl rand -hex 32` 生成。
+3. **`CLOUDFLARE_EMAIL`**: 您的 Cloudflare 账号登录邮箱。
+4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: 分别对应各环境下 `apps/server/.env` 文件的完整内容。这确保了后端环境变量的安全注入。
+5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: 分别对应各环境下 `apps/web/.env` 文件的完整内容。这确保了前端环境变量的安全注入。
 
 ---
 
