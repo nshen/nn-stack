@@ -10,6 +10,7 @@ const app = await alchemy('nn-stack-web', {
 
 export const web = await Nextjs('web', {
   name: `${app.name}-${app.stage}`,
+  adopt: true,
 });
 
 console.log({ web: web.url });
