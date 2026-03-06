@@ -26,6 +26,7 @@ const app = await alchemy('nn-stack-server', {
 // Create a KV namespace
 const KV = await KVNamespace('KV', {
   title: `${app.name}-kv-${app.stage}`,
+  adopt: true,
 });
 
 await Exec('db-generate', {
