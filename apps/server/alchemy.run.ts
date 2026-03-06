@@ -5,7 +5,7 @@ import {
   Worker,
   D1Database,
   R2Bucket,
-  AccountId
+  AccountId,
 } from 'alchemy/cloudflare';
 
 import { CloudflareStateStore } from 'alchemy/state';
@@ -99,6 +99,7 @@ export const server = await Worker('server', {
   dev: {
     port: 4000,
   },
+  adopt: true,
 });
 
 console.log({ server: server.url });
