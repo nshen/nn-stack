@@ -16,7 +16,7 @@ console.log('Your Cloudflare Account ID is:', accountId);
 // Use CloudflareStateStore only if CLOUDFLARE_API_TOKEN is present (e.g., in CI/CD)
 // This allows the template to work out-of-the-box for local users.
 const stateStore = process.env.CLOUDFLARE_API_TOKEN
-  ? (scope: any) => new CloudflareStateStore(scope)
+  ? (scope: any) => new CloudflareStateStore(scope, { forceUpdate: true })
   : undefined;
 
 const app = await alchemy('nn-stack-server', {

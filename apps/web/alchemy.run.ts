@@ -4,7 +4,7 @@ import { CloudflareStateStore } from 'alchemy/state';
 
 const app = await alchemy('nn-stack-web', {
   stateStore: process.env.CLOUDFLARE_API_TOKEN
-    ? (scope: any) => new CloudflareStateStore(scope)
+    ? (scope: any) => new CloudflareStateStore(scope, { forceUpdate: true })
     : undefined,
 });
 
