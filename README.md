@@ -119,10 +119,19 @@ This project includes a fully configured GitHub Actions workflow (`.github/workf
 To enable automated deployment, add the following **Repository Secrets** in your GitHub repository (*Settings -> Secrets and variables -> Actions -> New repository secret*):
 
 1. **`CLOUDFLARE_API_TOKEN`**: Your Cloudflare API Token. Generate one mirroring your permissions by running: `pnpm dlx alchemy util create-cloudflare-token`.
-2. **`ALCHEMY_STATE_TOKEN`**: A random 32-character hex string for Alchemy state management. Generate via: `openssl rand -hex 32`.
+2. **`ALCHEMY_STATE_TOKEN`**: A random 32-character hex string for Alchemy state management. Generate via: `openssl rand -hex 32`. Must be the same across all projects under the same Cloudflare account.
 3. **`CLOUDFLARE_EMAIL`**: Your Cloudflare account login email.
 4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: The full content of your `apps/server/.env` file for the respective environment. This injects your backend environment variables securely.
 5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: The full content of your `apps/web/.env` file for the respective environment. This injects your frontend environment variables securely.
+
+Upload local env files to GitHub Secrets via CLI:
+
+```bash
+gh secret set ENV_SERVER_DEV < apps/server/.dev.env
+gh secret set ENV_SERVER_PROD < apps/server/.env
+gh secret set ENV_WEB_DEV < apps/web/.dev.env
+gh secret set ENV_WEB_PROD < apps/web/.env
+```
 
 ---
 
@@ -251,10 +260,19 @@ pnpm run deploy:prod
 要启用自动部署，请在您的 GitHub 仓库中添加以下 **Repository Secrets** (*Settings -> Secrets and variables -> Actions -> New repository secret*)：
 
 1. **`CLOUDFLARE_API_TOKEN`**: Cloudflare API 令牌。运行 `pnpm dlx alchemy util create-cloudflare-token` 生成一个包含当前权限的令牌。
-2. **`ALCHEMY_STATE_TOKEN`**: 用于 Alchemy 状态管理的随机字符串。可通过 `openssl rand -hex 32` 生成。
+2. **`ALCHEMY_STATE_TOKEN`**: 用于 Alchemy 状态管理的随机字符串。可通过 `openssl rand -hex 32` 生成, 如果 cloudflare 下有多个项目必须相同。
 3. **`CLOUDFLARE_EMAIL`**: 您的 Cloudflare 账号登录邮箱。
 4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: 分别对应各环境下 `apps/server/.env` 文件的完整内容。这确保了后端环境变量的安全注入。
 5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: 分别对应各环境下 `apps/web/.env` 文件的完整内容。这确保了前端环境变量的安全注入。
+
+通过 CLI 上传本地 env 文件到 GitHub Secrets：
+
+```bash
+gh secret set ENV_SERVER_DEV < apps/server/.dev.env
+gh secret set ENV_SERVER_PROD < apps/server/.env
+gh secret set ENV_WEB_DEV < apps/web/.dev.env
+gh secret set ENV_WEB_PROD < apps/web/.env
+```
 
 ---
 
