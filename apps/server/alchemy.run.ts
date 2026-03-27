@@ -19,7 +19,9 @@ const stateStore = process.env.CLOUDFLARE_API_TOKEN
   ? (scope: any) => new CloudflareStateStore(scope, { forceUpdate: true })
   : undefined;
 
-const app = await alchemy('nn-stack-server', {
+const PROJECT_NAME = 'nn-stack';
+
+const app = await alchemy(`${PROJECT_NAME}-server`, {
   stateStore,
 });
 
