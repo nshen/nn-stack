@@ -15,18 +15,18 @@
   },
   "dependencies": {
     "@nn-stack/api": "workspace:*",
-    "@orpc/server": "1.12.2",
-    "drizzle-orm": "^0.45.1",
-    "hono": "^4.10.8",
-    "zod": "^4.1.12"
+    "@orpc/server": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.8",
-    "@cloudflare/workers-types": "^4.20251212.0",
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
     "@nn-stack/config": "workspace:*",
-    "@types/node": "24.10.1",
-    "alchemy": "^0.82.2",
-    "drizzle-kit": "^0.31.8",
-    "typescript": "^5.9.3"
+    "@types/node": "catalog:",
+    "alchemy": "catalog:",
+    "drizzle-kit": "catalog:",
+    "typescript": "catalog:"
   }
 }

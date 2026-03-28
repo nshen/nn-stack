@@ -15,11 +15,11 @@
     "db:generate": "drizzle-kit generate"
   },
   "dependencies": {
-    "drizzle-kit": "^0.31.8",
-    "drizzle-orm": "^0.45.1"
+    "drizzle-kit": "catalog:",
+    "drizzle-orm": "catalog:"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.8",
-    "@types/node": "24.10.1"
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:"
   }
 }

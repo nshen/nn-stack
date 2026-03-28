@@ -25,16 +25,16 @@
     "@aws-sdk/client-s3": "^3.956.0",
     "@aws-sdk/s3-request-presigner": "^3.956.0",
     "@nn-stack/db": "workspace:*",
-    "@orpc/server": "1.12.2",
-    "drizzle-orm": "^0.45.1",
-    "hono": "^4.10.8",
-    "zod": "^4.1.12"
+    "@orpc/server": "catalog:",
+    "drizzle-orm": "catalog:",
+    "hono": "catalog:",
+    "zod": "catalog:"
   },
   "devDependencies": {
-    "@biomejs/biome": "^2.3.8",
-    "@cloudflare/workers-types": "^4.20251212.0",
+    "@biomejs/biome": "catalog:",
+    "@cloudflare/workers-types": "catalog:",
     "@nn-stack/config": "workspace:*",
-    "alchemy": "^0.82.2",
-    "typescript": "^5.9.3"
+    "alchemy": "catalog:",
+    "typescript": "catalog:"
   }
 }

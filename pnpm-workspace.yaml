@@ -1,3 +1,32 @@
 packages:
   - apps/*
   - packages/*
+
+catalog:
+  # Runtime
+  react: ^19.2.3
+  react-dom: ^19.2.3
+  hono: ^4.10.8
+  zod: ^4.1.12
+  drizzle-orm: ^0.45.1
+  drizzle-kit: ^0.31.8
+  lucide-react: ^0.562.0
+  tailwindcss: ^4.1.18
+
+  # oRPC
+  "@orpc/server": ^1.13.13
+  "@orpc/client": ^1.13.13
+  "@orpc/tanstack-query": ^1.13.13
+
+  # Cloudflare
+  "@opennextjs/cloudflare": ^1.18.0
+  "@cloudflare/workers-types": ^4.20260317.1
+  wrangler: ^4.78.0
+  alchemy: ^0.90.1
+
+  # Dev tools
+  typescript: ^5.9.3
+  "@biomejs/biome": ^2.3.10
+  "@types/node": ^25.0.3
+  "@types/react": ^19.2.7
+  "@types/react-dom": ^19.2.3
