@@ -4,6 +4,8 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "pnpm -r dev",
+    "dev:web": "pnpm --filter server --filter web dev",
+    "dev:tanstack": "pnpm --filter server --filter tanstack dev",
     "deploy:dev": "pnpm run -r deploy:dev",
     "deploy:prod": "pnpm run -r deploy:prod",
     "destroy:dev": "pnpm run -r destroy:dev",
