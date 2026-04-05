@@ -27,7 +27,7 @@ function SSRDemoPage() {
         <SourceCodeButton path="apps/tanstack/src/routes/playground/ssr.tsx" />
       </div>
 
-      <div className="p-6 bg-slate-50 border rounded-lg">
+      <div className="p-6 bg-muted/50 border rounded-lg">
         <PlanetsList />
       </div>
     </div>
