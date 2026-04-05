@@ -1,6 +1,6 @@
 @import '@fontsource-variable/geist';
 @import '@fontsource-variable/geist-mono';
-@import '@nn-stack/ui/styles/globals.css';
+@import '../../../../packages/ui/src/styles/globals.css';
 
 html {
   scrollbar-gutter: stable;
