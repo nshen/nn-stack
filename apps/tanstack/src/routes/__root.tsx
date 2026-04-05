@@ -8,6 +8,7 @@ import {
 } from '@tanstack/react-router';
 import { TooltipProvider } from '@nn-stack/ui/components/tooltip';
 import { Toaster } from '@nn-stack/ui/components/sonner';
+import uiGlobalsCss from '@nn-stack/ui/styles/globals.css?url';
 import globalsCss from '~/styles/globals.css?url';
 
 export const Route = createRootRouteWithContext<{
@@ -21,6 +22,7 @@ export const Route = createRootRouteWithContext<{
       { name: 'description', content: 'Built with Alchemy' },
     ],
     links: [
+      { rel: 'stylesheet', href: uiGlobalsCss },
       { rel: 'stylesheet', href: globalsCss },
     ],
   }),
