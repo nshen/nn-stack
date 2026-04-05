@@ -20,8 +20,12 @@ name: Deploy Application
 # 4. ENV_SERVER_DEV / ENV_SERVER_PROD: 
 #    - How to get: The full content of your apps/server/.env file for each stage.
 #
-# 5. ENV_WEB_DEV / ENV_WEB_PROD: 
+# 5. ENV_WEB_DEV / ENV_WEB_PROD:
 #    - How to get: The full content of your apps/web/.env file for each stage.
+#    - Also used for apps/tanstack when FRONTEND=tanstack (same env var format).
+#
+# Optional repository variable (Settings -> Secrets and variables -> Actions -> Variables):
+# - FRONTEND: Which frontend app to deploy. Values: 'web' (default) or 'tanstack'.
 
 on:
   push:
@@ -59,17 +63,19 @@ jobs:
         if: github.ref == 'refs/heads/dev'
         run: |
           echo "${{ secrets.ENV_SERVER_DEV }}" > apps/server/.env
-          echo "${{ secrets.ENV_WEB_DEV }}" > apps/web/.env
+          echo "${{ secrets.ENV_WEB_DEV }}" > apps/${{ vars.FRONTEND || 'web' }}/.env
 
       - name: Inject Environment Files (Prod)
         if: github.ref == 'refs/heads/main'
         run: |
           echo "${{ secrets.ENV_SERVER_PROD }}" > apps/server/.env
-          echo "${{ secrets.ENV_WEB_PROD }}" > apps/web/.env
-        
+          echo "${{ secrets.ENV_WEB_PROD }}" > apps/${{ vars.FRONTEND || 'web' }}/.env
+
       - name: Deploy to Dev
         if: github.ref == 'refs/heads/dev'
-        run: pnpm run deploy:dev
+        run: |
+          pnpm --filter server deploy:dev
+          pnpm --filter ${{ vars.FRONTEND || 'web' }} deploy:dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -78,7 +84,9 @@ jobs:
 
       - name: Deploy to Prod
         if: github.ref == 'refs/heads/main'
-        run: pnpm run deploy:prod
+        run: |
+          pnpm --filter server deploy:prod
+          pnpm --filter ${{ vars.FRONTEND || 'web' }} deploy:prod
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}

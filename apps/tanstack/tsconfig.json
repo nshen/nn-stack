@@ -1,0 +1,11 @@
+{
+  "extends": "@nn-stack/config/tsconfig.base.json",
+  "compilerOptions": {
+    "paths": {
+      "~/*": ["./src/*"],
+      "@nn-stack/ui/*": ["../../packages/ui/src/*"]
+    },
+    "lib": ["DOM", "DOM.Iterable", "ES2022"]
+  },
+  "include": ["src/**/*", "vite.config.ts", "alchemy.run.ts", "env.d.ts"]
+}
