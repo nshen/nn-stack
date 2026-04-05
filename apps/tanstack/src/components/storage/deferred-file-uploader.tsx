@@ -1,4 +1,4 @@
-import { useState, useCallback, useEffect } from 'react';
+import { useState, useCallback, useEffect, useRef } from 'react';
 import { useDropzone } from 'react-dropzone';
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
 import { orpc } from '~/lib/orpc';
@@ -40,11 +40,10 @@ export function DeferredFileUploader() {
   const queryClient = useQueryClient();
 
   // Fetch existing files
-  const { data: remoteFiles, isLoading: isLoadingRemote, error: fetchError } = useQuery(
-    orpc.storage.list.queryOptions({
-      retry: false,
-    }),
-  );
+  const { data: remoteFiles, isLoading: isLoadingRemote, error: fetchError } = useQuery({
+    ...orpc.storage.list.queryOptions(),
+    retry: false,
+  });
 
   // Mutations
   const presignMutation = useMutation(orpc.storage.presign.mutationOptions());
@@ -179,13 +178,16 @@ export function DeferredFileUploader() {
     }
   };
 
+  const filesRef = useRef(files);
+  filesRef.current = files;
+
   useEffect(() => {
     return () => {
-      files.forEach((file) => {
+      filesRef.current.forEach((file) => {
         URL.revokeObjectURL(file.preview);
       });
     };
-  }, [files]);
+  }, []);
 
   return (
     <div className="space-y-8 max-w-4xl mx-auto p-4">
