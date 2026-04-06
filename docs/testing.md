@@ -23,7 +23,12 @@ pnpm --filter <package> test --watch  # Watch mode
 
 ## E2E Tests — AI-Assisted Playwright Workflow
 
-E2E tests follow a two-phase AI-assisted workflow:
+E2E tests follow a two-phase AI-assisted workflow using Chrome DevTools MCP.
+
+### Prerequisites
+
+- All interactive elements must have `data-testid` attributes (see `docs/coding-standards.md`)
+- Playwright tests use `page.getByTestId()` for element selection — stable across UI refactors
 
 ### Phase 1: Write Test Specs as Natural Language
 
@@ -44,19 +49,50 @@ Create `.md` files describing user scenarios from the user's perspective:
 9. Verify the user is removed from the list
 ```
 
-### Phase 2: Generate Playwright Tests
+### Phase 2: Generate Playwright Tests via Chrome DevTools MCP
 
-1. Run the spec through **Chrome DevTools MCP** to observe the actual page structure (selectors, DOM hierarchy, element states)
-2. Based on the observed structure, generate a Playwright test file:
+1. AI reads the `.md` spec file
+2. AI uses **Chrome DevTools MCP** to navigate the running app, following the spec steps:
+   - Navigate to pages, click elements, fill forms, observe results
+   - Discover `data-testid` attributes and page structure from the live DOM
+3. AI generates a Playwright test file using the observed `data-testid` selectors:
 
 ```
 e2e/specs/user-crud.md        ← Human-written scenario
 e2e/tests/user-crud.spec.ts   ← AI-generated Playwright test
 ```
 
+Example generated output:
+
+```ts
+test('user CRUD operations', async ({ page }) => {
+  await page.goto('/playground/components/users');
+  await page.getByTestId('user-name-input').fill('Test User');
+  await page.getByTestId('user-email-input').fill('test@example.com');
+  await page.getByTestId('create-user-btn').click();
+  await expect(page.getByText('Test User')).toBeVisible();
+  // ...
+});
+```
+
+### File Structure
+
+```
+e2e/
+├── specs/                     ← Human-written natural language scenarios
+│   ├── user-crud.md
+│   ├── file-upload.md
+│   └── ssr-demo.md
+└── tests/                     ← AI-generated Playwright tests
+    ├── user-crud.spec.ts
+    ├── file-upload.spec.ts
+    └── ssr-demo.spec.ts
+```
+
 ### Key Principles
 
 - **Specs are the source of truth** — humans write and maintain the `.md` files
-- **Generated tests are reproducible** — re-run the MCP observation + generation when UI changes
-- **Don't hand-edit generated tests** — regenerate them from specs instead
+- **`data-testid` is the contract** — UI can refactor freely as long as testids stay stable
+- **Generated tests run without AI** — standard Playwright in CI, no API keys needed
+- **Regenerate, don't hand-edit** — when UI changes, re-run MCP observation to update tests
 - Keep specs focused: one user flow per file
