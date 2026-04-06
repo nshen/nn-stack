@@ -54,6 +54,6 @@ Read these docs based on the task at hand:
 Use `ctx7` CLI (installed as devDependency) to query up-to-date documentation for any library:
 
 ```bash
-npx ctx7 library <name> "<query>"       # Find library ID
-npx ctx7 docs <libraryId> "<query>"     # Query documentation
+ctx7 library <name> "<query>"       # Find library ID
+ctx7 docs <libraryId> "<query>"     # Query documentation
 ```
