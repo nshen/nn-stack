@@ -23,7 +23,7 @@ pnpm --filter <package> test --watch  # Watch mode
 
 ## E2E Tests — AI-Assisted Playwright Workflow
 
-E2E tests follow a two-phase AI-assisted workflow using Chrome DevTools MCP.
+E2E tests follow a two-phase AI-assisted workflow using [Playwright MCP](https://github.com/microsoft/playwright-mcp).
 
 ### Prerequisites
 
@@ -49,13 +49,13 @@ Create `.md` files describing user scenarios from the user's perspective:
 9. Verify the user is removed from the list
 ```
 
-### Phase 2: Generate Playwright Tests via Chrome DevTools MCP
+### Phase 2: Generate Playwright Tests via Playwright MCP
 
 1. AI reads the `.md` spec file
-2. AI uses **Chrome DevTools MCP** to navigate the running app, following the spec steps:
+2. AI uses **Playwright MCP** to navigate the running app, following the spec steps:
    - Navigate to pages, click elements, fill forms, observe results
-   - Discover `data-testid` attributes and page structure from the live DOM
-3. AI generates a Playwright test file using the observed `data-testid` selectors:
+   - Discover `data-testid` attributes and page structure via Playwright's built-in selectors (`getByTestId`, `getByRole`, etc.)
+3. AI generates a Playwright test file using the observed selectors:
 
 ```
 e2e/specs/user-crud.md        ← Human-written scenario
@@ -94,5 +94,5 @@ e2e/
 - **Specs are the source of truth** — humans write and maintain the `.md` files
 - **`data-testid` is the contract** — UI can refactor freely as long as testids stay stable
 - **Generated tests run without AI** — standard Playwright in CI, no API keys needed
-- **Regenerate, don't hand-edit** — when UI changes, re-run MCP observation to update tests
+- **Regenerate, don't hand-edit** — when UI changes, re-run Playwright MCP observation to update tests
 - Keep specs focused: one user flow per file
