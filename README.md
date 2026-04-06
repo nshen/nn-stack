@@ -142,16 +142,6 @@ This project includes a fully configured GitHub Actions workflow (`.github/workf
 - **`dev` branch** automatically deploys to the **Development** environment (e.g., [https://nn-stack-web-dev.nshen.workers.dev](https://nn-stack-web-dev.nshen.workers.dev)). Use this for testing and staging.
 - **`main` branch** automatically deploys to the **Production** environment (e.g., [https://nn-stack-web-prod.nshen.workers.dev](https://nn-stack-web-prod.nshen.workers.dev)). Use this for your live, user-facing application.
 
-##### Switching Frontend in CI/CD
-
-The CI/CD workflow deploys **Next.js** (`web`) by default. To switch to **TanStack Start**, add a **Repository Variable** (*Settings -> Secrets and variables -> Actions -> Variables*):
-
-| Variable   | Value       | Description                            |
-| :--------- | :---------- | :------------------------------------- |
-| `FRONTEND` | `tanstack`  | Deploy TanStack Start instead of Next.js |
-
-Leave unset or set to `web` for the default Next.js deployment. Both frontends share the same `NEXT_PUBLIC_*` environment variables, so no new secrets are needed.
-
 ##### Required Secrets
 
 To enable automated deployment, add the following **Repository Secrets** in your GitHub repository (*Settings -> Secrets and variables -> Actions -> New repository secret*):
@@ -159,10 +149,12 @@ To enable automated deployment, add the following **Repository Secrets** in your
 1. **`CLOUDFLARE_API_TOKEN`**: Your Cloudflare API Token. Generate one mirroring your permissions by running: `pnpm dlx alchemy util create-cloudflare-token`.
 2. **`ALCHEMY_STATE_TOKEN`**: A random 32-character hex string for Alchemy state management. Generate via: `openssl rand -hex 32`. Must be the same across all projects under the same Cloudflare account.
 3. **`CLOUDFLARE_EMAIL`**: Your Cloudflare account login email.
-4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: The full content of your `apps/server/.env` file for the respective environment. This injects your backend environment variables securely.
-5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: The full content of your frontend `.env` file for the respective environment. Used for both Next.js and TanStack Start (same format).
+4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: The full content of your `apps/server/.env` file for the respective environment.
+5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: The full content of your frontend `.env` file. The CI/CD reads the `FRONTEND=` line from this file to determine which frontend to deploy. No extra configuration needed.
 
-Upload local env files to GitHub Secrets via CLI:
+##### Upload env files to GitHub Secrets
+
+**To deploy Next.js** — upload from `apps/web/`:
 
 ```bash
 gh secret set ENV_SERVER_DEV < apps/server/.dev.env
@@ -170,6 +162,15 @@ gh secret set ENV_SERVER_PROD < apps/server/.env
 gh secret set ENV_WEB_DEV < apps/web/.dev.env
 gh secret set ENV_WEB_PROD < apps/web/.env
 ```
+
+**To switch to TanStack Start** — upload from `apps/tanstack/` instead:
+
+```bash
+gh secret set ENV_WEB_DEV < apps/tanstack/.dev.env
+gh secret set ENV_WEB_PROD < apps/tanstack/.env
+```
+
+Each frontend's `.env` file contains `FRONTEND=web` or `FRONTEND=tanstack`. The CI/CD automatically reads this value to deploy the correct app. To switch frontends, just re-upload the env files from the other app's directory.
 
 ---
 
@@ -321,16 +322,6 @@ pnpm --filter server --filter tanstack deploy:prod
 - **`dev` 分支** 自动部署到 **开发环境 (Development)**（例如：[https://nn-stack-web-dev.nshen.workers.dev](https://nn-stack-web-dev.nshen.workers.dev)）。用于测试和预发布。
 - **`main` 分支** 自动部署到 **生产环境 (Production)**（例如：[https://nn-stack-web-prod.nshen.workers.dev](https://nn-stack-web-prod.nshen.workers.dev)）。用于正式的线上应用。
 
-##### 在 CI/CD 中切换前端
-
-CI/CD 默认部署 **Next.js**（`web`）。若要切换为 **TanStack Start**，添加一个 **Repository Variable**（*Settings -> Secrets and variables -> Actions -> Variables*）：
-
-| 变量       | 值          | 说明                              |
-| :--------- | :---------- | :-------------------------------- |
-| `FRONTEND` | `tanstack`  | 部署 TanStack Start 替代 Next.js  |
-
-不设置或设为 `web` 则保持默认的 Next.js 部署。两个前端使用相同的 `NEXT_PUBLIC_*` 环境变量，无需新增 Secrets。
-
 ##### 所需 Secrets
 
 要启用自动部署，请在您的 GitHub 仓库中添加以下 **Repository Secrets** (*Settings -> Secrets and variables -> Actions -> New repository secret*)：
@@ -338,10 +329,12 @@ CI/CD 默认部署 **Next.js**（`web`）。若要切换为 **TanStack Start**�
 1. **`CLOUDFLARE_API_TOKEN`**: Cloudflare API 令牌。运行 `pnpm dlx alchemy util create-cloudflare-token` 生成一个包含当前权限的令牌。
 2. **`ALCHEMY_STATE_TOKEN`**: 用于 Alchemy 状态管理的随机字符串。可通过 `openssl rand -hex 32` 生成, 如果 cloudflare 下有多个项目必须相同。
 3. **`CLOUDFLARE_EMAIL`**: 您的 Cloudflare 账号登录邮箱。
-4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: 分别对应各环境下 `apps/server/.env` 文件的完整内容。这确保了后端环境变量的安全注入。
-5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: 分别对应各环境下前端 `.env` 文件的完整内容。Next.js 和 TanStack Start 格式相同，共用此 Secret。
+4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: 分别对应各环境下 `apps/server/.env` 文件的完整内容。
+5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: 前端 `.env` 文件的完整内容。CI/CD 会自动读取其中的 `FRONTEND=` 行来决定部署哪个前端，无需额外配置。
 
-通过 CLI 上传本地 env 文件到 GitHub Secrets：
+##### 上传 env 文件到 GitHub Secrets
+
+**部署 Next.js** — 从 `apps/web/` 上传：
 
 ```bash
 gh secret set ENV_SERVER_DEV < apps/server/.dev.env
@@ -349,6 +342,15 @@ gh secret set ENV_SERVER_PROD < apps/server/.env
 gh secret set ENV_WEB_DEV < apps/web/.dev.env
 gh secret set ENV_WEB_PROD < apps/web/.env
 ```
+
+**切换为 TanStack Start** — 改为从 `apps/tanstack/` 上传：
+
+```bash
+gh secret set ENV_WEB_DEV < apps/tanstack/.dev.env
+gh secret set ENV_WEB_PROD < apps/tanstack/.env
+```
+
+每个前端的 `.env` 文件中包含 `FRONTEND=web` 或 `FRONTEND=tanstack`，CI/CD 会自动读取该值来部署对应的前端。切换前端只需从另一个目录重新上传 env 文件即可。
 
 ---
 
