@@ -27,26 +27,6 @@ try {
 }
 ```
 
-## Test Attributes
-
-All interactive elements must have `data-testid` for E2E testing. Non-interactive display elements do not need it.
-
-**What needs `data-testid`**: buttons, inputs, links, form controls, list containers, dialog triggers, dropdowns.
-
-**Naming convention**: `<context>-<element>`, lowercase with `-`:
-
-```tsx
-<Button data-testid="create-user-btn">Create</Button>
-<Input data-testid="user-name-input" />
-<ul data-testid="user-list">
-  <li data-testid={`user-item-${user.id}`}>...</li>
-</ul>
-<Dialog>
-  <DialogTrigger data-testid="edit-user-dialog-trigger" />
-  <DialogContent data-testid="edit-user-dialog">...</DialogContent>
-</Dialog>
-```
-
 ## Code Quality
 
 - Linting and formatting: Biome.

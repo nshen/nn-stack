@@ -21,18 +21,30 @@ pnpm --filter <package> test          # Run tests for a specific package
 pnpm --filter <package> test --watch  # Watch mode
 ```
 
-## E2E Tests — AI-Assisted Playwright Workflow
+## E2E Tests — Playwright Test Agents
 
-E2E tests follow a two-phase AI-assisted workflow using [Playwright MCP](https://github.com/microsoft/playwright-mcp).
+E2E tests use [Playwright Test Agents](https://playwright.dev/docs/test-agents) for AI-assisted test creation, generation, and self-healing.
 
-### Prerequisites
+### Setup
 
-- All interactive elements must have `data-testid` attributes (see `docs/coding-standards.md`)
-- Playwright tests use `page.getByTestId()` for element selection — stable across UI refactors
+Initialize Playwright Test Agents in the project:
 
-### Phase 1: Write Test Specs as Natural Language
+```bash
+npx playwright init-agents --loop=claude
+```
 
-Create `.md` files describing user scenarios from the user's perspective:
+This sets up agent definitions under `.github/` with all necessary MCP tools and instructions — no separate skills installation required. Regenerate after Playwright updates to access new tools.
+
+### Workflow
+
+#### Step 1: Planner Agent — Create Test Specs
+
+Based on user descriptions or PRD documents, use the **Planner Agent** to explore the running app and produce markdown test plans:
+
+- Input: user scenario description or PRD document
+- Output: structured markdown spec file under `e2e/specs/`
+
+The planner navigates the app, discovers page structure, and writes human-readable test plans with steps and expected results.
 
 ```markdown
 <!-- e2e/specs/user-crud.md -->
@@ -49,41 +61,32 @@ Create `.md` files describing user scenarios from the user's perspective:
 9. Verify the user is removed from the list
 ```
 
-### Phase 2: Generate Playwright Tests via Playwright MCP
+#### Step 2: Generator Agent — Create Test Files
 
-1. AI reads the `.md` spec file
-2. AI uses **Playwright MCP** to navigate the running app, following the spec steps:
-   - Navigate to pages, click elements, fill forms, observe results
-   - Discover `data-testid` attributes and page structure via Playwright's built-in selectors (`getByTestId`, `getByRole`, etc.)
-3. AI generates a Playwright test file using the observed selectors:
+Use the **Generator Agent** to transform markdown specs into executable Playwright test files:
 
-```
-e2e/specs/user-crud.md        ← Human-written scenario
-e2e/tests/user-crud.spec.ts   ← AI-generated Playwright test
-```
+- Input: markdown spec from `e2e/specs/`
+- Output: Playwright test file under `e2e/tests/`
+- The generator verifies selectors and assertions live against the running app using semantic selectors (`getByRole`, `getByText`, `getByLabel`, `getByPlaceholder`)
 
-Example generated output:
+#### Step 3: Healer Agent — Run & Fix Tests
 
-```ts
-test('user CRUD operations', async ({ page }) => {
-  await page.goto('/playground/components/users');
-  await page.getByTestId('user-name-input').fill('Test User');
-  await page.getByTestId('user-email-input').fill('test@example.com');
-  await page.getByTestId('create-user-btn').click();
-  await expect(page.getByText('Test User')).toBeVisible();
-  // ...
-});
-```
+Use the **Healer Agent** to execute tests and automatically repair failures:
+
+- Replays failing steps and inspects the current UI
+- Suggests patches (locator updates, wait adjustments, data fixes)
+- Re-runs until passing or guardrails activate
 
 ### File Structure
 
 ```
 e2e/
-├── specs/                     ← Human-written natural language scenarios
+├── specs/                     ← Markdown test plans (planner output)
 │   ├── user-crud.md
 │   ├── file-upload.md
 │   └── ssr-demo.md
-└── tests/                     ← AI-generated Playwright tests
+└── tests/                     ← Playwright test files (generator output)
+    ├── seed.spec.ts           ← Bootstrap environment
     ├── user-crud.spec.ts
     ├── file-upload.spec.ts
     └── ssr-demo.spec.ts
@@ -91,8 +94,8 @@ e2e/
 
 ### Key Principles
 
-- **Specs are the source of truth** — humans write and maintain the `.md` files
-- **`data-testid` is the contract** — UI can refactor freely as long as testids stay stable
+- **Specs are the source of truth** — review and maintain the markdown plans
+- **Use semantic selectors** — prefer `getByRole`, `getByText`, `getByLabel` over fragile CSS selectors or testids
 - **Generated tests run without AI** — standard Playwright in CI, no API keys needed
-- **Regenerate, don't hand-edit** — when UI changes, re-run Playwright MCP observation to update tests
+- **Use healer to fix flaky tests** — don't hand-edit generated tests, let the healer agent repair them
 - Keep specs focused: one user flow per file
