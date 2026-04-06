@@ -48,3 +48,12 @@ Read these docs based on the task at hand:
 | Writing or running tests | [docs/testing.md](docs/testing.md) |
 
 **Always read the active frontend's rules file before writing frontend code.**
+
+## Looking Up Library Documentation
+
+Use `ctx7` CLI (installed as devDependency) to query up-to-date documentation for any library:
+
+```bash
+npx ctx7 library <name> "<query>"       # Find library ID
+npx ctx7 docs <libraryId> "<query>"     # Query documentation
+```
