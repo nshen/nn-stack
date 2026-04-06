@@ -51,9 +51,9 @@ Read these docs based on the task at hand:
 
 ## Looking Up Library Documentation
 
-Use `ctx7` CLI (installed as devDependency) to query up-to-date documentation for any library:
+Use `pnpm ctx7` CLI (installed as devDependency) to query up-to-date documentation for any library:
 
 ```bash
-ctx7 library <name> "<query>"       # Find library ID
-ctx7 docs <libraryId> "<query>"     # Query documentation
+pnpm ctx7 library <name> "<query>"       # Find library ID
+pnpm ctx7 docs <libraryId> "<query>"     # Query documentation
 ```

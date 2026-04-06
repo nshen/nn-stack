@@ -2,7 +2,7 @@
 
 API development is end-to-end type safe using oRPC.
 
-Before starting, make sure to understand the latest versions of `TanStack Query`, `Drizzle`, `Zod` v4 and `oRPC`. Use `ctx7 docs <libraryId> "<query>"` to look up the latest documentation (run `ctx7 library <name> "<query>"` first to find the library ID).
+Before starting, make sure to understand the latest versions of `TanStack Query`, `Drizzle`, `Zod` v4 and `oRPC`. Use `pnpm ctx7 docs <libraryId> "<query>"` to look up the latest documentation (run `pnpm ctx7 library <name> "<query>"` first to find the library ID).
 
 ## Architecture
 
