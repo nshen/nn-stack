@@ -45,9 +45,6 @@ Read these docs based on the task at hand:
 | Env vars, deployment config | [docs/environment.md](docs/environment.md) |
 | **Frontend: TanStack Start** | [docs/rules-tanstack.md](docs/rules-tanstack.md) |
 | **Frontend: Next.js** | [docs/rules-next.md](docs/rules-next.md) |
+| Writing or running tests | [docs/testing.md](docs/testing.md) |
 
 **Always read the active frontend's rules file before writing frontend code.**
-
-## Testing
-
-No tests required at this time.
