@@ -1,8 +1,2 @@
-# Active Frontend
-
-FRONTEND=tanstack
-
-Read `RULES-TANSTACK.md` for framework-specific rules.
-Read `GEMINI.md` for shared project conventions (API, DB, UI, styling, etc.).
-
-To switch to Next.js: change to `FRONTEND=web` and read `RULES-NEXT.md` instead.
+Read `AGENTS.md` for all project rules, conventions, and the active frontend setting.
+Read the `RULES-*.md` file specified in `AGENTS.md` for framework-specific rules.
