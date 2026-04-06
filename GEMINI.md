@@ -17,11 +17,11 @@ nn-stack/
     └── ui/         # Shadcn UI components
 ```
 
-> **Which frontend to use?** Check `CLAUDE.md` for the `FRONTEND=` setting. Both `web` and `tanstack` have identical features — only modify the active one.
+> **Which frontend to use?** Check `CLAUDE.md` for the `FRONTEND=` setting. Both `web` and `tanstack` have identical features — only modify the active one. See `RULES-NEXT.md` or `RULES-TANSTACK.md` for framework-specific rules.
 
 - **`apps/server`**: A backend application uses `hono` and `@orpc/server`. Automatically handle APIs defined in `packages/api`. Deployment is handled via `alchemy.run`.
-- **`apps/web`**: A frontend web application built with Next.js. It interacts with the backend services. Deployment is handled via `alchemy.run`.
-- **`apps/tanstack`**: A frontend web application built with TanStack Start. Same features as `apps/web` but uses TanStack Router instead of Next.js App Router. Deployment is handled via `alchemy.run`.
+- **`apps/web`**: Frontend built with Next.js. Rules in `RULES-NEXT.md`.
+- **`apps/tanstack`**: Frontend built with TanStack Start. Rules in `RULES-TANSTACK.md`.
 - **`packages/api`**: A shared package defining the API interfaces and types. Uses `orpc` to implement end-to-end type-safe APIs, validate by using zod, shared between web and server.
 - **`packages/config`**: A shared package for common configurations.
 - **`packages/ui`**: Original `shadcn` UI components will be installed here for use by other packages. These components should not be modified.
@@ -149,12 +149,11 @@ For local development, we use `.dev.env` in each app and set the following value
 
 ## Development Rules
 
-Must comply with the active frontend framework's best practices (Next.js or TanStack Start), Hono, and oRPC best practices
+Must comply with the active frontend framework's best practices (see `RULES-NEXT.md` or `RULES-TANSTACK.md`), Hono, and oRPC best practices.
 
 ## Constraints
 
-- If the component is a client component **and you are working in `apps/web` (Next.js)**, don't forget to add 'use client'. This is NOT needed for `apps/tanstack` (TanStack Start).
-- If the page needs UI components, don't use native browser components. Must develop based on Shadcn UI components, imported from `@nn-stack/ui`. Restore the design to the maximum extent possible. If there are issues, you can use Shadcn's MCP tool.
+- If the page needs UI components, don't use native browser components. Must develop based on Shadcn UI components, imported from `@nn-stack/ui`. If there are issues, you can use Shadcn's MCP tool.
 - Only use tailwindcss V4 for styling. CSS inline styles are not allowed. Follow tailwindcss v4 built-in responsive design rules and mobile-first principles.
 - If there are multiple ways to implement layout, prefer using grid or the most concise implementation method
 - When components need icons, only use icons provided in `lucide-react`, no SVG allowed.
@@ -162,24 +161,11 @@ Must comply with the active frontend framework's best practices (Next.js or TanS
 - Don't over-optimize, don't add meaningless `useMemo` and `useCallback`, especially don't add `useMemo` to data returned by Tanstack Query API hooks
 - The `cn` utility function must be imported from `@nn-stack/ui/lib/utils`. Do not create a local `lib/utils.ts` or import from `@/lib/utils`.
 - All text in the interface should be in English
-- If importing other components, use `@/` absolute path imports (Next.js) or `~/` (TanStack Start)
 - Note that all code comments should be in English. Don't write obviously meaningless comments, and don't easily delete existing comments in the code
 - **No `any` Type**: The usage of `any` is strictly prohibited. Use `unknown` with type narrowing, or define explicit interfaces/types. If a library type is difficult to access, define a local compatible interface. Do not use `as any` casting.
 - **Error Handling Best Practices**: In `try-catch` blocks, the catch variable is `unknown` by default. Do not cast it to `any`.
   - Use `if (error instanceof Error)` to narrow the type before accessing `.message`.
   - If the error structure is unknown, fallback to a generic error message.
-  - Example:
-    ```typescript
-    try {
-      // ...
-    } catch (error: unknown) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      } else {
-        console.error("An unknown error occurred");
-      }
-    }
-    ```
 
 ## UI/UX Design Principles (from Refactoring UI)
 
@@ -224,14 +210,8 @@ To ensure a high-quality, professional, and consistent user interface, all UI de
 - Provide reasonable file naming
   - File names must be named in lowercase snake case
   - File names should never have `_`, use `-` instead
-- Generate complete component code in the **active frontend** (check `CLAUDE.md` for `FRONTEND=`).
-  - **Next.js (`apps/web`)**: Save components in `apps/web/components/`, pages in `apps/web/app/`
-  - **TanStack Start (`apps/tanstack`)**: Save components in `apps/tanstack/src/components/`, routes in `apps/tanstack/src/routes/`
-  - For example, a `Login` component:
-    - Next.js: `apps/web/components/login/index.tsx` + `apps/web/app/playground/components/login/page.tsx`
-    - TanStack Start: `apps/tanstack/src/components/login/index.tsx` + `apps/tanstack/src/routes/playground/components/login.tsx`
-- **Complex JSX Comments**: Complex JSX structures MUST have English comments to clearly separate and identify different UI sections. This makes it easier for humans to visually distinguish blocks (e.g., `{/* Header Section */}`, `{/* Main Content */}`). All comments must be in English.
-- You can try to remind users to optimize meaningless `useMemo` and `useCallback` in the code
+- Generate code in the **active frontend** — see the active `RULES-*.md` file for file paths
+- **Complex JSX Comments**: Complex JSX structures MUST have English comments to clearly separate and identify different UI sections (e.g., `{/* Header Section */}`, `{/* Main Content */}`). All comments must be in English.
 
 ## `@nn-stack/ui` package rules
 
