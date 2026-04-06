@@ -8,7 +8,8 @@ This project is a monorepo managed by `pnpm` and structured into `apps` and `pac
 nn-stack/
 ├── apps/
 │   ├── server/     # Backend Hono server
-│   └── web/        # Frontend Next.js application
+│   ├── web/        # Frontend Next.js application (port 3000)
+│   └── tanstack/   # Frontend TanStack Start application (port 3001)
 └── packages/
     ├── api/        # Shared API interfaces (orpc)
     ├── db/         # Drizzle database
@@ -16,8 +17,11 @@ nn-stack/
     └── ui/         # Shadcn UI components
 ```
 
+> **Which frontend to use?** Check `CLAUDE.md` for the `FRONTEND=` setting. Both `web` and `tanstack` have identical features — only modify the active one.
+
 - **`apps/server`**: A backend application uses `hono` and `@orpc/server`. Automatically handle APIs defined in `packages/api`. Deployment is handled via `alchemy.run`.
 - **`apps/web`**: A frontend web application built with Next.js. It interacts with the backend services. Deployment is handled via `alchemy.run`.
+- **`apps/tanstack`**: A frontend web application built with TanStack Start. Same features as `apps/web` but uses TanStack Router instead of Next.js App Router. Deployment is handled via `alchemy.run`.
 - **`packages/api`**: A shared package defining the API interfaces and types. Uses `orpc` to implement end-to-end type-safe APIs, validate by using zod, shared between web and server.
 - **`packages/config`**: A shared package for common configurations.
 - **`packages/ui`**: Original `shadcn` UI components will be installed here for use by other packages. These components should not be modified.
@@ -28,7 +32,7 @@ nn-stack/
 | Category        | Technology           |
 | --------------- | -------------------- |
 | Package Manager | pnpm                 |
-| Frontend        | Next.js, React Query |
+| Frontend        | Next.js / TanStack Start, React Query |
 | Backend         | Hono                 |
 | API Layer       | ORPC, Zod            |
 | UI Library      | Shadcn/ui, Radix UI  |
@@ -105,15 +109,16 @@ This project uses `alchemy` for deployment.
 
 ### Environment Variables
 
-For local development, we use `.dev.env` in `apps/web` and `apps/server` respectively and set the following values:
+For local development, we use `.dev.env` in each app and set the following values:
 
-- **`apps/web/.dev.env`**: `NEXT_PUBLIC_SERVER_URL=http://localhost:4000` (Points to the local Hono server).
-- **`apps/server/.dev.env`**: `CORS_ORIGIN=http://localhost:3000,http://localhost:3001` (Allows requests from the local Next.js app).
+- **`apps/web/.dev.env`**: `FRONTEND=web` and `NEXT_PUBLIC_SERVER_URL=http://localhost:4000`
+- **`apps/tanstack/.dev.env`**: `FRONTEND=tanstack` and `NEXT_PUBLIC_SERVER_URL=http://localhost:4000`
+- **`apps/server/.dev.env`**: `CORS_ORIGIN=http://localhost:3000,http://localhost:3001` (Allows requests from both frontends).
 
 **Important Note on Adding New Environment Variables:**
 
 1.  **Do NOT manually edit `env.d.ts`**: These files are auto-generated based on the bindings and configurations in `alchemy.run.ts`.
-2.  **Edit `apps/server/alchemy.run.ts` for server or edit `apps/web/alchemy.run.ts`** for client: To add a new environment variable or binding:
+2.  **Edit `apps/server/alchemy.run.ts` for server, or `apps/web/alchemy.run.ts` / `apps/tanstack/alchemy.run.ts`** for the active frontend: To add a new environment variable or binding:
     - Locate the `bindings` object within the `Worker` configuration.
     - Add your new variable there (e.g., `MY_VAR: process.env.MY_VAR || ''`).
     - If using `process.env`, ensure the variable is defined in `apps/server/.dev.env` or `apps/web/.dev.env`for local development.
@@ -144,11 +149,11 @@ For local development, we use `.dev.env` in `apps/web` and `apps/server` respect
 
 ## Development Rules
 
-Must comply with Next.js Hono oRPC best practices
+Must comply with the active frontend framework's best practices (Next.js or TanStack Start), Hono, and oRPC best practices
 
 ## Constraints
 
-- If the component is a client component, don't forget to add 'use client'
+- If the component is a client component **and you are working in `apps/web` (Next.js)**, don't forget to add 'use client'. This is NOT needed for `apps/tanstack` (TanStack Start).
 - If the page needs UI components, don't use native browser components. Must develop based on Shadcn UI components, imported from `@nn-stack/ui`. Restore the design to the maximum extent possible. If there are issues, you can use Shadcn's MCP tool.
 - Only use tailwindcss V4 for styling. CSS inline styles are not allowed. Follow tailwindcss v4 built-in responsive design rules and mobile-first principles.
 - If there are multiple ways to implement layout, prefer using grid or the most concise implementation method
@@ -157,7 +162,7 @@ Must comply with Next.js Hono oRPC best practices
 - Don't over-optimize, don't add meaningless `useMemo` and `useCallback`, especially don't add `useMemo` to data returned by Tanstack Query API hooks
 - The `cn` utility function must be imported from `@nn-stack/ui/lib/utils`. Do not create a local `lib/utils.ts` or import from `@/lib/utils`.
 - All text in the interface should be in English
-- If importing other components, use `@/` absolute path imports
+- If importing other components, use `@/` absolute path imports (Next.js) or `~/` (TanStack Start)
 - Note that all code comments should be in English. Don't write obviously meaningless comments, and don't easily delete existing comments in the code
 - **No `any` Type**: The usage of `any` is strictly prohibited. Use `unknown` with type narrowing, or define explicit interfaces/types. If a library type is difficult to access, define a local compatible interface. Do not use `as any` casting.
 - **Error Handling Best Practices**: In `try-catch` blocks, the catch variable is `unknown` by default. Do not cast it to `any`.
@@ -219,10 +224,12 @@ To ensure a high-quality, professional, and consistent user interface, all UI de
 - Provide reasonable file naming
   - File names must be named in lowercase snake case
   - File names should never have `_`, use `-` instead
-- Generate complete Next.js component code. If you have save permissions, please save the file in the `apps/web/components/` folder under the corresponding component name
-  - For example, when generating a `Login` component, it should be saved as `apps/web/components/login/index.tsx`
-- Also generate usage examples of the component in the `apps/web/app/playground/components/` folder under the corresponding `component name`
-  - For example, when generating a `Login` component, it should be saved as `apps/web/app/playground/components/login/page.tsx`
+- Generate complete component code in the **active frontend** (check `CLAUDE.md` for `FRONTEND=`).
+  - **Next.js (`apps/web`)**: Save components in `apps/web/components/`, pages in `apps/web/app/`
+  - **TanStack Start (`apps/tanstack`)**: Save components in `apps/tanstack/src/components/`, routes in `apps/tanstack/src/routes/`
+  - For example, a `Login` component:
+    - Next.js: `apps/web/components/login/index.tsx` + `apps/web/app/playground/components/login/page.tsx`
+    - TanStack Start: `apps/tanstack/src/components/login/index.tsx` + `apps/tanstack/src/routes/playground/components/login.tsx`
 - **Complex JSX Comments**: Complex JSX structures MUST have English comments to clearly separate and identify different UI sections. This makes it easier for humans to visually distinguish blocks (e.g., `{/* Header Section */}`, `{/* Main Content */}`). All comments must be in English.
 - You can try to remind users to optimize meaningless `useMemo` and `useCallback` in the code
 
@@ -234,17 +241,17 @@ To ensure a high-quality, professional, and consistent user interface, all UI de
 
 ### UI Component Imports
 
-When importing Shadcn UI components from `@nn-stack/ui` in `apps/web`:
+When importing Shadcn UI components from `@nn-stack/ui` in `apps/web` or `apps/tanstack`:
 
 - **Correct**: `import { Button } from '@nn-stack/ui/components/button'`
 - **Incorrect**: `import { Button } from '@nn-stack/ui/button'`
 - The `tsconfig.json` path mapping `@nn-stack/ui/*` points to `packages/ui/src/*`, and components are located in `packages/ui/src/components/`.
 
-When a page in `apps/web` needs a UI component:
+When a page needs a UI component:
 
 1. First, check if it exists in `@nn-stack/ui`.
 2. If it does not exist, use the command `pnpm dlx shadcn@latest add <component> -c packages/ui` to add it to the ui package.
-3. Finally, import and use it from `@nn-stack/ui` in the code of `apps/web`.
+3. Finally, import and use it from `@nn-stack/ui` in your frontend code.
 
 ### Component Specific Rules
 
@@ -262,7 +269,7 @@ On the server side, use ORPC to define server APIs in the `@nn-stack/packages/ap
 
 The API entry point is located at `apps/packages/api/src/index.ts`.
 
-On the client side, use TanStack React Query in `@nn-stack/apps/web` to call the corresponding APIs, for example:
+On the client side, use TanStack React Query in the active frontend app to call the corresponding APIs, for example:
 
 `const connectionCheck = useQuery(orpc.healthCheck.connection.queryOptions());`
 
