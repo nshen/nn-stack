@@ -8,6 +8,8 @@
     "deploy:prod": "pnpm run -r deploy:prod",
     "destroy:dev": "pnpm run -r destroy:dev",
     "destroy:prod": "pnpm run -r destroy:prod",
+    "test": "pnpm -r test",
+    "test:e2e": "pnpm --filter @nn-stack/tanstack run test:e2e",
     "lint": "pnpm run -r lint",
     "format": "pnpm run -r format",
     "sync:secrets": "bash scripts/sync-secrets.sh"
@@ -21,5 +23,11 @@
     "alchemy": "catalog:",
     "ctx7": "^0.3.9",
     "wrangler": "catalog:"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "workerd"
+    ]
   }
 }

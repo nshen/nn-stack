@@ -1,101 +1,52 @@
-# Testing
+# Testing Strategy
 
-## Unit & Integration Tests — Vitest
+## Per-Workspace Overview
 
-Use [Vitest](https://vitest.dev) for unit and integration tests.
+| Workspace | Tool | Type | Notes |
+|-----------|------|------|-------|
+| `apps/server` | Vitest + `@cloudflare/vitest-pool-workers` | Integration | Real D1/KV via miniflare, `import app` + `app.fetch()` |
+| `apps/tanstack` | Playwright | E2E | Against running dev server |
+| `packages/api` | None | — | Covered by `apps/server` tests (see below) |
+| `packages/db` | None | — | Schema-only, no runtime logic |
+| `packages/ui` | None | — | Shadcn components, covered by E2E |
+| `packages/config` | None | — | tsconfig only |
 
-### File Conventions
+## Why `packages/api` has no standalone tests
 
-- Test files: `*.test.ts` or `*.test.tsx`, co-located with the source file
-- Example: `packages/api/src/users.ts` → `packages/api/src/users.test.ts`
+All API handlers depend on Cloudflare bindings (D1, KV, R2) via `context.ts`. Mocking these is fragile. Instead, `apps/server` tests run handlers in real miniflare Workers runtime through the full request chain: HTTP → Hono → oRPC → handler → D1.
 
-### What to Test
-
-- **Unit tests**: Pure functions, utilities, Zod schemas, data transformations
-- **Integration tests**: oRPC handlers with mocked Cloudflare bindings, database queries with test D1 instances
-
-### Running Tests
-
-```bash
-pnpm --filter <package> test          # Run tests for a specific package
-pnpm --filter <package> test --watch  # Watch mode
-```
-
-## E2E Tests — Playwright Test Agents
-
-E2E tests use [Playwright Test Agents](https://playwright.dev/docs/test-agents) for AI-assisted test creation, generation, and self-healing.
-
-### Setup
-
-Initialize Playwright Test Agents in the project:
+## Commands
 
 ```bash
-npx playwright init-agents --loop=claude
+pnpm test              # all integration tests
+pnpm test:e2e          # Playwright E2E (needs dev server)
 ```
 
-This sets up agent definitions under `.github/` with all necessary MCP tools and instructions — no separate skills installation required. Regenerate after Playwright updates to access new tools.
+## Server tests
 
-### Workflow
+- Config: `apps/server/vitest.config.ts` — `cloudflareTest()` plugin with miniflare D1/KV bindings
+- Setup: `apps/server/tests/setup.ts` — runs D1 migrations from `packages/db/migrations/`
+- Pattern: `import app from '../src/index'` then `app.fetch(new Request(...))`
+- Location: `apps/server/tests/*.test.ts`
 
-#### Step 1: Planner Agent — Create Test Specs
+## Web E2E tests
 
-Based on user descriptions or PRD documents, use the **Planner Agent** to explore the running app and produce markdown test plans:
+- Config: `apps/tanstack/playwright.config.ts` — Chromium, baseURL `localhost:3000`, auto-starts dev server
+- Location: `apps/tanstack/e2e/*.spec.ts`
+- Use semantic selectors — prefer `getByRole`, `getByText`, `getByLabel` over fragile CSS selectors
 
-- Input: user scenario description or PRD document
-- Output: structured markdown spec file under `e2e/specs/`
+## Future: Playwright Test Agents
 
-The planner navigates the app, discovers page structure, and writes human-readable test plans with steps and expected results.
+> Not yet initialized. Run `npx playwright init-agents --loop=claude` to set up.
 
-```markdown
-<!-- e2e/specs/user-crud.md -->
-# User CRUD
+Once initialized, use AI-assisted agents for test creation and self-healing:
 
-1. Navigate to /playground/components/users
-2. Fill in name "Test User" and email "test@example.com"
-3. Click "Create User"
-4. Verify "Test User" appears in the user list
-5. Click "Edit" on "Test User"
-6. Change name to "Updated User", click "Update"
-7. Verify "Updated User" appears in the list
-8. Click "Delete" on "Updated User"
-9. Verify the user is removed from the list
-```
+1. **Planner Agent** — explore the running app, produce markdown test specs under `apps/tanstack/e2e/specs/`
+2. **Generator Agent** — transform specs into Playwright test files under `apps/tanstack/e2e/tests/`
+3. **Healer Agent** — run failing tests, inspect UI, auto-repair locators and assertions
 
-#### Step 2: Generator Agent — Create Test Files
-
-Use the **Generator Agent** to transform markdown specs into executable Playwright test files:
-
-- Input: markdown spec from `e2e/specs/`
-- Output: Playwright test file under `e2e/tests/`
-- The generator verifies selectors and assertions live against the running app using semantic selectors (`getByRole`, `getByText`, `getByLabel`, `getByPlaceholder`)
-
-#### Step 3: Healer Agent — Run & Fix Tests
-
-Use the **Healer Agent** to execute tests and automatically repair failures:
-
-- Replays failing steps and inspects the current UI
-- Suggests patches (locator updates, wait adjustments, data fixes)
-- Re-runs until passing or guardrails activate
-
-### File Structure
-
-```
-e2e/
-├── specs/                     ← Markdown test plans (planner output)
-│   ├── user-crud.md
-│   ├── file-upload.md
-│   └── ssr-demo.md
-└── tests/                     ← Playwright test files (generator output)
-    ├── seed.spec.ts           ← Bootstrap environment
-    ├── user-crud.spec.ts
-    ├── file-upload.spec.ts
-    └── ssr-demo.spec.ts
-```
-
-### Key Principles
-
-- **Specs are the source of truth** — review and maintain the markdown plans
-- **Use semantic selectors** — prefer `getByRole`, `getByText`, `getByLabel` over fragile CSS selectors or testids
-- **Generated tests run without AI** — standard Playwright in CI, no API keys needed
-- **Use healer to fix flaky tests** — don't hand-edit generated tests, let the healer agent repair them
+Key principles:
+- Specs are the source of truth
+- Generated tests run without AI in CI
+- Use healer to fix flaky tests instead of hand-editing
 - Keep specs focused: one user flow per file
