@@ -35,18 +35,24 @@ pnpm test:e2e          # Playwright E2E (needs dev server)
 - Location: `apps/tanstack/e2e/*.spec.ts`
 - Use semantic selectors — prefer `getByRole`, `getByText`, `getByLabel` over fragile CSS selectors
 
-## Future: Playwright Test Agents
+## Playwright Test Agents
 
-> Not yet initialized. Run `npx playwright init-agents --loop=claude` to set up.
+AI-assisted E2E test creation via [Playwright Test Agents](https://playwright.dev/docs/test-agents). Agent definitions are in `.claude/agents/playwright-test-*.md`, backed by the `playwright-test` MCP server.
 
-Once initialized, use AI-assisted agents for test creation and self-healing:
+### Agents
 
-1. **Planner Agent** — explore the running app, produce markdown test specs under `apps/tanstack/e2e/specs/`
-2. **Generator Agent** — transform specs into Playwright test files under `apps/tanstack/e2e/tests/`
-3. **Healer Agent** — run failing tests, inspect UI, auto-repair locators and assertions
+1. **Planner** — explore the running app, produce markdown test specs under `apps/tanstack/e2e/specs/`
+2. **Generator** — transform specs into Playwright test files under `apps/tanstack/e2e/`
+3. **Healer** — run failing tests, inspect UI, auto-repair locators and assertions
 
-Key principles:
-- Specs are the source of truth
-- Generated tests run without AI in CI
+### Seed file
+
+`apps/tanstack/e2e/seed.spec.ts` — bootstraps the test environment. Referenced by generated tests.
+
+### Key principles
+
+- Specs are the source of truth — review and maintain the markdown plans
+- Use semantic selectors — prefer `getByRole`, `getByText`, `getByLabel` over fragile CSS selectors
+- Generated tests run without AI — standard Playwright in CI, no API keys needed
 - Use healer to fix flaky tests instead of hand-editing
 - Keep specs focused: one user flow per file
