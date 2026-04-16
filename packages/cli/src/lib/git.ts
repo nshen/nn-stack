@@ -107,3 +107,12 @@ export async function branchExists(name: string): Promise<boolean> {
 export async function getRepoRoot(): Promise<string> {
   return (await $`git rev-parse --show-toplevel`).stdout.trim()
 }
+
+export async function hasCommits(): Promise<boolean> {
+  try {
+    await $`git rev-parse HEAD`
+    return true
+  } catch {
+    return false
+  }
+}

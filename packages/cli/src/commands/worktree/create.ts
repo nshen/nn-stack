@@ -6,6 +6,7 @@ import {
   aheadBehind,
   branchExists,
   deleteBranch,
+  hasCommits,
   isDirty,
   listWorktrees,
   removeWorktree,
@@ -37,6 +38,13 @@ export async function createCommand(
   opts: { branch?: string; printPath?: boolean },
 ) {
   assertValidName(name)
+
+  if (!(await hasCommits())) {
+    console.error(
+      'Cannot create worktree: repository has no commits yet. Make an initial commit first.',
+    )
+    process.exit(1)
+  }
 
   const wtPath = await worktreeDirFor(name)
   let branchName: string | null = opts.branch ?? `feat/${name}`
