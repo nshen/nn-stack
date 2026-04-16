@@ -50,11 +50,20 @@ export async function createCommand(
     await fs.mkdir(path.dirname(wtPath), { recursive: true })
 
     // Create new worktree
-    const exists = await branchExists(branchName)
-    if (exists) {
-      await addWorktreeExisting(wtPath, branchName)
-    } else {
-      await addWorktree(wtPath, branchName)
+    try {
+      const exists = await branchExists(branchName)
+      if (exists) {
+        await addWorktreeExisting(wtPath, branchName)
+      } else {
+        await addWorktree(wtPath, branchName)
+      }
+    } catch (err) {
+      const stderr =
+        err && typeof err === 'object' && 'stderr' in err
+          ? String(err.stderr).trim()
+          : String(err)
+      console.error(`Failed to create worktree: ${stderr}`)
+      process.exit(1)
     }
 
     // Write state
