@@ -25,6 +25,14 @@ export async function rmCommand(
   const wtPath = entry.path
   const branch = entry.branch?.replace('refs/heads/', '') ?? null
 
+  // Check if current directory is inside the worktree
+  const cwd = process.cwd()
+  if (cwd === wtPath || cwd.startsWith(`${wtPath}/`)) {
+    console.error(`Cannot remove worktree "${name}": you are currently inside it.`)
+    console.error(`Run "exit" first to leave the worktree, then remove it.`)
+    process.exit(1)
+  }
+
   // Check dirty
   const dirty = await isDirty(wtPath)
   if (dirty && !opts.force) {

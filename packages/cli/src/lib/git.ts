@@ -100,8 +100,9 @@ export async function aheadBehind(
 }
 
 export async function deleteBranch(name: string, force = false) {
-  if (force) await $`git branch -D ${name}`
-  else await $`git branch -d ${name}`
+  const root = await getRepoRoot()
+  if (force) await $`git -C ${root} branch -D ${name}`
+  else await $`git -C ${root} branch -d ${name}`
 }
 
 export async function branchExists(name: string): Promise<boolean> {
