@@ -1,0 +1,29 @@
+{
+  "name": "@nn-stack/cli",
+  "version": "0.1.0",
+  "description": "nn personal CLI — worktree management",
+  "type": "module",
+  "bin": {
+    "nn": "./dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "typecheck": "tsc --noEmit",
+    "lint": "biome lint --write",
+    "format": "biome format --write"
+  },
+  "keywords": [],
+  "author": "nshen<nshen121@gmail.com>",
+  "license": "MIT",
+  "dependencies": {
+    "commander": "^12",
+    "zx": "^8"
+  },
+  "devDependencies": {
+    "@biomejs/biome": "catalog:",
+    "@types/node": "catalog:",
+    "tsup": "^8",
+    "typescript": "catalog:"
+  }
+}
