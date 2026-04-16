@@ -6,8 +6,8 @@ export async function lsCommand(opts: { json?: boolean }) {
   const entries = await listWorktrees()
 
   if (opts.json) {
-    const data = entries.map((e) => ({
-      name: e.branch ? path.basename(e.path) : '(main)',
+    const data = entries.map((e, i) => ({
+      name: i === 0 ? '(main)' : path.basename(e.path),
       branch: e.branch?.replace('refs/heads/', '') ?? null,
       path: e.path,
       bare: e.isBare,

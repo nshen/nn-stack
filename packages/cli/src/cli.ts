@@ -64,4 +64,7 @@ w.command('prune')
     await pruneCommand()
   })
 
-program.parse()
+program.parseAsync().catch((err) => {
+  console.error(err)
+  process.exitCode = 1
+})

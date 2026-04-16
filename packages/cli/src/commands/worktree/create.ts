@@ -13,17 +13,31 @@ import { prompt } from '../../lib/prompt.js'
 import { type NNState, readState, writeState } from '../../lib/state.js'
 import { enterSubshell } from '../../lib/subshell.js'
 
+const VALID_NAME = /^[A-Za-z0-9][A-Za-z0-9._-]*$/
+
+function assertValidName(name: string) {
+  if (
+    name === '.' ||
+    name === '..' ||
+    name.includes('/') ||
+    name.includes('\\') ||
+    !VALID_NAME.test(name)
+  ) {
+    console.error(
+      `Invalid worktree name "${name}": must contain only letters, numbers, ".", "_" or "-", and must not be "." or "..".`,
+    )
+    process.exit(1)
+  }
+}
+
 export async function createCommand(
   name: string,
   opts: { branch?: string; printPath?: boolean },
 ) {
-  if (name.includes('/')) {
-    console.error(`Invalid worktree name "${name}": must not contain "/".`)
-    process.exit(1)
-  }
+  assertValidName(name)
 
   const wtPath = await worktreeDirFor(name)
-  const branchName = opts.branch ?? `feat/${name}`
+  let branchName = opts.branch ?? `feat/${name}`
 
   // Check if worktree already exists
   const existing = await listWorktrees()
@@ -54,8 +68,12 @@ export async function createCommand(
       console.log(`Created worktree: ${wtPath}`)
       console.log(`  branch: ${branchName}`)
     }
-  } else if (!opts.printPath) {
-    console.log(`Worktree already exists: ${wtPath}`)
+  } else {
+    // Resume — use actual branch from existing worktree
+    branchName = found.branch?.replace('refs/heads/', '') ?? branchName
+    if (!opts.printPath) {
+      console.log(`Worktree already exists: ${wtPath}`)
+    }
   }
 
   // --print-path: output only the path to stdout (machine-readable)

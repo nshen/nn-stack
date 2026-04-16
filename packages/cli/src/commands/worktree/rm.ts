@@ -1,4 +1,5 @@
 import {
+  aheadBehind,
   deleteBranch,
   isDirty,
   listWorktrees,
@@ -32,6 +33,17 @@ export async function rmCommand(
     process.exit(1)
   }
 
+  // Check unpushed commits
+  const { ahead, hasUpstream } = await aheadBehind(wtPath)
+  if ((!hasUpstream || ahead > 0) && !opts.force) {
+    const reason = !hasUpstream
+      ? 'has no upstream (never pushed)'
+      : `has ${ahead} unpushed commits`
+    console.error(`Worktree "${name}" ${reason}.`)
+    console.error('Use -f/--force to delete anyway.')
+    process.exit(1)
+  }
+
   // Check tmux panes
   const panes = await findPanesUnder(wtPath)
   if (panes.length > 0 && !opts.force) {
@@ -54,6 +66,11 @@ export async function rmCommand(
       console.log(`  branch: ${branch} ${branchAction}`)
     }
     console.log(`  dirty:  ${dirty ? 'yes' : 'no'}`)
+    if (hasUpstream) {
+      console.log(`  ahead:  ${ahead > 0 ? `${ahead} unpushed` : '0'}`)
+    } else {
+      console.log('  ahead:  no upstream')
+    }
     console.log()
 
     const answer = await prompt('Proceed? [y/N]: ')

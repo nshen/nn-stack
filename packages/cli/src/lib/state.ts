@@ -19,7 +19,10 @@ async function getGitDir(worktreePath: string): Promise<string> {
   const dotGit = await fs.readFile(dotGitPath, 'utf8')
   const match = dotGit.match(/^gitdir:\s*(.+)$/m)
   if (!match) throw new Error(`Not a git worktree: ${worktreePath}`)
-  return match[1].trim()
+  const gitDir = match[1].trim()
+  return path.isAbsolute(gitDir)
+    ? gitDir
+    : path.resolve(path.dirname(dotGitPath), gitDir)
 }
 
 export async function writeState(worktreePath: string, state: NNState) {
