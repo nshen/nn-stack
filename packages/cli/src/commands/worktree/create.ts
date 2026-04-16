@@ -3,6 +3,7 @@ import path from 'node:path'
 import {
   addWorktree,
   addWorktreeExisting,
+  addWorktreeOrphan,
   aheadBehind,
   branchExists,
   deleteBranch,
@@ -39,13 +40,7 @@ export async function createCommand(
 ) {
   assertValidName(name)
 
-  if (!(await hasCommits())) {
-    console.error(
-      'Cannot create worktree: repository has no commits yet. Make an initial commit first.',
-    )
-    process.exit(1)
-  }
-
+  const emptyRepo = !(await hasCommits())
   const wtPath = await worktreeDirFor(name)
   let branchName: string | null = opts.branch ?? `feat/${name}`
 
@@ -59,11 +54,26 @@ export async function createCommand(
 
     // Create new worktree
     try {
-      const exists = await branchExists(branchName)
-      if (exists) {
-        await addWorktreeExisting(wtPath, branchName)
+      if (emptyRepo) {
+        // Try --orphan first (git 2.42+), fallback to clear error
+        try {
+          await addWorktreeOrphan(wtPath, branchName)
+        } catch {
+          console.error(
+            'Cannot create worktree: repository has no commits.',
+          )
+          console.error(
+            'Make an initial commit first, or upgrade to git 2.42+ for orphan worktree support.',
+          )
+          process.exit(1)
+        }
       } else {
-        await addWorktree(wtPath, branchName)
+        const exists = await branchExists(branchName)
+        if (exists) {
+          await addWorktreeExisting(wtPath, branchName)
+        } else {
+          await addWorktree(wtPath, branchName)
+        }
       }
     } catch (err) {
       const stderr =
