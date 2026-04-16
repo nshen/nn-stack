@@ -1,3 +1,5 @@
+import fs from 'node:fs/promises'
+import path from 'node:path'
 import {
   addWorktree,
   addWorktreeExisting,
@@ -37,13 +39,16 @@ export async function createCommand(
   assertValidName(name)
 
   const wtPath = await worktreeDirFor(name)
-  let branchName = opts.branch ?? `feat/${name}`
+  let branchName: string | null = opts.branch ?? `feat/${name}`
 
   // Check if worktree already exists
   const existing = await listWorktrees()
   const found = existing.find((e) => e.path === wtPath)
 
   if (!found) {
+    // Ensure parent directory exists
+    await fs.mkdir(path.dirname(wtPath), { recursive: true })
+
     // Create new worktree
     const exists = await branchExists(branchName)
     if (exists) {
@@ -69,8 +74,8 @@ export async function createCommand(
       console.log(`  branch: ${branchName}`)
     }
   } else {
-    // Resume — use actual branch from existing worktree
-    branchName = found.branch?.replace('refs/heads/', '') ?? branchName
+    // Resume — use actual branch from existing worktree (null if detached)
+    branchName = found.branch?.replace('refs/heads/', '') ?? null
     if (!opts.printPath) {
       console.log(`Worktree already exists: ${wtPath}`)
     }
@@ -112,7 +117,7 @@ export async function createCommand(
 async function showExitPrompt(
   name: string,
   wtPath: string,
-  branchName: string,
+  branchName: string | null,
 ) {
   const dirty = await isDirty(wtPath)
   const { ahead, hasUpstream } = await aheadBehind(wtPath)
@@ -127,14 +132,14 @@ async function showExitPrompt(
 
   console.log()
   console.log(`── Worktree: ${name} ────────────────────────`)
-  console.log(`  branch:  ${branchName}`)
+  console.log(`  branch:  ${branchName ?? '(detached)'}`)
   console.log(`  dirty:   ${dirty ? 'yes' : 'no'}`)
   console.log(`  ahead:   ${aheadText}`)
   console.log(`  PR:      ${pr}`)
   console.log('───────────────────────────────────────────')
   console.log()
   console.log('  [k] Keep (default)')
-  console.log('  [d] Delete worktree + branch')
+  console.log(`  [d] Delete worktree${branchName ? ' + branch' : ''}`)
   console.log()
 
   const choice = await prompt('choice [k/d]: ')
@@ -160,7 +165,7 @@ async function showExitPrompt(
     }
   }
 
-  // Delete
+  // Delete worktree
   try {
     await removeWorktree(wtPath, true)
     console.log(`Removed worktree: ${wtPath}`)
@@ -169,15 +174,18 @@ async function showExitPrompt(
     return
   }
 
-  try {
-    await deleteBranch(branchName, false)
-    console.log(`Deleted branch: ${branchName}`)
-  } catch {
+  // Delete branch (skip if detached)
+  if (branchName) {
     try {
-      await deleteBranch(branchName, true)
-      console.log(`Force-deleted branch: ${branchName} (had unmerged commits)`)
+      await deleteBranch(branchName, false)
+      console.log(`Deleted branch: ${branchName}`)
     } catch {
-      console.log(`Branch ${branchName} could not be deleted`)
+      try {
+        await deleteBranch(branchName, true)
+        console.log(`Force-deleted branch: ${branchName} (had unmerged commits)`)
+      } catch {
+        console.log(`Branch ${branchName} could not be deleted`)
+      }
     }
   }
 }

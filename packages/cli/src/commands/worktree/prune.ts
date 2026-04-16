@@ -50,11 +50,18 @@ export async function pruneCommand() {
           await deleteBranch(b, false)
           console.log(`  Deleted branch ${b}`)
         } catch {
-          try {
-            await deleteBranch(b, true)
-            console.log(`  Force-deleted branch ${b} (had unmerged commits)`)
-          } catch {
-            console.log(`  Failed to delete branch ${b} (may be current branch)`)
+          const forceAnswer = await prompt(
+            `  Branch ${b} has unmerged commits. Force delete? [y/N]: `,
+          )
+          if (forceAnswer.toLowerCase() === 'y') {
+            try {
+              await deleteBranch(b, true)
+              console.log(`  Force-deleted branch ${b}`)
+            } catch {
+              console.log(`  Failed to delete branch ${b} (may be current branch)`)
+            }
+          } else {
+            console.log(`  Skipped branch ${b}`)
           }
         }
       }

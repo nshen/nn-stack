@@ -89,8 +89,12 @@ export async function rmCommand(
     try {
       await deleteBranch(branch, !!opts.force)
       console.log(`Deleted branch: ${branch}`)
-    } catch {
-      console.log(`Branch ${branch} could not be deleted (may have unmerged work, use -f to force)`)
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err)
+      const hint = opts.force
+        ? ''
+        : ', use -f to force'
+      console.log(`Branch ${branch} could not be deleted (${msg}${hint})`)
     }
   }
 }
