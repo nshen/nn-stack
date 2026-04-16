@@ -63,7 +63,7 @@ export async function addWorktree(path: string, branch: string) {
 }
 
 export async function addWorktreeOrphan(path: string, branch: string) {
-  await $`git worktree add --orphan -b ${branch} ${path}`
+  await $({ quiet: true })`git worktree add --orphan -b ${branch} ${path}`
 }
 
 export async function addWorktreeExisting(path: string, branch: string) {
