@@ -81,6 +81,9 @@ Thumbs.db
 # JetBrains IDEs (WebStorm, IntelliJ etc.)
 .idea/
 
+# Claude Code
+.claude/
+
 
 .vercel
 
