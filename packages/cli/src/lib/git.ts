@@ -1,3 +1,4 @@
+import path from 'node:path'
 import { $ } from 'zx'
 
 $.verbose = false
@@ -109,7 +110,12 @@ export async function branchExists(name: string): Promise<boolean> {
 }
 
 export async function getRepoRoot(): Promise<string> {
-  return (await $`git rev-parse --show-toplevel`).stdout.trim()
+  // git-common-dir points to the main repo's .git, even inside a worktree
+  const gitCommonDir = (
+    await $`git rev-parse --path-format=absolute --git-common-dir`
+  ).stdout.trim()
+  // .git dir is <repo>/.git, so parent is the repo root
+  return path.dirname(gitCommonDir)
 }
 
 export async function hasCommits(): Promise<boolean> {
