@@ -115,8 +115,10 @@ export async function remoteBranchExists(
   remote = 'origin',
 ): Promise<boolean> {
   try {
-    await $`git show-ref --verify --quiet refs/remotes/${remote}/${name}`
-    return true
+    const out = (
+      await $`git ls-remote --heads ${remote} ${`refs/heads/${name}`}`
+    ).stdout.trim()
+    return out.length > 0
   } catch {
     return false
   }

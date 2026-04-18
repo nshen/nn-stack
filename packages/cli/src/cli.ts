@@ -45,7 +45,10 @@ const w = program
 
 w.command('attach')
   .description('Attach a worktree to an existing branch (and its PR)')
-  .argument('<branch>', 'existing branch name (local or origin/<branch>)')
+  .argument(
+    '<branch>',
+    'existing branch name (tried locally first, then on origin)',
+  )
   .option('--as <name>', 'worktree directory name (default: derived from branch)')
   .option('--pr <n>', 'PR number (skips gh lookup)', (v) => {
     const n = Number(v)

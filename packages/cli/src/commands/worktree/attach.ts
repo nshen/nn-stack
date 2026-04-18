@@ -18,9 +18,14 @@ import { enterSubshell } from '../../lib/subshell.js'
 import { handleSubshellExit } from './_shared.js'
 
 export async function attachCommand(
-  branch: string,
+  rawBranch: string,
   opts: { as?: string; pr?: number; printPath?: boolean },
 ) {
+  // Accept "origin/foo" and normalize to "foo" so all downstream git/gh calls
+  // see an unqualified branch name.
+  const branch = rawBranch.startsWith('origin/')
+    ? rawBranch.slice('origin/'.length)
+    : rawBranch
   const name = opts.as ?? branch
   assertValidName(name)
 
