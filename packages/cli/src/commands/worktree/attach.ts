@@ -4,7 +4,7 @@ import { getPrForBranch } from '../../lib/gh.js'
 import {
   addWorktreeExisting,
   branchExists,
-  fetchBranch,
+  fetchAndTrackBranch,
   listWorktrees,
   remoteBranchExists,
 } from '../../lib/git.js'
@@ -74,13 +74,13 @@ export async function attachCommand(
         process.exit(1)
       }
       try {
-        await fetchBranch('origin', branch)
+        await fetchAndTrackBranch('origin', branch)
       } catch (err) {
         const stderr =
           err && typeof err === 'object' && 'stderr' in err
             ? String(err.stderr).trim()
             : String(err)
-        console.error(`Failed to fetch branch: ${stderr}`)
+        console.error(`Failed to fetch/track branch: ${stderr}`)
         process.exit(1)
       }
     }
@@ -115,7 +115,7 @@ export async function attachCommand(
       prNumber = lookup.pr
     } else if (!opts.printPath) {
       if (lookup.kind === 'unavailable') {
-        console.log('note: PR lookup failed — skipping PR lookup')
+        console.log('note: PR lookup failed — skipping')
       } else {
         console.log(`note: no open PR found for "${branch}"`)
       }

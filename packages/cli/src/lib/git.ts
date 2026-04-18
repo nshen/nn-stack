@@ -124,7 +124,7 @@ export async function remoteBranchExists(
   return out.length > 0
 }
 
-export async function fetchBranch(remote: string, branch: string) {
+export async function fetchAndTrackBranch(remote: string, branch: string) {
   const root = await getRepoRoot()
   // Plain `git fetch <remote> <branch>` uses the configured refspec and updates
   // refs/remotes/<remote>/<branch>; an explicit `<branch>:<branch>` refspec
