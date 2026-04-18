@@ -99,26 +99,31 @@ export async function attachCommand(
     }
   }
 
-  // Resolve PR number.
-  let prNumber: number | null = null
-  if (!isResume || opts.pr !== undefined) {
-    if (opts.pr !== undefined) {
-      prNumber = opts.pr
-    } else {
-      const lookup = await getPrForBranch(branch)
-      if (lookup.kind === 'found') {
-        prNumber = lookup.pr
-      } else if (!opts.printPath) {
-        if (lookup.kind === 'unavailable') {
-          console.log('note: PR lookup failed — skipping PR lookup')
-        } else {
-          console.log(`note: no open PR found for "${branch}"`)
-        }
+  // On resume, read existing state so we can preserve createdAt/lastReviewId
+  // and decide whether a PR lookup is still needed.
+  const prevState = isResume ? await readState(wtPath) : null
+
+  // Resolve PR number. Lookup runs for: fresh attach, explicit --pr, resume
+  // with missing state, or resume where state.pr is null (so that re-attaching
+  // can recover a PR number that wasn't persisted earlier).
+  let prNumber: number | null = prevState?.pr ?? null
+  if (opts.pr !== undefined) {
+    prNumber = opts.pr
+  } else if (!isResume || !prevState || prevState.pr == null) {
+    const lookup = await getPrForBranch(branch)
+    if (lookup.kind === 'found') {
+      prNumber = lookup.pr
+    } else if (!opts.printPath) {
+      if (lookup.kind === 'unavailable') {
+        console.log('note: PR lookup failed — skipping PR lookup')
+      } else {
+        console.log(`note: no open PR found for "${branch}"`)
       }
     }
   }
 
   if (!found) {
+    // Fresh attach.
     const { root } = await getRepoInfo()
     const state: NNState = {
       name,
@@ -135,16 +140,29 @@ export async function attachCommand(
       console.log(`  branch: ${resolvedBranch ?? branch}`)
       if (prNumber !== null) console.log(`  PR:     #${prNumber}`)
     }
-  } else if (opts.pr !== undefined) {
-    // Resume with explicit --pr: update state.pr only.
-    const prev = await readState(wtPath)
-    if (prev) {
-      await writeState(wtPath, { ...prev, pr: prNumber })
-      if (!opts.printPath && prNumber !== null) {
-        console.log(`Updated PR: #${prNumber}`)
-      }
-    } else if (!opts.printPath) {
-      console.log(`note: state file missing — --pr ${prNumber} not persisted`)
+  } else if (!prevState) {
+    // Resume with no state file — recreate it (e.g. worktree imported from
+    // outside nn, or state file was deleted).
+    const { root } = await getRepoInfo()
+    const state: NNState = {
+      name,
+      branch: resolvedBranch ?? branch,
+      repo: root,
+      createdAt: new Date().toISOString(),
+      pr: prNumber,
+      lastReviewId: null,
+    }
+    await writeState(wtPath, state)
+
+    if (!opts.printPath) {
+      console.log(`Restored state: ${wtPath}`)
+      if (prNumber !== null) console.log(`  PR:     #${prNumber}`)
+    }
+  } else if (prevState.pr !== prNumber) {
+    // Resume: update state.pr if --pr was passed or a lookup discovered one.
+    await writeState(wtPath, { ...prevState, pr: prNumber })
+    if (!opts.printPath && prNumber !== null) {
+      console.log(`Updated PR: #${prNumber}`)
     }
   }
 
