@@ -16,12 +16,13 @@ program
       '  nn w prune               Clean up stale worktree metadata',
       '',
       'Examples:',
-      '  nn w planA               Create worktree with branch feat/planA',
-      '  nn w planA --branch fix  Create worktree with branch fix',
-      '  nn w planA --print-path  Print worktree path (for scripting)',
-      '  nn w ls                  List all worktrees',
-      '  nn w rm planA            Remove worktree and delete branch',
-      '  nn w rm planA -f         Force remove (even if dirty)',
+      '  nn w planA                Create worktree with branch planA',
+      '  nn w feat/planA           Branch feat/planA, directory feat-planA',
+      '  nn w planA --branch fix   Create worktree with branch fix',
+      '  nn w planA --print-path   Print worktree path (for scripting)',
+      '  nn w ls                   List all worktrees',
+      '  nn w rm planA             Remove worktree and delete branch',
+      '  nn w rm planA -f          Force remove (even if dirty)',
     ].join('\n'),
   )
 
@@ -30,7 +31,7 @@ const w = program
   .alias('worktree')
   .description('Worktree management')
   .argument('[name]', 'worktree name (creates or resumes)')
-  .option('--branch <branch>', 'branch name (default: feat/<name>)')
+  .option('--branch <branch>', 'branch name (default: <name>)')
   .option('--print-path', 'print worktree path and exit')
   .action(async (name, opts) => {
     if (!name) return w.help()
