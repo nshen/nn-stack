@@ -118,18 +118,19 @@ export async function remoteBranchExists(
   name: string,
   remote = 'origin',
 ): Promise<boolean> {
-  try {
-    const out = (
-      await $`git ls-remote --heads ${remote} ${`refs/heads/${name}`}`
-    ).stdout.trim()
-    return out.length > 0
-  } catch {
-    return false
-  }
+  const out = (
+    await $`git ls-remote --heads ${remote} ${`refs/heads/${name}`}`
+  ).stdout.trim()
+  return out.length > 0
 }
 
 export async function fetchBranch(remote: string, branch: string) {
-  await $`git fetch ${remote} ${branch}:${branch}`
+  const root = await getRepoRoot()
+  // Plain `git fetch <remote> <branch>` uses the configured refspec and updates
+  // refs/remotes/<remote>/<branch>; an explicit `<branch>:<branch>` refspec
+  // would skip that, leaving --set-upstream-to with no remote-tracking ref.
+  await $`git -C ${root} fetch ${remote} ${branch}`
+  await $`git -C ${root} branch --track ${branch} ${`${remote}/${branch}`}`
 }
 
 export async function getRepoRoot(): Promise<string> {

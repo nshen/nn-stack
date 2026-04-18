@@ -22,17 +22,11 @@ export async function attachCommand(
   opts: { as?: string; pr?: number; printPath?: boolean },
 ) {
   // Accept "origin/foo" as a convenience when users paste from `git branch -r`.
-  // Only strip the prefix if the verbatim name doesn't resolve — this preserves
-  // legitimate branches literally named "origin/foo".
+  // Only strip the prefix if no local branch exists with that literal name —
+  // this preserves legitimate local branches named "origin/foo".
   let branch = rawBranch
-  if (rawBranch.startsWith('origin/')) {
-    const literalLocal = await branchExists(rawBranch)
-    const literalRemote = literalLocal
-      ? false
-      : await remoteBranchExists(rawBranch)
-    if (!literalLocal && !literalRemote) {
-      branch = rawBranch.slice('origin/'.length)
-    }
+  if (rawBranch.startsWith('origin/') && !(await branchExists(rawBranch))) {
+    branch = rawBranch.slice('origin/'.length)
   }
   const name = opts.as ?? branch
   assertValidName(name)
@@ -55,7 +49,17 @@ export async function attachCommand(
     // Resolve branch: local first, then origin/<branch>.
     const hasLocal = await branchExists(branch)
     if (!hasLocal) {
-      const hasRemote = await remoteBranchExists(branch)
+      let hasRemote: boolean
+      try {
+        hasRemote = await remoteBranchExists(branch)
+      } catch (err) {
+        const stderr =
+          err && typeof err === 'object' && 'stderr' in err
+            ? String(err.stderr).trim()
+            : String(err)
+        console.error(`Failed to check remote branch: ${stderr}`)
+        process.exit(1)
+      }
       if (!hasRemote) {
         console.error(
           `Branch "${branch}" not found locally or on origin. Fetch it first, or use "nn w <name>" to create a new branch.`,
