@@ -21,11 +21,19 @@ export async function attachCommand(
   rawBranch: string,
   opts: { as?: string; pr?: number; printPath?: boolean },
 ) {
-  // Accept "origin/foo" and normalize to "foo" so all downstream git/gh calls
-  // see an unqualified branch name.
-  const branch = rawBranch.startsWith('origin/')
-    ? rawBranch.slice('origin/'.length)
-    : rawBranch
+  // Accept "origin/foo" as a convenience when users paste from `git branch -r`.
+  // Only strip the prefix if the verbatim name doesn't resolve — this preserves
+  // legitimate branches literally named "origin/foo".
+  let branch = rawBranch
+  if (rawBranch.startsWith('origin/')) {
+    const literalLocal = await branchExists(rawBranch)
+    const literalRemote = literalLocal
+      ? false
+      : await remoteBranchExists(rawBranch)
+    if (!literalLocal && !literalRemote) {
+      branch = rawBranch.slice('origin/'.length)
+    }
+  }
   const name = opts.as ?? branch
   assertValidName(name)
 
@@ -121,6 +129,9 @@ export async function attachCommand(
     const prev = await readState(wtPath)
     if (prev) {
       await writeState(wtPath, { ...prev, pr: prNumber })
+      if (!opts.printPath && prNumber !== null) {
+        console.log(`Updated PR: #${prNumber}`)
+      }
     } else if (!opts.printPath) {
       console.log(`note: state file missing — --pr ${prNumber} not persisted`)
     }

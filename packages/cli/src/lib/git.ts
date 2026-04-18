@@ -106,8 +106,12 @@ export async function deleteBranch(name: string, force = false) {
 }
 
 export async function branchExists(name: string): Promise<boolean> {
-  const out = (await $`git branch --list ${name}`).stdout
-  return out.trim().length > 0
+  try {
+    await $`git show-ref --verify --quiet ${`refs/heads/${name}`}`
+    return true
+  } catch {
+    return false
+  }
 }
 
 export async function remoteBranchExists(
