@@ -110,6 +110,22 @@ export async function branchExists(name: string): Promise<boolean> {
   return out.trim().length > 0
 }
 
+export async function remoteBranchExists(
+  name: string,
+  remote = 'origin',
+): Promise<boolean> {
+  try {
+    await $`git show-ref --verify --quiet refs/remotes/${remote}/${name}`
+    return true
+  } catch {
+    return false
+  }
+}
+
+export async function fetchBranch(remote: string, branch: string) {
+  await $`git fetch ${remote} ${branch}:${branch}`
+}
+
 export async function getRepoRoot(): Promise<string> {
   // git-common-dir points to the main repo's .git, even inside a worktree
   const gitCommonDir = (
