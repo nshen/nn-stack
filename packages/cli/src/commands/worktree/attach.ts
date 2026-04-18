@@ -39,9 +39,16 @@ export async function attachCommand(
   let isResume = false
 
   if (found) {
-    // Worktree already exists — resume.
-    isResume = true
+    // Worktree already exists — only resume if it matches the requested branch.
     resolvedBranch = found.branch?.replace('refs/heads/', '') ?? null
+    if (resolvedBranch !== branch) {
+      const actual = resolvedBranch ?? '(detached HEAD)'
+      console.error(
+        `Worktree already exists at "${wtPath}" but is on "${actual}", not requested branch "${branch}". Use a different --as name or switch the existing worktree to the requested branch first.`,
+      )
+      process.exit(1)
+    }
+    isResume = true
     if (!opts.printPath) {
       console.log(`Worktree already exists: ${wtPath}`)
     }
@@ -103,7 +110,7 @@ export async function attachCommand(
         prNumber = lookup.pr
       } else if (!opts.printPath) {
         if (lookup.kind === 'unavailable') {
-          console.log('note: gh not available — skipping PR lookup')
+          console.log('note: PR lookup failed — skipping PR lookup')
         } else {
           console.log(`note: no open PR found for "${branch}"`)
         }
