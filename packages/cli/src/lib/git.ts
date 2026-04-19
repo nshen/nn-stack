@@ -106,8 +106,31 @@ export async function deleteBranch(name: string, force = false) {
 }
 
 export async function branchExists(name: string): Promise<boolean> {
-  const out = (await $`git branch --list ${name}`).stdout
-  return out.trim().length > 0
+  try {
+    await $`git show-ref --verify --quiet ${`refs/heads/${name}`}`
+    return true
+  } catch {
+    return false
+  }
+}
+
+export async function remoteBranchExists(
+  name: string,
+  remote = 'origin',
+): Promise<boolean> {
+  const out = (
+    await $`git ls-remote --heads ${remote} ${`refs/heads/${name}`}`
+  ).stdout.trim()
+  return out.length > 0
+}
+
+export async function fetchAndTrackBranch(remote: string, branch: string) {
+  const root = await getRepoRoot()
+  // Plain `git fetch <remote> <branch>` uses the configured refspec and updates
+  // refs/remotes/<remote>/<branch>; an explicit `<branch>:<branch>` refspec
+  // would skip that, leaving --set-upstream-to with no remote-tracking ref.
+  await $`git -C ${root} fetch ${remote} ${branch}`
+  await $`git -C ${root} branch --track ${branch} ${`${remote}/${branch}`}`
 }
 
 export async function getRepoRoot(): Promise<string> {
