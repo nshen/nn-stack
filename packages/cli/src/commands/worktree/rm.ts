@@ -1,3 +1,4 @@
+import path from 'node:path'
 import {
   aheadBehind,
   deleteBranch,
@@ -5,7 +6,6 @@ import {
   listWorktrees,
   removeWorktree,
 } from '../../lib/git.js'
-import { worktreeDirFor } from '../../lib/paths.js'
 import { prompt } from '../../lib/prompt.js'
 import { findPanesUnder } from '../../lib/tmux.js'
 
@@ -13,9 +13,12 @@ export async function rmCommand(
   name: string,
   opts: { force?: boolean; yes?: boolean; keepBranch?: boolean },
 ) {
-  const expectedPath = await worktreeDirFor(name)
   const entries = await listWorktrees()
-  const entry = entries.find((e) => e.path === expectedPath)
+  // Match by basename of path — same rule `ls` uses for the NAME column.
+  // Skip index 0 (the main worktree) so `rm` never targets it.
+  const entry = entries
+    .slice(1)
+    .find((e) => path.basename(e.path) === name)
 
   if (!entry) {
     console.error(`Worktree "${name}" not found.`)
