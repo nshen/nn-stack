@@ -15,6 +15,12 @@ program
       '  nn w ls [--json]            List all worktrees',
       '  nn w rm <name> [-f] [-y]    Remove a worktree',
       '  nn w prune                  Clean up stale worktree metadata',
+      '  nn w current [--json]       Show info about the current worktree',
+      '',
+      'State commands (inside a worktree):',
+      '  nn state get <key>          Read a key from nn-state.json',
+      '  nn state set <key> <val>    Write a key to nn-state.json',
+      '  nn state show [--json]      Show all keys',
       '',
       'Examples:',
       '  nn w planA                       Create worktree with branch planA',
@@ -27,6 +33,8 @@ program
       '  nn w ls                          List all worktrees',
       '  nn w rm planA                    Remove worktree and delete branch',
       '  nn w rm planA -f                 Force remove (even if dirty)',
+      '  nn state get pr                  Print current PR number',
+      '  nn state set pr 123              Store PR number',
     ].join('\n'),
   )
 
@@ -90,7 +98,48 @@ w.command('prune')
     await pruneCommand()
   })
 
+w.command('current')
+  .description('Show info about the current worktree')
+  .option('--json', 'JSON output')
+  .action(async (opts) => {
+    const { currentCommand } = await import('./commands/worktree/current.js')
+    await currentCommand(opts)
+  })
+
+const state = program
+  .command('state')
+  .description('Read/write keys in the current worktree nn-state.json')
+
+state
+  .command('get')
+  .description('Read a key from nn-state.json')
+  .argument('<key>', 'key name (e.g. pr, lastReviewId)')
+  .action(async (key) => {
+    const { stateGetCommand } = await import('./commands/state.js')
+    await stateGetCommand(key)
+  })
+
+state
+  .command('set')
+  .description('Write a key to nn-state.json')
+  .argument('<key>', 'key name')
+  .argument('<value>', 'value (numeric strings become numbers)')
+  .option('--json', 'parse value as JSON (for arrays/objects/booleans)')
+  .action(async (key, value, opts) => {
+    const { stateSetCommand } = await import('./commands/state.js')
+    await stateSetCommand(key, value, opts)
+  })
+
+state
+  .command('show')
+  .description('Show all keys in nn-state.json')
+  .option('--json', 'JSON output')
+  .action(async (opts) => {
+    const { stateShowCommand } = await import('./commands/state.js')
+    await stateShowCommand(opts)
+  })
+
 program.parseAsync().catch((err) => {
-  console.error(err)
+  console.error(err instanceof Error ? err.message : err)
   process.exitCode = 1
 })

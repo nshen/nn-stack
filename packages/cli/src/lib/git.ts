@@ -134,12 +134,54 @@ export async function fetchAndTrackBranch(remote: string, branch: string) {
 }
 
 export async function getRepoRoot(): Promise<string> {
-  // git-common-dir points to the main repo's .git, even inside a worktree
-  const gitCommonDir = (
-    await $`git rev-parse --path-format=absolute --git-common-dir`
-  ).stdout.trim()
+  const gitCommonDir = await getGitCommonDir()
   // .git dir is <repo>/.git, so parent is the repo root
   return path.dirname(gitCommonDir)
+}
+
+const q = $({ quiet: true })
+
+export async function getGitCommonDir(): Promise<string> {
+  // git-common-dir points to the main repo's .git, even inside a worktree
+  return (
+    await q`git rev-parse --path-format=absolute --git-common-dir`
+  ).stdout.trim()
+}
+
+export async function getGitDir(): Promise<string> {
+  // For a linked worktree this is <main>/.git/worktrees/<name>
+  // For the main repo this equals getGitCommonDir()
+  return (
+    await q`git rev-parse --path-format=absolute --git-dir`
+  ).stdout.trim()
+}
+
+export async function getTopLevel(): Promise<string> {
+  return (await q`git rev-parse --show-toplevel`).stdout.trim()
+}
+
+export async function getCurrentBranch(): Promise<string | null> {
+  const out = (await $`git branch --show-current`).stdout.trim()
+  return out || null
+}
+
+export async function getRemoteUrl(
+  name = 'origin',
+): Promise<string | null> {
+  try {
+    return (await $`git remote get-url ${name}`).stdout.trim()
+  } catch {
+    return null
+  }
+}
+
+export function parseOwnerRepo(
+  remote: string,
+): { owner: string; repo: string } | null {
+  // Supports git@github.com:owner/repo.git, https://github.com/owner/repo(.git)
+  const m = remote.match(/[:/]([^/:]+)\/([^/]+?)(?:\.git)?\/?$/)
+  if (!m) return null
+  return { owner: m[1], repo: m[2] }
 }
 
 export async function hasCommits(): Promise<boolean> {
