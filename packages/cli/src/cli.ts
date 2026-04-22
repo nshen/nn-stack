@@ -12,6 +12,12 @@ program
       'Dev workflow:',
       '  nn dev <name> [plan]     Create worktree + launch Claude /nn-dev',
       '',
+      'Skill commands:',
+      '  nn skill install [--project] [--force]   Install bundled skills',
+      '  nn skill uninstall [--project]           Remove installed skills',
+      '  nn skill status [--json]                 Show where each skill lives',
+      '  nn skill list                            List bundled skills',
+      '',
       'Worktree commands:',
       '  nn w <name>                 Create or resume a worktree',
       '  nn w attach <branch>        Attach worktree to an existing branch + PR',
@@ -142,6 +148,46 @@ state
   .action(async (opts) => {
     const { stateShowCommand } = await import('./commands/state.js')
     await stateShowCommand(opts)
+  })
+
+const skill = program
+  .command('skill')
+  .description('Manage bundled Claude Code skills (/nn-dev etc.)')
+
+skill
+  .command('install')
+  .description('Install bundled skills to ~/.claude/commands (or --project)')
+  .option('--project', 'install to <repo>/.claude/commands instead')
+  .option('--force', 'overwrite skills that were modified locally')
+  .action(async (opts) => {
+    const { skillInstallCommand } = await import('./commands/skill.js')
+    await skillInstallCommand(opts)
+  })
+
+skill
+  .command('uninstall')
+  .description('Remove installed skills')
+  .option('--project', 'remove from <repo>/.claude/commands')
+  .action(async (opts) => {
+    const { skillUninstallCommand } = await import('./commands/skill.js')
+    await skillUninstallCommand(opts)
+  })
+
+skill
+  .command('status')
+  .description('Show where each bundled skill is installed and its state')
+  .option('--json', 'JSON output')
+  .action(async (opts) => {
+    const { skillStatusCommand } = await import('./commands/skill.js')
+    await skillStatusCommand(opts)
+  })
+
+skill
+  .command('list')
+  .description('List skills bundled with this CLI')
+  .action(async () => {
+    const { skillListCommand } = await import('./commands/skill.js')
+    await skillListCommand()
   })
 
 program

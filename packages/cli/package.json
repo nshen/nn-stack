@@ -6,6 +6,10 @@
   "bin": {
     "nn": "./dist/cli.js"
   },
+  "files": [
+    "dist",
+    "skills"
+  ],
   "scripts": {
     "build": "tsup",
     "dev": "tsup --watch",

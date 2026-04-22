@@ -1,6 +1,50 @@
 import { spawn } from 'node:child_process'
+import { prompt } from '../lib/prompt.js'
+import {
+  BUNDLED_SKILLS,
+  type SkillName,
+  installSkill,
+  skillDiscoverableAt,
+} from '../lib/skills.js'
 import { showExitPrompt } from './worktree/_shared.js'
 import { prepareWorktree } from './worktree/create.js'
+
+async function ensureSkillsInstalled() {
+  const missing: SkillName[] = []
+  for (const name of BUNDLED_SKILLS) {
+    if (!(await skillDiscoverableAt(name))) missing.push(name)
+  }
+  if (missing.length === 0) return
+
+  if (!process.stdin.isTTY) {
+    console.error(`Skills not found: ${missing.join(', ')}`)
+    console.error(
+      "Can't prompt in a non-interactive shell. Run `nn skill install` first.",
+    )
+    process.exit(1)
+  }
+
+  console.log(`Skills not found: ${missing.join(', ')}`)
+  console.log('Claude Code needs these to run /nn-dev.')
+  console.log()
+  console.log('  [g] Install globally  (~/.claude/commands/)   (default)')
+  console.log('  [p] Install to this project  (.claude/commands/)')
+  console.log('  [n] Abort')
+  console.log()
+  const choice = (await prompt('choice [g/p/n]: ')).toLowerCase().trim()
+
+  if (choice === 'n') {
+    console.error('Aborted. Install manually with `nn skill install`.')
+    process.exit(1)
+  }
+  const scope = choice === 'p' ? 'project' : 'global'
+
+  for (const name of missing) {
+    const result = await installSkill(name, scope)
+    console.log(`  ✓ ${result}: ${name} (${scope})`)
+  }
+  console.log()
+}
 
 /**
  * `nn dev <name> [plan...]`
@@ -12,6 +56,8 @@ export async function devCommand(
   planArgs: string[],
   opts: { branch?: string },
 ) {
+  await ensureSkillsInstalled()
+
   const {
     path: wtPath,
     branch,
@@ -54,17 +100,18 @@ export async function devCommand(
 
 function runClaude(
   cwd: string,
-  prompt: string,
+  initialPrompt: string,
 ): Promise<{ code: number | null; signal: NodeJS.Signals | null }> {
   return new Promise((resolve, reject) => {
-    const child = spawn('claude', [prompt], {
+    const child = spawn('claude', [initialPrompt], {
       stdio: 'inherit',
       cwd,
       env: process.env,
     })
     child.on('exit', (code, signal) => resolve({ code, signal }))
     child.on('error', (err) => {
-      if ((err as NodeJS.ErrnoException).code === 'ENOENT') {
+      const code = (err as NodeJS.ErrnoException).code
+      if (code === 'ENOENT') {
         console.error('`claude` not found on PATH.')
         console.error(
           'Install Claude Code first: https://claude.com/claude-code',
