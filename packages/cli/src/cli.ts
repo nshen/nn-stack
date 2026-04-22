@@ -9,6 +9,9 @@ program
     'after',
     [
       '',
+      'Dev workflow:',
+      '  nn dev <name> [plan]     Create worktree + launch Claude /nn-dev',
+      '',
       'Worktree commands:',
       '  nn w <name>                 Create or resume a worktree',
       '  nn w attach <branch>        Attach worktree to an existing branch + PR',
@@ -23,6 +26,8 @@ program
       '  nn state show [--json]      Show all keys',
       '',
       'Examples:',
+      '  nn dev planA plan.md             One-shot: worktree + Claude /nn-dev',
+      '  nn dev planA                     Resume a worktree and re-enter /nn-dev',
       '  nn w planA                       Create worktree with branch planA',
       '  nn w feat/planA                  Branch feat/planA, directory feat-planA',
       '  nn w planA --branch fix          Create worktree with branch fix',
@@ -137,6 +142,17 @@ state
   .action(async (opts) => {
     const { stateShowCommand } = await import('./commands/state.js')
     await stateShowCommand(opts)
+  })
+
+program
+  .command('dev')
+  .description('Create worktree + launch Claude with /nn-dev')
+  .argument('<name>', 'worktree name (creates or resumes)')
+  .argument('[plan...]', 'plan text or .md path; forwarded to /nn-dev')
+  .option('--branch <branch>', 'branch name (default: <name>)')
+  .action(async (name, plan, opts) => {
+    const { devCommand } = await import('./commands/dev.js')
+    await devCommand(name, plan, opts)
   })
 
 program.parseAsync().catch((err) => {
