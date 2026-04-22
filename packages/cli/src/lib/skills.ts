@@ -26,8 +26,18 @@ export function globalSkillsDir(): string {
   return path.join(os.homedir(), '.claude', 'commands')
 }
 
-export async function projectSkillsDir(): Promise<string> {
-  return path.join(await getRepoRoot(), '.claude', 'commands')
+/**
+ * Project-scope skills dir, or null when not inside a git repo.
+ * Callers that require this (e.g. `--project` install) should error with
+ * a specific message; callers that merely display status should treat
+ * null as "not applicable".
+ */
+export async function projectSkillsDir(): Promise<string | null> {
+  try {
+    return path.join(await getRepoRoot(), '.claude', 'commands')
+  } catch {
+    return null
+  }
 }
 
 async function sha256File(file: string): Promise<string | null> {
@@ -44,7 +54,7 @@ export interface SkillStatus {
   bundledHash: string
   globalPath: string
   globalHash: string | null
-  projectPath: string
+  projectPath: string | null
   projectHash: string | null
 }
 
@@ -53,11 +63,14 @@ export async function skillStatus(
 ): Promise<SkillStatus> {
   const bundled = path.join(bundledSkillsDir(), `${name}.md`)
   const globalPath = path.join(globalSkillsDir(), `${name}.md`)
-  const projectPath = path.join(await projectSkillsDir(), `${name}.md`)
+  const projectDir = await projectSkillsDir()
+  const projectPath = projectDir
+    ? path.join(projectDir, `${name}.md`)
+    : null
   const [bundledHash, globalHash, projectHash] = await Promise.all([
     sha256File(bundled),
     sha256File(globalPath),
-    sha256File(projectPath),
+    projectPath ? sha256File(projectPath) : Promise.resolve(null),
   ])
   if (!bundledHash) {
     throw new Error(`bundled skill missing: ${bundled}`)
@@ -76,13 +89,22 @@ export async function allSkillStatuses(): Promise<SkillStatus[]> {
   return Promise.all(BUNDLED_SKILLS.map(skillStatus))
 }
 
+function requireProjectPath(status: SkillStatus): string {
+  if (!status.projectPath) {
+    console.error('--project requires a git repo.')
+    process.exit(1)
+  }
+  return status.projectPath
+}
+
 export async function installSkill(
   name: SkillName,
   scope: 'global' | 'project',
   opts: { force?: boolean } = {},
 ): Promise<'installed' | 'updated' | 'skipped-same' | 'skipped-modified'> {
   const status = await skillStatus(name)
-  const target = scope === 'global' ? status.globalPath : status.projectPath
+  const target =
+    scope === 'global' ? status.globalPath : requireProjectPath(status)
   const current = scope === 'global' ? status.globalHash : status.projectHash
 
   if (current === status.bundledHash) return 'skipped-same'
@@ -99,7 +121,8 @@ export async function uninstallSkill(
   scope: 'global' | 'project',
 ): Promise<'removed' | 'not-installed'> {
   const status = await skillStatus(name)
-  const target = scope === 'global' ? status.globalPath : status.projectPath
+  const target =
+    scope === 'global' ? status.globalPath : requireProjectPath(status)
   try {
     await fs.unlink(target)
     return 'removed'

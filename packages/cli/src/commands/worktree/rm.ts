@@ -2,6 +2,7 @@ import path from 'node:path'
 import {
   aheadBehind,
   deleteBranch,
+  getRepoRoot,
   isDirty,
   listWorktrees,
   removeWorktree,
@@ -13,11 +14,11 @@ export async function rmCommand(
   name: string,
   opts: { force?: boolean; yes?: boolean; keepBranch?: boolean },
 ) {
-  const entries = await listWorktrees()
+  const [entries, root] = await Promise.all([listWorktrees(), getRepoRoot()])
   // Match by basename of path — same rule `ls` uses for the NAME column.
-  // Skip index 0 (the main worktree) so `rm` never targets it.
+  // Filter out the main repo explicitly (don't assume it's index 0).
   const entry = entries
-    .slice(1)
+    .filter((e) => e.path !== root)
     .find((e) => path.basename(e.path) === name)
 
   if (!entry) {
@@ -30,7 +31,7 @@ export async function rmCommand(
 
   // Check if current directory is inside the worktree
   const cwd = process.cwd()
-  if (cwd === wtPath || cwd.startsWith(`${wtPath}/`)) {
+  if (cwd === wtPath || cwd.startsWith(wtPath + path.sep)) {
     console.error(`Cannot remove worktree "${name}": you are currently inside it.`)
     console.error(`Run "exit" first to leave the worktree, then remove it.`)
     process.exit(1)

@@ -178,7 +178,9 @@ export async function getRemoteUrl(
 export function parseOwnerRepo(
   remote: string,
 ): { owner: string; repo: string } | null {
-  // Supports git@github.com:owner/repo.git, https://github.com/owner/repo(.git)
+  // Supports git@github.com:owner/repo.git and https://github.com/owner/repo(.git)
+  // Only extracts the last two path segments — nested GitLab groups
+  // (group/sub/repo) collapse to sub/repo. Good enough for GitHub flows.
   const m = remote.match(/[:/]([^/:]+)\/([^/]+?)(?:\.git)?\/?$/)
   if (!m) return null
   return { owner: m[1], repo: m[2] }

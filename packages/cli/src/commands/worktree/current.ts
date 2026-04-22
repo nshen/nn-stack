@@ -34,14 +34,22 @@ export async function currentCommand(opts: { json?: boolean }) {
       owner: null,
       repo: null,
     }
-    if (opts.json) console.log(JSON.stringify(info, null, 2))
-    else console.error('not in a git repo')
+    // In --json mode the JSON payload is the answer — exit 0 so scripts
+    // can parse it. In human mode treat it as a check and exit 1.
+    if (opts.json) {
+      console.log(JSON.stringify(info, null, 2))
+      return
+    }
+    console.error('not in a git repo')
     process.exit(1)
   }
 
-  const commonDir = await getGitCommonDir()
-  const topLevel = await getTopLevel()
-  const remote = await getRemoteUrl()
+  const [commonDir, topLevel, branch, remote] = await Promise.all([
+    getGitCommonDir(),
+    getTopLevel(),
+    getCurrentBranch(),
+    getRemoteUrl(),
+  ])
   const ownerRepo = remote ? parseOwnerRepo(remote) : null
 
   const info: CurrentInfo = {
@@ -49,7 +57,7 @@ export async function currentCommand(opts: { json?: boolean }) {
     isLinked: gitDir !== commonDir,
     path: topLevel,
     name: path.basename(topLevel),
-    branch: await getCurrentBranch(),
+    branch,
     gitDir,
     owner: ownerRepo?.owner ?? null,
     repo: ownerRepo?.repo ?? null,

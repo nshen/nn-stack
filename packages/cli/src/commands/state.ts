@@ -20,12 +20,44 @@ async function stateFilePath(): Promise<string> {
   return path.join(gitDir, 'nn-state.json')
 }
 
+const INTEGER_RE = /^-?\d+$/
+const DECIMAL_RE = /^-?\d+\.\d+$/
+
 async function readData(file: string): Promise<Record<string, unknown>> {
+  let raw: string
   try {
-    return JSON.parse(await fs.readFile(file, 'utf8'))
-  } catch {
-    return {}
+    raw = await fs.readFile(file, 'utf8')
+  } catch (err) {
+    if ((err as NodeJS.ErrnoException).code === 'ENOENT') return {}
+    throw err
   }
+  try {
+    return JSON.parse(raw)
+  } catch (err) {
+    // Refuse to silently clobber a corrupt state file — the user would lose
+    // whatever salvageable fields it contained on the next `set`.
+    console.error(`Corrupt JSON in ${file}:`)
+    console.error(`  ${err instanceof Error ? err.message : err}`)
+    console.error('Fix or delete the file before re-running.')
+    process.exit(1)
+  }
+}
+
+async function writeDataAtomic(
+  file: string,
+  data: Record<string, unknown>,
+) {
+  // Per-PID tmp name avoids two concurrent writers clobbering the same tmp.
+  // fsync the tmp fd before rename so a crash can't leave a half-written file.
+  const tmp = `${file}.${process.pid}.tmp`
+  const fh = await fs.open(tmp, 'w')
+  try {
+    await fh.writeFile(JSON.stringify(data, null, 2))
+    await fh.sync()
+  } finally {
+    await fh.close()
+  }
+  await fs.rename(tmp, file)
 }
 
 export async function stateGetCommand(key: string) {
@@ -51,11 +83,20 @@ export async function stateSetCommand(
       console.error(`invalid JSON for --json: ${err}`)
       process.exit(1)
     }
-  } else if (value !== '' && !Number.isNaN(Number(value))) {
+  } else if (INTEGER_RE.test(value)) {
+    const n = Number(value)
+    if (!Number.isSafeInteger(n)) {
+      console.error(
+        `Integer ${value} exceeds Number.MAX_SAFE_INTEGER; pass --json to store as a string.`,
+      )
+      process.exit(1)
+    }
+    parsed = n
+  } else if (DECIMAL_RE.test(value)) {
     parsed = Number(value)
   }
   data[key] = parsed
-  await fs.writeFile(file, JSON.stringify(data, null, 2))
+  await writeDataAtomic(file, data)
 }
 
 export async function stateShowCommand(opts: { json?: boolean }) {

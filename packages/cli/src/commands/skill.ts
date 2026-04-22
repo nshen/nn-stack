@@ -14,8 +14,17 @@ export async function skillInstallCommand(opts: {
   force?: boolean
 }) {
   const scope = opts.project ? 'project' : 'global'
-  const targetDir =
-    scope === 'global' ? globalSkillsDir() : await projectSkillsDir()
+  let targetDir: string
+  if (scope === 'global') {
+    targetDir = globalSkillsDir()
+  } else {
+    const pdir = await projectSkillsDir()
+    if (!pdir) {
+      console.error('--project requires a git repo.')
+      process.exit(1)
+    }
+    targetDir = pdir
+  }
   console.log(`Installing skills to: ${targetDir}`)
   console.log()
 
@@ -60,8 +69,13 @@ export async function skillStatusCommand(opts: { json?: boolean }) {
 
   for (const s of statuses) {
     console.log(s.name)
-    console.log(`  global:  ${describe(s.bundledHash, s.globalHash)}  ${s.globalPath}`)
-    console.log(`  project: ${describe(s.bundledHash, s.projectHash)}  ${s.projectPath}`)
+    console.log(
+      `  global:  ${describe(s.bundledHash, s.globalHash)}  ${s.globalPath}`,
+    )
+    const projLine = s.projectPath
+      ? `${describe(s.bundledHash, s.projectHash)}  ${s.projectPath}`
+      : 'n/a (not in a git repo)'
+    console.log(`  project: ${projLine}`)
   }
 }
 

@@ -1,13 +1,13 @@
 import path from 'node:path'
 import { table } from '../../lib/format.js'
-import { listWorktrees } from '../../lib/git.js'
+import { getRepoRoot, listWorktrees } from '../../lib/git.js'
 
 export async function lsCommand(opts: { json?: boolean }) {
-  const entries = await listWorktrees()
+  const [entries, root] = await Promise.all([listWorktrees(), getRepoRoot()])
 
   if (opts.json) {
-    const data = entries.map((e, i) => ({
-      name: i === 0 ? '(main)' : path.basename(e.path),
+    const data = entries.map((e) => ({
+      name: e.path === root ? '(main)' : path.basename(e.path),
       branch: e.branch?.replace('refs/heads/', '') ?? null,
       path: e.path,
       bare: e.isBare,
@@ -20,9 +20,9 @@ export async function lsCommand(opts: { json?: boolean }) {
   }
 
   const headers = ['NAME', 'BRANCH', 'PATH', 'STATUS']
-  const rows = entries.map((e, i) => {
+  const rows = entries.map((e) => {
     const branch = e.branch?.replace('refs/heads/', '') ?? '(detached)'
-    const isMain = i === 0
+    const isMain = e.path === root
     const name = e.prunable
       ? '(orphan)'
       : isMain
