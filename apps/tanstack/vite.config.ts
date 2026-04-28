@@ -2,6 +2,7 @@ import { defineConfig } from 'vite';
 import { tanstackStart } from '@tanstack/react-start/plugin/vite';
 import tailwindcss from '@tailwindcss/vite';
 import viteReact from '@vitejs/plugin-react';
+import alchemy from 'alchemy/cloudflare/tanstack-start';
 
 export default defineConfig({
   server: {
@@ -11,5 +12,10 @@ export default defineConfig({
   resolve: {
     tsconfigPaths: true,
   },
-  plugins: [tanstackStart(), viteReact(), tailwindcss()],
+  plugins: [
+    alchemy(),
+    tanstackStart({ target: 'cloudflare-module', customViteReactPlugin: true }),
+    viteReact(),
+    tailwindcss(),
+  ],
 });

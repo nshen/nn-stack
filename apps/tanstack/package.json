@@ -30,6 +30,7 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@cloudflare/vite-plugin": "^1.34.0",
     "@nn-stack/config": "workspace:*",
     "@tailwindcss/vite": "^4.2.2",
     "@types/node": "catalog:",
