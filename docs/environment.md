@@ -1,12 +1,27 @@
 # Environment Variables & Deployment
 
+## Env Files Per Stage
+
+Each app reads a different env file depending on the stage. None are committed (gitignored).
+
+| Stage | Command | env file |
+|-------|---------|----------|
+| Local dev | `pnpm dev` | `.local.env` |
+| Cloudflare dev | `pnpm deploy:dev` | `.dev.env` |
+| Cloudflare prod | `pnpm deploy:prod` | `.prod.env` |
+
 ## Local Development
 
-Each app uses a `.dev.env` file:
+Copy the example and fill in values:
 
-- **`apps/web/.dev.env`**: `FRONTEND=web` and `NEXT_PUBLIC_SERVER_URL=http://localhost:4000`
-- **`apps/tanstack/.dev.env`**: `FRONTEND=tanstack` and `NEXT_PUBLIC_SERVER_URL=http://localhost:4000`
-- **`apps/server/.dev.env`**: `CORS_ORIGIN=http://localhost:3000,http://localhost:3001`
+```bash
+cp apps/server/.local.env.example apps/server/.local.env
+# Then create apps/tanstack/.local.env similarly.
+```
+
+Defaults:
+- **`apps/tanstack/.local.env`**: `NEXT_PUBLIC_SERVER_URL=http://localhost:4000`
+- **`apps/server/.local.env`**: `CORS_ORIGIN=http://localhost:3000`
 
 ## Adding New Environment Variables
 
@@ -14,7 +29,7 @@ Each app uses a `.dev.env` file:
 2. Edit `alchemy.run.ts` in the relevant app:
    - Locate the `bindings` object in the `Worker` configuration.
    - Add your variable (e.g., `MY_VAR: process.env.MY_VAR || ''`).
-   - Define the variable in the app's `.dev.env` for local development.
+   - Define the variable in the app's `.local.env` for local development (and `.dev.env` / `.prod.env` for deploys).
 3. Run `pnpm dev` — `env.d.ts` is auto-regenerated for type safety.
 
 ## Deployment
@@ -22,8 +37,6 @@ Each app uses a `.dev.env` file:
 Uses Alchemy for Cloudflare Workers deployment:
 
 ```bash
-pnpm --filter server --filter <frontend> deploy:dev   # Development
-pnpm --filter server --filter <frontend> deploy:prod  # Production
+pnpm run deploy:dev   # Development
+pnpm run deploy:prod  # Production
 ```
-
-Where `<frontend>` is `web` or `tanstack`.

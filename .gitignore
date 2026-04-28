@@ -20,11 +20,6 @@ build/
 out/
 coverage/
 
-# Next.js / Web specific
-.next/
-# Next.js static export directory
-out/
-
 # Hono / Node/Bun runtime specific artifacts
 *.tsbuildinfo
 .tsbuildinfo
@@ -55,8 +50,7 @@ pnpm-debug.log*
 .env.test.local
 .env.production.local
 *.env*
-!.env.example
-!.dev.env
+!*.env.example
 .secrets/
 *.pem
 *.bak

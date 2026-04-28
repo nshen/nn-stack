@@ -14,8 +14,7 @@ DATABASE=d1
 ```
 apps/
   server/     Hono backend (port 4000)
-  web/        Next.js frontend (port 3000)
-  tanstack/   TanStack Start frontend (port 3001)
+  tanstack/   TanStack Start frontend (port 3000)
 packages/
   api/        oRPC API definitions + Zod schemas
   db/         Drizzle schema + migrations
@@ -26,8 +25,7 @@ packages/
 ## Quick Commands
 
 ```bash
-pnpm dev:tanstack          # server + tanstack
-pnpm dev:web               # server + next.js
+pnpm dev                   # server + tanstack
 pnpm run lint              # lint all
 pnpm run format            # format all
 ```
@@ -44,11 +42,10 @@ Read these docs based on the task at hand:
 | Code style, TypeScript rules | [docs/coding-standards.md](docs/coding-standards.md) |
 | Env vars, deployment config | [docs/environment.md](docs/environment.md) |
 | **Frontend: TanStack Start** | [docs/rules-tanstack.md](docs/rules-tanstack.md) |
-| **Frontend: Next.js** | [docs/rules-next.md](docs/rules-next.md) |
 | Writing or running tests | [docs/testing.md](docs/testing.md) |
 | Debugging UI issues | [docs/debugging.md](docs/debugging.md) |
 
-**Always read the active frontend's rules file before writing frontend code.**
+**Always read the frontend rules file before writing frontend code.**
 
 ## Looking Up Library Documentation
 

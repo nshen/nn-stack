@@ -2,7 +2,7 @@
 
 [中文](#nn-stack-中文)
 
-NN-Stack is an opinionated **Full Stack Starter Kit** built for **Cloudflare's Edge Network**. It runs **Next.js** or **TanStack Start** (Frontend) and **Hono** (Backend) as independent Workers connected by **End-to-End Type Safety**. Forget complex configuration, **deploy globally with a single command. Runs for $0/month.**
+NN-Stack is an opinionated **Full Stack Starter Kit** built for **Cloudflare's Edge Network**. It runs **TanStack Start** (Frontend) and **Hono** (Backend) as independent Workers connected by **End-to-End Type Safety**. Forget complex configuration, **deploy globally with a single command. Runs for $0/month.**
 
 ---
 
@@ -20,7 +20,7 @@ NN-Stack is an opinionated **Full Stack Starter Kit** built for **Cloudflare's E
 
 | Category           | Technology                | Description                        |
 | :----------------- | :------------------------ | :--------------------------------- |
-| **Frontend**       | **Next.js / TanStack Start** | Edge-optimized React framework (choose one). |
+| **Frontend**       | **TanStack Start**        | Edge-optimized React framework.    |
 | **Backend**        | **Hono**                  | Ultra-fast standard web framework. |
 | **Communication**  | **ORPC + TanStack Query** | E2E Type-safe RPC                  |
 | **Database**       | **Cloudflare D1/KV**      | Serverless SQLite at the edge.     |
@@ -37,16 +37,13 @@ NN-Stack is an opinionated **Full Stack Starter Kit** built for **Cloudflare's E
 nn-stack/
 ├── apps/
 │   ├── server/    # Hono Server Worker
-│   ├── web/       # Next.js Frontend Worker (port 3000)
-│   └── tanstack/  # TanStack Start Frontend Worker (port 3001)
+│   └── tanstack/  # TanStack Start Frontend Worker (port 3000)
 └── packages/
     ├── api/       # Shared ORPC API definitions & Zod schemas
     ├── db/        # Drizzle Schema & Migrations
     ├── ui/        # Shared Shadcn UI components
     └── config/    # Shared TS configs
 ```
-
-> Both `web` (Next.js) and `tanstack` (TanStack Start) implement the same features. You can choose either one as your frontend.
 
 ---
 
@@ -70,24 +67,21 @@ pnpm install
 
 ### 2. Development
 
-Start the full stack locally. Alchemy handles the local emulation.
+Create a local env file for each app (gitignored), then start the stack:
 
 ```bash
-# Start all apps (server + web + tanstack)
+cp apps/server/.local.env.example apps/server/.local.env
+# create apps/tanstack/.local.env (NEXT_PUBLIC_SERVER_URL=http://localhost:4000)
+
 pnpm dev
-
-# Start server + Next.js only
-pnpm dev:web
-
-# Start server + TanStack Start only
-pnpm dev:tanstack
 ```
 
-| App             | URL                    |
-| :-------------- | :--------------------- |
-| **Server**      | http://localhost:4000   |
-| **Web (Next.js)** | http://localhost:3000 |
-| **TanStack Start** | http://localhost:3001 |
+| App                | URL                    |
+| :----------------- | :--------------------- |
+| **Server**         | http://localhost:4000  |
+| **TanStack Start** | http://localhost:3000  |
+
+> `.local.env` is for local dev only. `.dev.env` / `.prod.env` are for stage deploys (CI-injected).
 
 ### 3. Authentication
 
@@ -102,45 +96,28 @@ pnpm alchemy login
 
 Deploy everything to Cloudflare's global network.
 
-#### Choose Your Frontend
-
-By default, the project deploys Next.js (`web`). To deploy TanStack Start instead, use the `--filter` flag:
-
 ```bash
-# Deploy Next.js (default)
-pnpm --filter server --filter web deploy:dev
-
-# Deploy TanStack Start
-pnpm --filter server --filter tanstack deploy:dev
-```
-
-Or deploy everything at once (all frontends):
-
-```bash
+# Deploy to Dev
 pnpm run deploy:dev
+
+# Deploy to Prod
+pnpm run deploy:prod
 ```
 
 > **First-Time Setup:**
-> For the first deploy, link the services by updating their `.env` files:
+> For the first deploy, link the services by updating their stage env files (`.dev.env` for dev, `.prod.env` for prod):
 >
-> - `apps/web/.env` (or `apps/tanstack/.env`): Set `NEXT_PUBLIC_SERVER_URL` to your Backend URL.
-> - `apps/server/.env`: Set `CORS_ORIGIN` to your Frontend URL.
+> - `apps/tanstack/.dev.env` / `.prod.env`: Set `NEXT_PUBLIC_SERVER_URL` to your Backend URL.
+> - `apps/server/.dev.env` / `.prod.env`: Set `CORS_ORIGIN` to your Frontend URL.
 >
 > Then redeploy once to apply the changes.
-
-```bash
-# Deploy to Production environment
-pnpm --filter server --filter web deploy:prod
-# or
-pnpm --filter server --filter tanstack deploy:prod
-```
 
 #### Automated CI/CD Deployment
 
 This project includes a fully configured GitHub Actions workflow (`.github/workflows/deploy.yml`) for automated CI/CD. It supports two completely isolated environments, providing a safe and professional deployment strategy:
 
-- **`dev` branch** automatically deploys to the **Development** environment (e.g., [https://nn-stack-web-dev.nshen.workers.dev](https://nn-stack-web-dev.nshen.workers.dev)). Use this for testing and staging.
-- **`main` branch** automatically deploys to the **Production** environment (e.g., [https://nn-stack-web-prod.nshen.workers.dev](https://nn-stack-web-prod.nshen.workers.dev)). Use this for your live, user-facing application.
+- **`dev` branch** automatically deploys to the **Development** environment (e.g., [https://nn-stack-tanstack-dev.nshen.workers.dev](https://nn-stack-tanstack-dev.nshen.workers.dev)). Use this for testing and staging.
+- **`main` branch** automatically deploys to the **Production** environment (e.g., [https://nn-stack-tanstack-prod.nshen.workers.dev](https://nn-stack-tanstack-prod.nshen.workers.dev)). Use this for your live, user-facing application.
 
 ##### Required Secrets
 
@@ -149,28 +126,25 @@ To enable automated deployment, add the following **Repository Secrets** in your
 1. **`CLOUDFLARE_API_TOKEN`**: Your Cloudflare API Token. Generate one mirroring your permissions by running: `pnpm dlx alchemy util create-cloudflare-token`.
 2. **`ALCHEMY_STATE_TOKEN`**: A random 32-character hex string for Alchemy state management. Generate via: `openssl rand -hex 32`. Must be the same across all projects under the same Cloudflare account.
 3. **`CLOUDFLARE_EMAIL`**: Your Cloudflare account login email.
-4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: The full content of your `apps/server/.env` file for the respective environment.
-5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: The full content of your frontend `.env` file. The CI/CD reads the `FRONTEND=` line from this file to determine which frontend to deploy. No extra configuration needed.
+4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: The full content of `apps/server/.dev.env` / `apps/server/.prod.env`.
+5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: The full content of `apps/tanstack/.dev.env` / `apps/tanstack/.prod.env`.
 
 ##### Upload env files to GitHub Secrets
 
-**To deploy Next.js** — upload from `apps/web/`:
+Or use the helper script (skips missing files with a warning):
+
+```bash
+pnpm sync:secrets
+```
+
+Manual equivalent:
 
 ```bash
 gh secret set ENV_SERVER_DEV < apps/server/.dev.env
-gh secret set ENV_SERVER_PROD < apps/server/.env
-gh secret set ENV_WEB_DEV < apps/web/.dev.env
-gh secret set ENV_WEB_PROD < apps/web/.env
-```
-
-**To switch to TanStack Start** — upload from `apps/tanstack/` instead:
-
-```bash
+gh secret set ENV_SERVER_PROD < apps/server/.prod.env
 gh secret set ENV_WEB_DEV < apps/tanstack/.dev.env
-gh secret set ENV_WEB_PROD < apps/tanstack/.env
+gh secret set ENV_WEB_PROD < apps/tanstack/.prod.env
 ```
-
-Each frontend's `.env` file contains `FRONTEND=web` or `FRONTEND=tanstack`. The CI/CD automatically reads this value to deploy the correct app. To switch frontends, just re-upload the env files from the other app's directory.
 
 ---
 
@@ -182,7 +156,7 @@ MIT © Nshen.net
 
 # NN-Stack 中文
 
-NN-Stack 是一套**有主见（Opinionated）的全栈 Starter Kit**，专为 **Cloudflare 边缘网络**打造。它将 **Next.js** 或 **TanStack Start**（前端）和 **Hono**（后端）作为独立的 Worker 运行，并通过**端到端（End-to-End）类型安全**进行连接。告别繁琐配置，**一条命令全球部署。运行成本 $0/月。**
+NN-Stack 是一套**有主见（Opinionated）的全栈 Starter Kit**，专为 **Cloudflare 边缘网络**打造。它将 **TanStack Start**（前端）和 **Hono**（后端）作为独立的 Worker 运行，并通过**端到端（End-to-End）类型安全**进行连接。告别繁琐配置，**一条命令全球部署。运行成本 $0/月。**
 
 ---
 
@@ -200,7 +174,7 @@ NN-Stack 是一套**有主见（Opinionated）的全栈 Starter Kit**，专为 *
 
 | 类别               | 技术                      | 描述                         |
 | :----------------- | :------------------------ | :--------------------------- |
-| **Frontend**       | **Next.js / TanStack Start** | 针对边缘优化的 React 框架（二选一）。 |
+| **Frontend**       | **TanStack Start**        | 针对边缘优化的 React 框架。  |
 | **Backend**        | **Hono**                  | 超快的 Web 标准框架。        |
 | **Communication**  | **ORPC + TanStack Query** | 端到端类型安全 RPC           |
 | **Database**       | **Cloudflare D1/KV**      | 边缘 Serverless SQLite。     |
@@ -217,16 +191,13 @@ NN-Stack 是一套**有主见（Opinionated）的全栈 Starter Kit**，专为 *
 nn-stack/
 ├── apps/
 │   ├── server/    # Hono 后端 Worker
-│   ├── web/       # Next.js 前端 Worker（端口 3000）
-│   └── tanstack/  # TanStack Start 前端 Worker（端口 3001）
+│   └── tanstack/  # TanStack Start 前端 Worker（端口 3000）
 └── packages/
     ├── api/       # 共享 ORPC API 定义 & Zod Schemas
     ├── db/        # Drizzle Schema & Migrations
     ├── ui/        # 共享 Shadcn UI 组件
     └── config/    # 共享 TS 配置
 ```
-
-> `web`（Next.js）和 `tanstack`（TanStack Start）实现了相同的功能，可任选其一作为前端。
 
 ---
 
@@ -250,24 +221,21 @@ pnpm install
 
 ### 2. 开发
 
-启动本地全栈开发环境。Alchemy 会自动处理本地模拟。
+为每个 app 创建一份本地 env 文件（已 gitignore），然后启动：
 
 ```bash
-# 启动所有应用（server + web + tanstack）
+cp apps/server/.local.env.example apps/server/.local.env
+# 创建 apps/tanstack/.local.env（NEXT_PUBLIC_SERVER_URL=http://localhost:4000）
+
 pnpm dev
-
-# 只启动 server + Next.js
-pnpm dev:web
-
-# 只启动 server + TanStack Start
-pnpm dev:tanstack
 ```
 
-| 应用              | URL                    |
-| :---------------- | :--------------------- |
-| **Server**        | http://localhost:4000   |
-| **Web (Next.js)** | http://localhost:3000   |
-| **TanStack Start** | http://localhost:3001  |
+| 应用               | URL                    |
+| :----------------- | :--------------------- |
+| **Server**         | http://localhost:4000  |
+| **TanStack Start** | http://localhost:3000  |
+
+> `.local.env` 仅用于本地开发；`.dev.env` / `.prod.env` 用于 stage 部署（CI 注入）。
 
 ### 3. 认证
 
@@ -282,45 +250,28 @@ pnpm alchemy login
 
 将所有应用部署到 Cloudflare 全球网络。
 
-#### 选择前端框架
-
-默认部署 Next.js（`web`）。若要部署 TanStack Start，使用 `--filter` 指定：
-
 ```bash
-# 部署 Next.js（默认）
-pnpm --filter server --filter web deploy:dev
-
-# 部署 TanStack Start
-pnpm --filter server --filter tanstack deploy:dev
-```
-
-或一次部署所有前端：
-
-```bash
+# 部署到开发环境
 pnpm run deploy:dev
+
+# 部署到生产环境
+pnpm run deploy:prod
 ```
 
 > **首次设置:**
-> 第一次部署时，通过更新 `.env` 文件来连接前后端服务：
+> 第一次部署时，通过更新对应 stage 的 env 文件（dev 用 `.dev.env`，prod 用 `.prod.env`）来连接前后端服务：
 >
-> - `apps/web/.env`（或 `apps/tanstack/.env`）: 设置 `NEXT_PUBLIC_SERVER_URL` 为你的后端 URL。
-> - `apps/server/.env`: 设置 `CORS_ORIGIN` 为你的前端 URL。
+> - `apps/tanstack/.dev.env` / `.prod.env`: 设置 `NEXT_PUBLIC_SERVER_URL` 为你的后端 URL。
+> - `apps/server/.dev.env` / `.prod.env`: 设置 `CORS_ORIGIN` 为你的前端 URL。
 >
 > 然后重新运行一次部署命令以应用更改。
-
-```bash
-# 部署到生产环境 (Production)
-pnpm --filter server --filter web deploy:prod
-# 或
-pnpm --filter server --filter tanstack deploy:prod
-```
 
 #### 自动化 CI/CD 部署
 
 本项目包含一个配置完整的 GitHub Actions 工作流 (`.github/workflows/deploy.yml`) 用于自动 CI/CD。它支持两个完全隔离的环境，提供了安全、专业的部署策略优势：
 
-- **`dev` 分支** 自动部署到 **开发环境 (Development)**（例如：[https://nn-stack-web-dev.nshen.workers.dev](https://nn-stack-web-dev.nshen.workers.dev)）。用于测试和预发布。
-- **`main` 分支** 自动部署到 **生产环境 (Production)**（例如：[https://nn-stack-web-prod.nshen.workers.dev](https://nn-stack-web-prod.nshen.workers.dev)）。用于正式的线上应用。
+- **`dev` 分支** 自动部署到 **开发环境 (Development)**（例如：[https://nn-stack-tanstack-dev.nshen.workers.dev](https://nn-stack-tanstack-dev.nshen.workers.dev)）。用于测试和预发布。
+- **`main` 分支** 自动部署到 **生产环境 (Production)**（例如：[https://nn-stack-tanstack-prod.nshen.workers.dev](https://nn-stack-tanstack-prod.nshen.workers.dev)）。用于正式的线上应用。
 
 ##### 所需 Secrets
 
@@ -329,28 +280,25 @@ pnpm --filter server --filter tanstack deploy:prod
 1. **`CLOUDFLARE_API_TOKEN`**: Cloudflare API 令牌。运行 `pnpm dlx alchemy util create-cloudflare-token` 生成一个包含当前权限的令牌。
 2. **`ALCHEMY_STATE_TOKEN`**: 用于 Alchemy 状态管理的随机字符串。可通过 `openssl rand -hex 32` 生成, 如果 cloudflare 下有多个项目必须相同。
 3. **`CLOUDFLARE_EMAIL`**: 您的 Cloudflare 账号登录邮箱。
-4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: 分别对应各环境下 `apps/server/.env` 文件的完整内容。
-5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: 前端 `.env` 文件的完整内容。CI/CD 会自动读取其中的 `FRONTEND=` 行来决定部署哪个前端，无需额外配置。
+4. **`ENV_SERVER_DEV` / `ENV_SERVER_PROD`**: 分别对应 `apps/server/.dev.env` / `apps/server/.prod.env` 的完整内容。
+5. **`ENV_WEB_DEV` / `ENV_WEB_PROD`**: 分别对应 `apps/tanstack/.dev.env` / `apps/tanstack/.prod.env` 的完整内容。
 
 ##### 上传 env 文件到 GitHub Secrets
 
-**部署 Next.js** — 从 `apps/web/` 上传：
+或使用辅助脚本（缺失的文件会跳过并给出提示）：
+
+```bash
+pnpm sync:secrets
+```
+
+手动等价：
 
 ```bash
 gh secret set ENV_SERVER_DEV < apps/server/.dev.env
-gh secret set ENV_SERVER_PROD < apps/server/.env
-gh secret set ENV_WEB_DEV < apps/web/.dev.env
-gh secret set ENV_WEB_PROD < apps/web/.env
-```
-
-**切换为 TanStack Start** — 改为从 `apps/tanstack/` 上传：
-
-```bash
+gh secret set ENV_SERVER_PROD < apps/server/.prod.env
 gh secret set ENV_WEB_DEV < apps/tanstack/.dev.env
-gh secret set ENV_WEB_PROD < apps/tanstack/.env
+gh secret set ENV_WEB_PROD < apps/tanstack/.prod.env
 ```
-
-每个前端的 `.env` 文件中包含 `FRONTEND=web` 或 `FRONTEND=tanstack`，CI/CD 会自动读取该值来部署对应的前端。切换前端只需从另一个目录重新上传 env 文件即可。
 
 ---
 

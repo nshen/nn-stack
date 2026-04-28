@@ -18,12 +18,10 @@ name: Deploy Application
 #    - Your Cloudflare account login email.
 #
 # 4. ENV_SERVER_DEV / ENV_SERVER_PROD:
-#    - How to get: The full content of your apps/server/.env file for each stage.
+#    - The full content of apps/server/.dev.env / .prod.env.
 #
 # 5. ENV_WEB_DEV / ENV_WEB_PROD:
-#    - The full content of your frontend .env file for each stage.
-#    - Must contain FRONTEND=web or FRONTEND=tanstack to select which frontend to deploy.
-#    - Upload from apps/web/.env for Next.js, or apps/tanstack/.env for TanStack Start.
+#    - The full content of apps/tanstack/.dev.env / .prod.env.
 
 on:
   push:
@@ -60,26 +58,20 @@ jobs:
       - name: Inject Environment Files (Dev)
         if: github.ref == 'refs/heads/dev'
         run: |
-          echo "${{ secrets.ENV_SERVER_DEV }}" > apps/server/.env
-          FRONTEND=$(echo "${{ secrets.ENV_WEB_DEV }}" | grep -m1 '^FRONTEND=' | cut -d'=' -f2 | tr -d '[:space:]')
-          FRONTEND=${FRONTEND:-web}
-          echo "FRONTEND=$FRONTEND" >> $GITHUB_ENV
-          echo "${{ secrets.ENV_WEB_DEV }}" > apps/$FRONTEND/.env
+          echo "${{ secrets.ENV_SERVER_DEV }}" > apps/server/.dev.env
+          echo "${{ secrets.ENV_WEB_DEV }}" > apps/tanstack/.dev.env
 
       - name: Inject Environment Files (Prod)
         if: github.ref == 'refs/heads/main'
         run: |
-          echo "${{ secrets.ENV_SERVER_PROD }}" > apps/server/.env
-          FRONTEND=$(echo "${{ secrets.ENV_WEB_PROD }}" | grep -m1 '^FRONTEND=' | cut -d'=' -f2 | tr -d '[:space:]')
-          FRONTEND=${FRONTEND:-web}
-          echo "FRONTEND=$FRONTEND" >> $GITHUB_ENV
-          echo "${{ secrets.ENV_WEB_PROD }}" > apps/$FRONTEND/.env
+          echo "${{ secrets.ENV_SERVER_PROD }}" > apps/server/.prod.env
+          echo "${{ secrets.ENV_WEB_PROD }}" > apps/tanstack/.prod.env
 
       - name: Deploy to Dev
         if: github.ref == 'refs/heads/dev'
         run: |
           pnpm --filter server deploy:dev
-          pnpm --filter $FRONTEND deploy:dev
+          pnpm --filter tanstack deploy:dev
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -90,7 +82,7 @@ jobs:
         if: github.ref == 'refs/heads/main'
         run: |
           pnpm --filter server deploy:prod
-          pnpm --filter $FRONTEND deploy:prod
+          pnpm --filter tanstack deploy:prod
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
