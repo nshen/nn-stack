@@ -9,7 +9,13 @@ catalogs:
     '@biomejs/biome':
       specifier: ^2.3.10
       version: 2.3.10
+    '@cloudflare/workers-types':
+      specifier: ^4.20260317.1
+      version: 4.20260317.1
     '@orpc/client':
+      specifier: ^1.13.13
+      version: 1.13.13
+    '@orpc/server':
       specifier: ^1.13.13
       version: 1.13.13
     '@orpc/tanstack-query':
@@ -27,6 +33,15 @@ catalogs:
     alchemy:
       specifier: ^0.90.1
       version: 0.90.1
+    drizzle-kit:
+      specifier: ^0.31.8
+      version: 0.31.8
+    drizzle-orm:
+      specifier: ^0.45.1
+      version: 0.45.1
+    hono:
+      specifier: ^4.10.8
+      version: 4.11.3
     lucide-react:
       specifier: ^0.562.0
       version: 0.562.0
@@ -42,6 +57,12 @@ catalogs:
     typescript:
       specifier: ^6.0.2
       version: 6.0.3
+    wrangler:
+      specifier: ^4.78.0
+      version: 4.78.0
+    zod:
+      specifier: ^4.1.12
+      version: 4.2.1
 
 importers:
 
@@ -168,83 +189,13 @@ importers:
         version: 6.0.1(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))
       alchemy:
         specifier: 'catalog:'
-        version: 0.90.1(@aws-sdk/client-dynamodb@3.984.0)(@aws-sdk/client-lambda@3.984.0)(@aws-sdk/client-s3@3.984.0)(@aws-sdk/client-sqs@3.984.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.18.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1)))(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260317.1)(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1))
+        version: 0.90.1(@aws-sdk/client-dynamodb@3.984.0)(@aws-sdk/client-lambda@3.984.0)(@aws-sdk/client-s3@3.984.0)(@aws-sdk/client-sqs@3.984.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.18.0(next@16.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1)))(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260317.1)(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1))
       typescript:
         specifier: 'catalog:'
         version: 6.0.3
       vite:
         specifier: ^8.0.10
         version: 8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2)
-
-  apps/web:
-    dependencies:
-      '@nn-stack/api':
-        specifier: workspace:*
-        version: link:../../packages/api
-      '@nn-stack/ui':
-        specifier: workspace:*
-        version: link:../../packages/ui
-      '@opennextjs/cloudflare':
-        specifier: 'catalog:'
-        version: 1.18.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1))
-      '@orpc/client':
-        specifier: 'catalog:'
-        version: 1.13.13
-      '@orpc/tanstack-query':
-        specifier: 'catalog:'
-        version: 1.13.13(@orpc/client@1.13.13)(@tanstack/query-core@5.90.16)
-      '@tailwindcss/postcss':
-        specifier: ^4.1.18
-        version: 4.1.18
-      '@tanstack/react-query':
-        specifier: ^5.90.12
-        version: 5.90.16(react@19.2.3)
-      lucide-react:
-        specifier: 'catalog:'
-        version: 0.562.0(react@19.2.3)
-      next:
-        specifier: 16.1.6
-        version: 16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3)
-      postcss:
-        specifier: ^8.5.6
-        version: 8.5.6
-      react:
-        specifier: 'catalog:'
-        version: 19.2.3
-      react-dom:
-        specifier: 'catalog:'
-        version: 19.2.3(react@19.2.3)
-      react-dropzone:
-        specifier: ^14.3.8
-        version: 14.3.8(react@19.2.3)
-      tailwindcss:
-        specifier: 'catalog:'
-        version: 4.2.2
-    devDependencies:
-      '@biomejs/biome':
-        specifier: 'catalog:'
-        version: 2.3.10
-      '@cloudflare/workers-types':
-        specifier: 'catalog:'
-        version: 4.20260317.1
-      '@nn-stack/config':
-        specifier: workspace:*
-        version: link:../../packages/config
-      '@types/node':
-        specifier: 'catalog:'
-        version: 25.0.3
-      '@types/react':
-        specifier: 'catalog:'
-        version: 19.2.7
-      '@types/react-dom':
-        specifier: 'catalog:'
-        version: 19.2.3(@types/react@19.2.7)
-      alchemy:
-        specifier: 'catalog:'
-        version: 0.90.1(@aws-sdk/client-dynamodb@3.984.0)(@aws-sdk/client-lambda@3.984.0)(@aws-sdk/client-s3@3.984.0)(@aws-sdk/client-sqs@3.984.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.18.0(next@16.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1)))(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260317.1)(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1))
-      typescript:
-        specifier: 'catalog:'
-        version: 6.0.3
 
   packages/api:
     dependencies:
@@ -366,10 +317,6 @@ importers:
         version: 19.2.3(@types/react@19.2.7)
 
 packages:
-
-  '@alloc/quick-lru@5.2.0':
-    resolution: {integrity: sha512-UrcABB+4bUrFABwbluTIBErXwvbsU/V7TZWfmbgJfbkwiBuziS9gxdODUyuiecfdGQ85jglMW6juS3+z5TsKLw==}
-    engines: {node: '>=10'}
 
   '@ast-grep/napi-darwin-arm64@0.40.5':
     resolution: {integrity: sha512-2F072fGN0WTq7KI3okuEnkGJVEHLbi56Bw1H6NAMf7j2mJJeQWsRyGOMcyNnUXZDeNdvoMH0OB2a5wwUegY/nQ==}
@@ -3475,17 +3422,8 @@ packages:
   '@swc/helpers@0.5.15':
     resolution: {integrity: sha512-JQ5TuMi45Owi4/BIMAJBoSQoOJu12oOk/gADqlcUL9JEdHB8vyjUSsxqeNXnmXHjYKMi2WcYtezGEEhqUI/E2g==}
 
-  '@tailwindcss/node@4.1.18':
-    resolution: {integrity: sha512-DoR7U1P7iYhw16qJ49fgXUlry1t4CpXeErJHnQ44JgTSKMaZUdf17cfn5mHchfJ4KRBZRFA/Coo+MUF5+gOaCQ==}
-
   '@tailwindcss/node@4.2.2':
     resolution: {integrity: sha512-pXS+wJ2gZpVXqFaUEjojq7jzMpTGf8rU6ipJz5ovJV6PUGmlJ+jvIwGrzdHdQ80Sg+wmQxUFuoW1UAAwHNEdFA==}
-
-  '@tailwindcss/oxide-android-arm64@4.1.18':
-    resolution: {integrity: sha512-dJHz7+Ugr9U/diKJA0W6N/6/cjI+ZTAoxPf9Iz9BFRF2GzEX8IvXxFIi/dZBloVJX/MZGvRuFA9rqwdiIEZQ0Q==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [android]
 
   '@tailwindcss/oxide-android-arm64@4.2.2':
     resolution: {integrity: sha512-dXGR1n+P3B6748jZO/SvHZq7qBOqqzQ+yFrXpoOWWALWndF9MoSKAT3Q0fYgAzYzGhxNYOoysRvYlpixRBBoDg==}
@@ -3493,22 +3431,10 @@ packages:
     cpu: [arm64]
     os: [android]
 
-  '@tailwindcss/oxide-darwin-arm64@4.1.18':
-    resolution: {integrity: sha512-Gc2q4Qhs660bhjyBSKgq6BYvwDz4G+BuyJ5H1xfhmDR3D8HnHCmT/BSkvSL0vQLy/nkMLY20PQ2OoYMO15Jd0A==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [darwin]
-
   '@tailwindcss/oxide-darwin-arm64@4.2.2':
     resolution: {integrity: sha512-iq9Qjr6knfMpZHj55/37ouZeykwbDqF21gPFtfnhCCKGDcPI/21FKC9XdMO/XyBM7qKORx6UIhGgg6jLl7BZlg==}
     engines: {node: '>= 20'}
     cpu: [arm64]
-    os: [darwin]
-
-  '@tailwindcss/oxide-darwin-x64@4.1.18':
-    resolution: {integrity: sha512-FL5oxr2xQsFrc3X9o1fjHKBYBMD1QZNyc1Xzw/h5Qu4XnEBi3dZn96HcHm41c/euGV+GRiXFfh2hUCyKi/e+yw==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
     os: [darwin]
 
   '@tailwindcss/oxide-darwin-x64@4.2.2':
@@ -3517,23 +3443,11 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  '@tailwindcss/oxide-freebsd-x64@4.1.18':
-    resolution: {integrity: sha512-Fj+RHgu5bDodmV1dM9yAxlfJwkkWvLiRjbhuO2LEtwtlYlBgiAT4x/j5wQr1tC3SANAgD+0YcmWVrj8R9trVMA==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [freebsd]
-
   '@tailwindcss/oxide-freebsd-x64@4.2.2':
     resolution: {integrity: sha512-YUqUgrGMSu2CDO82hzlQ5qSb5xmx3RUrke/QgnoEx7KvmRJHQuZHZmZTLSuuHwFf0DJPybFMXMYf+WJdxHy/nQ==}
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [freebsd]
-
-  '@tailwindcss/oxide-linux-arm-gnueabihf@4.1.18':
-    resolution: {integrity: sha512-Fp+Wzk/Ws4dZn+LV2Nqx3IilnhH51YZoRaYHQsVq3RQvEl+71VGKFpkfHrLM/Li+kt5c0DJe/bHXK1eHgDmdiA==}
-    engines: {node: '>= 10'}
-    cpu: [arm]
-    os: [linux]
 
   '@tailwindcss/oxide-linux-arm-gnueabihf@4.2.2':
     resolution: {integrity: sha512-FPdhvsW6g06T9BWT0qTwiVZYE2WIFo2dY5aCSpjG/S/u1tby+wXoslXS0kl3/KXnULlLr1E3NPRRw0g7t2kgaQ==}
@@ -3541,21 +3455,9 @@ packages:
     cpu: [arm]
     os: [linux]
 
-  '@tailwindcss/oxide-linux-arm64-gnu@4.1.18':
-    resolution: {integrity: sha512-S0n3jboLysNbh55Vrt7pk9wgpyTTPD0fdQeh7wQfMqLPM/Hrxi+dVsLsPrycQjGKEQk85Kgbx+6+QnYNiHalnw==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [linux]
-
   '@tailwindcss/oxide-linux-arm64-gnu@4.2.2':
     resolution: {integrity: sha512-4og1V+ftEPXGttOO7eCmW7VICmzzJWgMx+QXAJRAhjrSjumCwWqMfkDrNu1LXEQzNAwz28NCUpucgQPrR4S2yw==}
     engines: {node: '>= 20'}
-    cpu: [arm64]
-    os: [linux]
-
-  '@tailwindcss/oxide-linux-arm64-musl@4.1.18':
-    resolution: {integrity: sha512-1px92582HkPQlaaCkdRcio71p8bc8i/ap5807tPRDK/uw953cauQBT8c5tVGkOwrHMfc2Yh6UuxaH4vtTjGvHg==}
-    engines: {node: '>= 10'}
     cpu: [arm64]
     os: [linux]
 
@@ -3565,21 +3467,9 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  '@tailwindcss/oxide-linux-x64-gnu@4.1.18':
-    resolution: {integrity: sha512-v3gyT0ivkfBLoZGF9LyHmts0Isc8jHZyVcbzio6Wpzifg/+5ZJpDiRiUhDLkcr7f/r38SWNe7ucxmGW3j3Kb/g==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
-    os: [linux]
-
   '@tailwindcss/oxide-linux-x64-gnu@4.2.2':
     resolution: {integrity: sha512-rTAGAkDgqbXHNp/xW0iugLVmX62wOp2PoE39BTCGKjv3Iocf6AFbRP/wZT/kuCxC9QBh9Pu8XPkv/zCZB2mcMg==}
     engines: {node: '>= 20'}
-    cpu: [x64]
-    os: [linux]
-
-  '@tailwindcss/oxide-linux-x64-musl@4.1.18':
-    resolution: {integrity: sha512-bhJ2y2OQNlcRwwgOAGMY0xTFStt4/wyU6pvI6LSuZpRgKQwxTec0/3Scu91O8ir7qCR3AuepQKLU/kX99FouqQ==}
-    engines: {node: '>= 10'}
     cpu: [x64]
     os: [linux]
 
@@ -3588,18 +3478,6 @@ packages:
     engines: {node: '>= 20'}
     cpu: [x64]
     os: [linux]
-
-  '@tailwindcss/oxide-wasm32-wasi@4.1.18':
-    resolution: {integrity: sha512-LffYTvPjODiP6PT16oNeUQJzNVyJl1cjIebq/rWWBF+3eDst5JGEFSc5cWxyRCJ0Mxl+KyIkqRxk1XPEs9x8TA==}
-    engines: {node: '>=14.0.0'}
-    cpu: [wasm32]
-    bundledDependencies:
-      - '@napi-rs/wasm-runtime'
-      - '@emnapi/core'
-      - '@emnapi/runtime'
-      - '@tybys/wasm-util'
-      - '@emnapi/wasi-threads'
-      - tslib
 
   '@tailwindcss/oxide-wasm32-wasi@4.2.2':
     resolution: {integrity: sha512-eKSztKsmEsn1O5lJ4ZAfyn41NfG7vzCg496YiGtMDV86jz1q/irhms5O0VrY6ZwTUkFy/EKG3RfWgxSI3VbZ8Q==}
@@ -3613,22 +3491,10 @@ packages:
       - '@emnapi/wasi-threads'
       - tslib
 
-  '@tailwindcss/oxide-win32-arm64-msvc@4.1.18':
-    resolution: {integrity: sha512-HjSA7mr9HmC8fu6bdsZvZ+dhjyGCLdotjVOgLA2vEqxEBZaQo9YTX4kwgEvPCpRh8o4uWc4J/wEoFzhEmjvPbA==}
-    engines: {node: '>= 10'}
-    cpu: [arm64]
-    os: [win32]
-
   '@tailwindcss/oxide-win32-arm64-msvc@4.2.2':
     resolution: {integrity: sha512-qPmaQM4iKu5mxpsrWZMOZRgZv1tOZpUm+zdhhQP0VhJfyGGO3aUKdbh3gDZc/dPLQwW4eSqWGrrcWNBZWUWaXQ==}
     engines: {node: '>= 20'}
     cpu: [arm64]
-    os: [win32]
-
-  '@tailwindcss/oxide-win32-x64-msvc@4.1.18':
-    resolution: {integrity: sha512-bJWbyYpUlqamC8dpR7pfjA0I7vdF6t5VpUGMWRkXVE3AXgIZjYUYAK7II1GNaxR8J1SSrSrppRar8G++JekE3Q==}
-    engines: {node: '>= 10'}
-    cpu: [x64]
     os: [win32]
 
   '@tailwindcss/oxide-win32-x64-msvc@4.2.2':
@@ -3637,16 +3503,9 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@tailwindcss/oxide@4.1.18':
-    resolution: {integrity: sha512-EgCR5tTS5bUSKQgzeMClT6iCY3ToqE1y+ZB0AKldj809QXk1Y+3jB0upOYZrn9aGIzPtUsP7sX4QQ4XtjBB95A==}
-    engines: {node: '>= 10'}
-
   '@tailwindcss/oxide@4.2.2':
     resolution: {integrity: sha512-qEUA07+E5kehxYp9BVMpq9E8vnJuBHfJEC0vPC5e7iL/hw7HR61aDKoVoKzrG+QKp56vhNZe4qwkRmMC0zDLvg==}
     engines: {node: '>= 20'}
-
-  '@tailwindcss/postcss@4.1.18':
-    resolution: {integrity: sha512-Ce0GFnzAOuPyfV5SxjXGn0CubwGcuDB0zcdaPuCSzAa/2vII24JTkH+I6jcbXLb1ctjZMZZI6OjDaLPJQL1S0g==}
 
   '@tailwindcss/vite@4.2.2':
     resolution: {integrity: sha512-mEiF5HO1QqCLXoNEfXVA1Tzo+cYsrqV7w9Juj2wdUFyW07JRenqMG225MvPwr3ZD9N1bFQj46X7r33iHxLUW0w==}
@@ -4369,10 +4228,6 @@ packages:
   encoding-sniffer@0.2.1:
     resolution: {integrity: sha512-5gvq20T6vfpekVtqrYQsSCFZ1wEg5+wW0/QaZMWkFr6BqD3NfKs0rLCx4rrVlSWJeZb5NBJgVLswK/w2MWU+Gw==}
 
-  enhanced-resolve@5.18.4:
-    resolution: {integrity: sha512-LgQMM4WXU3QI+SYgEc2liRgznaD5ojbmY3sb8LxyguVkIg5FxdpTkvk72te2R38/TGKxH634oLxXRGY6d7AP+Q==}
-    engines: {node: '>=10.13.0'}
-
   enhanced-resolve@5.20.1:
     resolution: {integrity: sha512-Qohcme7V1inbAfvjItgw0EaxVX5q2rdVEZHRBrEQdRZTssLDGsL8Lwrznl8oQ/6kuTJONLaDcGjkNP247XEhcA==}
     engines: {node: '>=10.13.0'}
@@ -4611,9 +4466,6 @@ packages:
     resolution: {integrity: sha512-kVCxPF3vQM/N0B1PmoqVUqgHP+EeVjmZSQn+1oCRPxd2P21P2F19lIgbR3HBosbB1PUhOAoctJnfEn2GbN2eZA==}
     engines: {node: '>=18'}
 
-  get-tsconfig@4.13.0:
-    resolution: {integrity: sha512-1VKTZJCwBrvbd+Wn3AOgQP/2Av+TfTCOlE4AcRJE72W1ksZXbAx8PPBR9RzgTeSPzlPMHrbANMH3LbltH73wxQ==}
-
   get-tsconfig@4.14.0:
     resolution: {integrity: sha512-yTb+8DXzDREzgvYmh6s9vHsSVCHeC0G3PI5bEXNBHtmshPnO+S5O7qgLEOn0I5QvMy6kpZN8K1NKGyilLb93wA==}
 
@@ -4832,34 +4684,16 @@ packages:
   lie@3.3.0:
     resolution: {integrity: sha512-UaiMJzeWRlEujzAuw5LokY1L5ecNQYZKfmyZ9L7wDHb/p5etKaxXhohBcrw0EYby+G/NA52vRSN4N39dxHAIwQ==}
 
-  lightningcss-android-arm64@1.30.2:
-    resolution: {integrity: sha512-BH9sEdOCahSgmkVhBLeU7Hc9DWeZ1Eb6wNS6Da8igvUwAe0sqROHddIlvU06q3WyXVEOYDZ6ykBZQnjTbmo4+A==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [android]
-
   lightningcss-android-arm64@1.32.0:
     resolution: {integrity: sha512-YK7/ClTt4kAK0vo6w3X+Pnm0D2cf2vPHbhOXdoNti1Ga0al1P4TBZhwjATvjNwLEBCnKvjJc2jQgHXH0NEwlAg==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [android]
 
-  lightningcss-darwin-arm64@1.30.2:
-    resolution: {integrity: sha512-ylTcDJBN3Hp21TdhRT5zBOIi73P6/W0qwvlFEk22fkdXchtNTOU4Qc37SkzV+EKYxLouZ6M4LG9NfZ1qkhhBWA==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [darwin]
-
   lightningcss-darwin-arm64@1.32.0:
     resolution: {integrity: sha512-RzeG9Ju5bag2Bv1/lwlVJvBE3q6TtXskdZLLCyfg5pt+HLz9BqlICO7LZM7VHNTTn/5PRhHFBSjk5lc4cmscPQ==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
-    os: [darwin]
-
-  lightningcss-darwin-x64@1.30.2:
-    resolution: {integrity: sha512-oBZgKchomuDYxr7ilwLcyms6BCyLn0z8J0+ZZmfpjwg9fRVZIR5/GMXd7r9RH94iDhld3UmSjBM6nXWM2TfZTQ==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
     os: [darwin]
 
   lightningcss-darwin-x64@1.32.0:
@@ -4868,23 +4702,11 @@ packages:
     cpu: [x64]
     os: [darwin]
 
-  lightningcss-freebsd-x64@1.30.2:
-    resolution: {integrity: sha512-c2bH6xTrf4BDpK8MoGG4Bd6zAMZDAXS569UxCAGcA7IKbHNMlhGQ89eRmvpIUGfKWNVdbhSbkQaWhEoMGmGslA==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
-    os: [freebsd]
-
   lightningcss-freebsd-x64@1.32.0:
     resolution: {integrity: sha512-JCTigedEksZk3tHTTthnMdVfGf61Fky8Ji2E4YjUTEQX14xiy/lTzXnu1vwiZe3bYe0q+SpsSH/CTeDXK6WHig==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [freebsd]
-
-  lightningcss-linux-arm-gnueabihf@1.30.2:
-    resolution: {integrity: sha512-eVdpxh4wYcm0PofJIZVuYuLiqBIakQ9uFZmipf6LF/HRj5Bgm0eb3qL/mr1smyXIS1twwOxNWndd8z0E374hiA==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm]
-    os: [linux]
 
   lightningcss-linux-arm-gnueabihf@1.32.0:
     resolution: {integrity: sha512-x6rnnpRa2GL0zQOkt6rts3YDPzduLpWvwAF6EMhXFVZXD4tPrBkEFqzGowzCsIWsPjqSK+tyNEODUBXeeVHSkw==}
@@ -4892,20 +4714,8 @@ packages:
     cpu: [arm]
     os: [linux]
 
-  lightningcss-linux-arm64-gnu@1.30.2:
-    resolution: {integrity: sha512-UK65WJAbwIJbiBFXpxrbTNArtfuznvxAJw4Q2ZGlU8kPeDIWEX1dg3rn2veBVUylA2Ezg89ktszWbaQnxD/e3A==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [linux]
-
   lightningcss-linux-arm64-gnu@1.32.0:
     resolution: {integrity: sha512-0nnMyoyOLRJXfbMOilaSRcLH3Jw5z9HDNGfT/gwCPgaDjnx0i8w7vBzFLFR1f6CMLKF8gVbebmkUN3fa/kQJpQ==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [linux]
-
-  lightningcss-linux-arm64-musl@1.30.2:
-    resolution: {integrity: sha512-5Vh9dGeblpTxWHpOx8iauV02popZDsCYMPIgiuw97OJ5uaDsL86cnqSFs5LZkG3ghHoX5isLgWzMs+eD1YzrnA==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
     os: [linux]
@@ -4916,20 +4726,8 @@ packages:
     cpu: [arm64]
     os: [linux]
 
-  lightningcss-linux-x64-gnu@1.30.2:
-    resolution: {integrity: sha512-Cfd46gdmj1vQ+lR6VRTTadNHu6ALuw2pKR9lYq4FnhvgBc4zWY1EtZcAc6EffShbb1MFrIPfLDXD6Xprbnni4w==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
-    os: [linux]
-
   lightningcss-linux-x64-gnu@1.32.0:
     resolution: {integrity: sha512-V7Qr52IhZmdKPVr+Vtw8o+WLsQJYCTd8loIfpDaMRWGUZfBOYEJeyJIkqGIDMZPwPx24pUMfwSxxI8phr/MbOA==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
-    os: [linux]
-
-  lightningcss-linux-x64-musl@1.30.2:
-    resolution: {integrity: sha512-XJaLUUFXb6/QG2lGIW6aIk6jKdtjtcffUT0NKvIqhSBY3hh9Ch+1LCeH80dR9q9LBjG3ewbDjnumefsLsP6aiA==}
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [linux]
@@ -4940,22 +4738,10 @@ packages:
     cpu: [x64]
     os: [linux]
 
-  lightningcss-win32-arm64-msvc@1.30.2:
-    resolution: {integrity: sha512-FZn+vaj7zLv//D/192WFFVA0RgHawIcHqLX9xuWiQt7P0PtdFEVaxgF9rjM/IRYHQXNnk61/H/gb2Ei+kUQ4xQ==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [arm64]
-    os: [win32]
-
   lightningcss-win32-arm64-msvc@1.32.0:
     resolution: {integrity: sha512-8SbC8BR40pS6baCM8sbtYDSwEVQd4JlFTOlaD3gWGHfThTcABnNDBda6eTZeqbofalIJhFx0qKzgHJmcPTnGdw==}
     engines: {node: '>= 12.0.0'}
     cpu: [arm64]
-    os: [win32]
-
-  lightningcss-win32-x64-msvc@1.30.2:
-    resolution: {integrity: sha512-5g1yc73p+iAkid5phb4oVFMB45417DkRevRbt/El/gKXJk4jid+vPFF/AXbxn05Aky8PapwzZrdJShv5C0avjw==}
-    engines: {node: '>= 12.0.0'}
-    cpu: [x64]
     os: [win32]
 
   lightningcss-win32-x64-msvc@1.32.0:
@@ -4963,10 +4749,6 @@ packages:
     engines: {node: '>= 12.0.0'}
     cpu: [x64]
     os: [win32]
-
-  lightningcss@1.30.2:
-    resolution: {integrity: sha512-utfs7Pr5uJyyvDETitgsaqSyjCb2qNRAtuqUeWIAKztsOYdcACf2KtARYXg2pSvhkt+9NfoaNY7fxjl6nuMjIQ==}
-    engines: {node: '>= 12.0.0'}
 
   lightningcss@1.32.0:
     resolution: {integrity: sha512-NXYBzinNrblfraPGyrbPoD19C1h9lfI/1mzgWYvXUTe414Gz/X1FD2XBZSZM7rRTrMA8JL3OtAaGifrIKhQ5yQ==}
@@ -5265,10 +5047,6 @@ packages:
 
   postcss@8.5.12:
     resolution: {integrity: sha512-W62t/Se6rA0Az3DfCL0AqJwXuKwBeYg6nOaIgzP+xZ7N5BFCI7DYi1qs6ygUYT6rvfi6t9k65UMLJC+PHZpDAA==}
-    engines: {node: ^10 || ^12 || >=14}
-
-  postcss@8.5.6:
-    resolution: {integrity: sha512-3Ybi1tAuwAP9s0r1UQ2J4n5Y0G05bJkpUIO0/bI9MhwmD70S5aTWbXGBwxHrelT+XM1k6dM0pk+SwNkpTRN7Pg==}
     engines: {node: ^10 || ^12 || >=14}
 
   prettier@3.8.3:
@@ -5573,9 +5351,6 @@ packages:
 
   tailwind-merge@3.4.0:
     resolution: {integrity: sha512-uSaO4gnW+b3Y2aWoWfFpX62vn2sR3skfhbjsEnaBI81WD1wBLlHZe5sWf0AqjksNdYTbGBEd0UasQMT3SNV15g==}
-
-  tailwindcss@4.1.18:
-    resolution: {integrity: sha512-4+Z+0yiYyEtUVCScyfHCxOYP06L5Ne+JiHhY2IjR2KWMIWhJOYZKLSGZaP5HkZ8+bY0cxfzwDE5uOmzFXyIwxw==}
 
   tailwindcss@4.2.2:
     resolution: {integrity: sha512-KWBIxs1Xb6NoLdMVqhbhgwZf2PGBpPEiwOqgI4pFIYbNTfBXiKYyWoTsXgBQ9WFg/OlhnvHaY+AEpW7wSmFo2Q==}
@@ -5909,8 +5684,6 @@ packages:
 
 snapshots:
 
-  '@alloc/quick-lru@5.2.0': {}
-
   '@ast-grep/napi-darwin-arm64@0.40.5':
     optional: true
 
@@ -5949,6 +5722,7 @@ snapshots:
       '@ast-grep/napi-win32-arm64-msvc': 0.40.5
       '@ast-grep/napi-win32-ia32-msvc': 0.40.5
       '@ast-grep/napi-win32-x64-msvc': 0.40.5
+    optional: true
 
   '@aws-crypto/crc32@5.2.0':
     dependencies:
@@ -6078,6 +5852,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/client-cognito-identity@3.958.0':
     dependencies:
@@ -6169,6 +5944,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/client-lambda@3.984.0':
     dependencies:
@@ -6218,6 +5994,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/client-s3@3.958.0':
     dependencies:
@@ -6338,6 +6115,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/client-sqs@3.984.0':
     dependencies:
@@ -6384,6 +6162,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/client-sso@3.398.0':
     dependencies:
@@ -6541,6 +6320,7 @@ snapshots:
       '@smithy/util-middleware': 4.2.12
       '@smithy/util-utf8': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/crc64-nvme@3.957.0':
     dependencies:
@@ -6551,6 +6331,7 @@ snapshots:
     dependencies:
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/credential-provider-cognito-identity@3.958.0':
     dependencies:
@@ -6585,6 +6366,7 @@ snapshots:
       '@smithy/property-provider': 4.2.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/credential-provider-http@3.957.0':
     dependencies:
@@ -6611,6 +6393,7 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-stream': 4.5.20
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/credential-provider-ini@3.398.0':
     dependencies:
@@ -6665,6 +6448,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/credential-provider-login@3.958.0':
     dependencies:
@@ -6691,6 +6475,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/credential-provider-node@3.398.0':
     dependencies:
@@ -6742,6 +6527,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/credential-provider-process@3.398.0':
     dependencies:
@@ -6769,6 +6555,7 @@ snapshots:
       '@smithy/shared-ini-file-loader': 4.4.7
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/credential-provider-sso@3.398.0':
     dependencies:
@@ -6808,6 +6595,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/credential-provider-web-identity@3.398.0':
     dependencies:
@@ -6840,6 +6628,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/credential-providers@3.958.0':
     dependencies:
@@ -6874,11 +6663,13 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-base64': 4.3.2
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/endpoint-cache@3.972.5':
     dependencies:
       mnemonist: 0.38.3
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-bucket-endpoint@3.957.0':
     dependencies:
@@ -6899,6 +6690,7 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-config-provider': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-endpoint-discovery@3.972.9':
     dependencies:
@@ -6908,6 +6700,7 @@ snapshots:
       '@smithy/protocol-http': 5.3.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-expect-continue@3.957.0':
     dependencies:
@@ -6922,6 +6715,7 @@ snapshots:
       '@smithy/protocol-http': 5.3.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-flexible-checksums@3.957.0':
     dependencies:
@@ -6956,6 +6750,7 @@ snapshots:
       '@smithy/util-stream': 4.5.20
       '@smithy/util-utf8': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-host-header@3.398.0':
     dependencies:
@@ -6978,6 +6773,7 @@ snapshots:
       '@smithy/protocol-http': 5.3.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-location-constraint@3.957.0':
     dependencies:
@@ -6990,6 +6786,7 @@ snapshots:
       '@aws-sdk/types': 3.973.6
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-logger@3.398.0':
     dependencies:
@@ -7009,6 +6806,7 @@ snapshots:
       '@aws-sdk/types': 3.973.6
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-recursion-detection@3.398.0':
     dependencies:
@@ -7033,6 +6831,7 @@ snapshots:
       '@smithy/protocol-http': 5.3.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-sdk-s3@3.957.0':
     dependencies:
@@ -7067,6 +6866,7 @@ snapshots:
       '@smithy/util-stream': 4.5.20
       '@smithy/util-utf8': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-sdk-sqs@3.972.17':
     dependencies:
@@ -7076,6 +6876,7 @@ snapshots:
       '@smithy/util-hex-encoding': 4.2.2
       '@smithy/util-utf8': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-sdk-sts@3.398.0':
     dependencies:
@@ -7107,6 +6908,7 @@ snapshots:
       '@aws-sdk/types': 3.973.6
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/middleware-user-agent@3.398.0':
     dependencies:
@@ -7137,6 +6939,7 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-retry': 4.2.12
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/nested-clients@3.958.0':
     dependencies:
@@ -7223,6 +7026,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/region-config-resolver@3.957.0':
     dependencies:
@@ -7239,6 +7043,7 @@ snapshots:
       '@smithy/node-config-provider': 4.3.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/s3-request-presigner@3.958.0':
     dependencies:
@@ -7268,6 +7073,7 @@ snapshots:
       '@smithy/signature-v4': 5.3.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/token-providers@3.1019.0':
     dependencies:
@@ -7280,6 +7086,7 @@ snapshots:
       tslib: 2.8.1
     transitivePeerDependencies:
       - aws-crt
+    optional: true
 
   '@aws-sdk/token-providers@3.398.0':
     dependencies:
@@ -7357,6 +7164,7 @@ snapshots:
   '@aws-sdk/util-arn-parser@3.972.3':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/util-endpoints@3.398.0':
     dependencies:
@@ -7379,6 +7187,7 @@ snapshots:
       '@smithy/url-parser': 4.2.12
       '@smithy/util-endpoints': 3.3.3
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/util-endpoints@3.996.5':
     dependencies:
@@ -7387,6 +7196,7 @@ snapshots:
       '@smithy/url-parser': 4.2.12
       '@smithy/util-endpoints': 3.3.3
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/util-format-url@3.957.0':
     dependencies:
@@ -7424,6 +7234,7 @@ snapshots:
       '@smithy/types': 4.13.1
       bowser: 2.14.1
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/util-user-agent-node@3.398.0':
     dependencies:
@@ -7449,6 +7260,7 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-config-provider': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@aws-sdk/util-utf8-browser@3.259.0':
     dependencies:
@@ -7466,6 +7278,7 @@ snapshots:
       '@smithy/types': 4.13.1
       fast-xml-parser: 5.5.8
       tslib: 2.8.1
+    optional: true
 
   '@aws/lambda-invoke-store@0.2.2': {}
 
@@ -7683,12 +7496,14 @@ snapshots:
       object-treeify: 1.1.33
       picomatch: 4.0.4
       which: 4.0.0
+    optional: true
 
   '@drizzle-team/brocli@0.10.2': {}
 
   '@ecies/ciphers@0.2.5(@noble/ciphers@1.3.0)':
     dependencies:
       '@noble/ciphers': 1.3.0
+    optional: true
 
   '@emnapi/core@1.10.0':
     dependencies:
@@ -7719,7 +7534,7 @@ snapshots:
   '@esbuild-kit/esm-loader@2.6.5':
     dependencies:
       '@esbuild-kit/core-utils': 3.3.2
-      get-tsconfig: 4.13.0
+      get-tsconfig: 4.14.0
 
   '@esbuild/aix-ppc64@0.25.12':
     optional: true
@@ -8334,11 +8149,13 @@ snapshots:
     optionalDependencies:
       '@types/node': 25.0.3
 
-  '@isaacs/balanced-match@4.0.1': {}
+  '@isaacs/balanced-match@4.0.1':
+    optional: true
 
   '@isaacs/brace-expansion@5.0.0':
     dependencies:
       '@isaacs/balanced-match': 4.0.1
+    optional: true
 
   '@isaacs/cliui@8.0.2':
     dependencies:
@@ -8365,6 +8182,7 @@ snapshots:
     dependencies:
       '@jridgewell/gen-mapping': 0.3.13
       '@jridgewell/trace-mapping': 0.3.31
+    optional: true
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
 
@@ -8385,7 +8203,8 @@ snapshots:
       '@tybys/wasm-util': 0.10.1
     optional: true
 
-  '@next/env@16.1.6': {}
+  '@next/env@16.1.6':
+    optional: true
 
   '@next/swc-darwin-arm64@16.1.6':
     optional: true
@@ -8411,28 +8230,34 @@ snapshots:
   '@next/swc-win32-x64-msvc@16.1.6':
     optional: true
 
-  '@noble/ciphers@1.3.0': {}
+  '@noble/ciphers@1.3.0':
+    optional: true
 
   '@noble/curves@1.9.7':
     dependencies:
       '@noble/hashes': 1.8.0
+    optional: true
 
-  '@noble/hashes@1.8.0': {}
+  '@noble/hashes@1.8.0':
+    optional: true
 
   '@node-minify/core@8.0.6':
     dependencies:
       '@node-minify/utils': 8.0.6
       glob: 9.3.5
       mkdirp: 1.0.4
+    optional: true
 
   '@node-minify/terser@8.0.6':
     dependencies:
       '@node-minify/utils': 8.0.6
       terser: 5.16.9
+    optional: true
 
   '@node-minify/utils@8.0.6':
     dependencies:
       gzip-size: 6.0.0
+    optional: true
 
   '@octokit/auth-token@5.1.2': {}
 
@@ -8542,6 +8367,7 @@ snapshots:
     transitivePeerDependencies:
       - aws-crt
       - supports-color
+    optional: true
 
   '@opennextjs/cloudflare@1.18.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1))':
     dependencies:
@@ -8560,6 +8386,7 @@ snapshots:
       - aws-crt
       - encoding
       - supports-color
+    optional: true
 
   '@orpc/client@1.13.13':
     dependencies:
@@ -9056,6 +8883,7 @@ snapshots:
     dependencies:
       '@smithy/util-base64': 4.3.2
       tslib: 2.8.1
+    optional: true
 
   '@smithy/chunked-blob-reader@5.2.0':
     dependencies:
@@ -9064,6 +8892,7 @@ snapshots:
   '@smithy/chunked-blob-reader@5.2.2':
     dependencies:
       tslib: 2.8.1
+    optional: true
 
   '@smithy/config-resolver@2.2.0':
     dependencies:
@@ -9149,6 +8978,7 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-hex-encoding': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@smithy/eventstream-codec@4.2.7':
     dependencies:
@@ -9162,6 +8992,7 @@ snapshots:
       '@smithy/eventstream-serde-universal': 4.2.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@smithy/eventstream-serde-browser@4.2.7':
     dependencies:
@@ -9173,6 +9004,7 @@ snapshots:
     dependencies:
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@smithy/eventstream-serde-config-resolver@4.3.7':
     dependencies:
@@ -9184,6 +9016,7 @@ snapshots:
       '@smithy/eventstream-serde-universal': 4.2.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@smithy/eventstream-serde-node@4.2.7':
     dependencies:
@@ -9196,6 +9029,7 @@ snapshots:
       '@smithy/eventstream-codec': 4.2.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@smithy/eventstream-serde-universal@4.2.7':
     dependencies:
@@ -9234,6 +9068,7 @@ snapshots:
       '@smithy/chunked-blob-reader-native': 4.2.3
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@smithy/hash-blob-browser@4.2.8':
     dependencies:
@@ -9269,6 +9104,7 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-utf8': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@smithy/hash-stream-node@4.2.7':
     dependencies:
@@ -9309,6 +9145,7 @@ snapshots:
       '@smithy/types': 4.13.1
       '@smithy/util-utf8': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@smithy/md5-js@4.2.7':
     dependencies:
@@ -9610,6 +9447,7 @@ snapshots:
       '@smithy/util-uri-escape': 4.2.2
       '@smithy/util-utf8': 4.2.2
       tslib: 2.8.1
+    optional: true
 
   '@smithy/signature-v4@5.3.7':
     dependencies:
@@ -9938,6 +9776,7 @@ snapshots:
       '@smithy/abort-controller': 4.2.12
       '@smithy/types': 4.13.1
       tslib: 2.8.1
+    optional: true
 
   '@smithy/util-waiter@4.2.7':
     dependencies:
@@ -9960,16 +9799,7 @@ snapshots:
   '@swc/helpers@0.5.15':
     dependencies:
       tslib: 2.8.1
-
-  '@tailwindcss/node@4.1.18':
-    dependencies:
-      '@jridgewell/remapping': 2.3.5
-      enhanced-resolve: 5.18.4
-      jiti: 2.6.1
-      lightningcss: 1.30.2
-      magic-string: 0.30.21
-      source-map-js: 1.2.1
-      tailwindcss: 4.1.18
+    optional: true
 
   '@tailwindcss/node@4.2.2':
     dependencies:
@@ -9981,92 +9811,41 @@ snapshots:
       source-map-js: 1.2.1
       tailwindcss: 4.2.2
 
-  '@tailwindcss/oxide-android-arm64@4.1.18':
-    optional: true
-
   '@tailwindcss/oxide-android-arm64@4.2.2':
-    optional: true
-
-  '@tailwindcss/oxide-darwin-arm64@4.1.18':
     optional: true
 
   '@tailwindcss/oxide-darwin-arm64@4.2.2':
     optional: true
 
-  '@tailwindcss/oxide-darwin-x64@4.1.18':
-    optional: true
-
   '@tailwindcss/oxide-darwin-x64@4.2.2':
-    optional: true
-
-  '@tailwindcss/oxide-freebsd-x64@4.1.18':
     optional: true
 
   '@tailwindcss/oxide-freebsd-x64@4.2.2':
     optional: true
 
-  '@tailwindcss/oxide-linux-arm-gnueabihf@4.1.18':
-    optional: true
-
   '@tailwindcss/oxide-linux-arm-gnueabihf@4.2.2':
-    optional: true
-
-  '@tailwindcss/oxide-linux-arm64-gnu@4.1.18':
     optional: true
 
   '@tailwindcss/oxide-linux-arm64-gnu@4.2.2':
     optional: true
 
-  '@tailwindcss/oxide-linux-arm64-musl@4.1.18':
-    optional: true
-
   '@tailwindcss/oxide-linux-arm64-musl@4.2.2':
-    optional: true
-
-  '@tailwindcss/oxide-linux-x64-gnu@4.1.18':
     optional: true
 
   '@tailwindcss/oxide-linux-x64-gnu@4.2.2':
     optional: true
 
-  '@tailwindcss/oxide-linux-x64-musl@4.1.18':
-    optional: true
-
   '@tailwindcss/oxide-linux-x64-musl@4.2.2':
-    optional: true
-
-  '@tailwindcss/oxide-wasm32-wasi@4.1.18':
     optional: true
 
   '@tailwindcss/oxide-wasm32-wasi@4.2.2':
     optional: true
 
-  '@tailwindcss/oxide-win32-arm64-msvc@4.1.18':
-    optional: true
-
   '@tailwindcss/oxide-win32-arm64-msvc@4.2.2':
-    optional: true
-
-  '@tailwindcss/oxide-win32-x64-msvc@4.1.18':
     optional: true
 
   '@tailwindcss/oxide-win32-x64-msvc@4.2.2':
     optional: true
-
-  '@tailwindcss/oxide@4.1.18':
-    optionalDependencies:
-      '@tailwindcss/oxide-android-arm64': 4.1.18
-      '@tailwindcss/oxide-darwin-arm64': 4.1.18
-      '@tailwindcss/oxide-darwin-x64': 4.1.18
-      '@tailwindcss/oxide-freebsd-x64': 4.1.18
-      '@tailwindcss/oxide-linux-arm-gnueabihf': 4.1.18
-      '@tailwindcss/oxide-linux-arm64-gnu': 4.1.18
-      '@tailwindcss/oxide-linux-arm64-musl': 4.1.18
-      '@tailwindcss/oxide-linux-x64-gnu': 4.1.18
-      '@tailwindcss/oxide-linux-x64-musl': 4.1.18
-      '@tailwindcss/oxide-wasm32-wasi': 4.1.18
-      '@tailwindcss/oxide-win32-arm64-msvc': 4.1.18
-      '@tailwindcss/oxide-win32-x64-msvc': 4.1.18
 
   '@tailwindcss/oxide@4.2.2':
     optionalDependencies:
@@ -10082,14 +9861,6 @@ snapshots:
       '@tailwindcss/oxide-wasm32-wasi': 4.2.2
       '@tailwindcss/oxide-win32-arm64-msvc': 4.2.2
       '@tailwindcss/oxide-win32-x64-msvc': 4.2.2
-
-  '@tailwindcss/postcss@4.1.18':
-    dependencies:
-      '@alloc/quick-lru': 5.2.0
-      '@tailwindcss/node': 4.1.18
-      '@tailwindcss/oxide': 4.1.18
-      postcss: 8.5.6
-      tailwindcss: 4.1.18
 
   '@tailwindcss/vite@4.2.2(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))':
     dependencies:
@@ -10321,7 +10092,8 @@ snapshots:
 
   '@tanstack/virtual-file-routes@1.161.7': {}
 
-  '@tsconfig/node18@1.0.3': {}
+  '@tsconfig/node18@1.0.3':
+    optional: true
 
   '@tybys/wasm-util@0.10.1':
     dependencies:
@@ -10332,10 +10104,12 @@ snapshots:
     dependencies:
       '@types/node': 25.0.3
       form-data: 4.0.5
+    optional: true
 
   '@types/node@18.19.130':
     dependencies:
       undici-types: 5.26.5
+    optional: true
 
   '@types/node@25.0.3':
     dependencies:
@@ -10357,17 +10131,21 @@ snapshots:
   abort-controller@3.0.0:
     dependencies:
       event-target-shim: 5.0.1
+    optional: true
 
   accepts@2.0.0:
     dependencies:
       mime-types: 3.0.2
       negotiator: 1.0.0
+    optional: true
 
-  acorn@8.16.0: {}
+  acorn@8.16.0:
+    optional: true
 
   agentkeepalive@4.6.0:
     dependencies:
       humanize-ms: 1.2.1
+    optional: true
 
   alchemy@0.90.1(@aws-sdk/client-dynamodb@3.984.0)(@aws-sdk/client-lambda@3.984.0)(@aws-sdk/client-s3@3.958.0)(@aws-sdk/client-sqs@3.984.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.18.0(next@16.1.6(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1)))(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260317.1)(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1)):
     dependencies:
@@ -10405,79 +10183,6 @@ snapshots:
       '@aws-sdk/client-dynamodb': 3.984.0
       '@aws-sdk/client-lambda': 3.984.0
       '@aws-sdk/client-s3': 3.958.0
-      '@aws-sdk/client-sqs': 3.984.0
-      '@aws-sdk/client-sts': 3.398.0
-      '@opennextjs/cloudflare': 1.18.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1))
-      vite: 8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2)
-    transitivePeerDependencies:
-      - '@aws-sdk/client-rds-data'
-      - '@electric-sql/pglite'
-      - '@libsql/client-wasm'
-      - '@neondatabase/serverless'
-      - '@op-engineering/op-sqlite'
-      - '@opentelemetry/api'
-      - '@planetscale/database'
-      - '@prisma/client'
-      - '@tidbcloud/serverless'
-      - '@types/better-sqlite3'
-      - '@types/pg'
-      - '@types/sql.js'
-      - '@upstash/redis'
-      - '@vercel/postgres'
-      - '@xata.io/client'
-      - aws-crt
-      - better-sqlite3
-      - bufferutil
-      - bun-types
-      - expo-sqlite
-      - gel
-      - knex
-      - kysely
-      - mysql2
-      - pg
-      - postgres
-      - prisma
-      - sql.js
-      - sqlite3
-      - utf-8-validate
-      - workerd
-
-  alchemy@0.90.1(@aws-sdk/client-dynamodb@3.984.0)(@aws-sdk/client-lambda@3.984.0)(@aws-sdk/client-s3@3.984.0)(@aws-sdk/client-sqs@3.984.0)(@aws-sdk/client-sts@3.398.0)(@opennextjs/cloudflare@1.18.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1)))(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260317.1)(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1)):
-    dependencies:
-      '@aws-sdk/credential-providers': 3.958.0
-      '@cloudflare/unenv-preset': 2.7.7(unenv@2.0.0-rc.21)(workerd@1.20260317.1)
-      '@cloudflare/workers-types': 4.20260317.1
-      '@iarna/toml': 2.2.5
-      '@octokit/rest': 21.1.1
-      '@smithy/node-config-provider': 4.3.12
-      '@smithy/types': 4.13.1
-      aws4fetch: 1.0.20
-      drizzle-orm: 0.45.1(@cloudflare/workers-types@4.20260317.1)
-      env-paths: 3.0.0
-      esbuild: 0.25.12
-      execa: 9.6.1
-      fast-json-patch: 3.1.1
-      fast-xml-parser: 5.5.8
-      find-process: 2.0.0
-      glob: 10.5.0
-      jszip: 3.10.1
-      libsodium-wrappers: 0.8.2
-      miniflare: 4.20260310.0
-      neverthrow: 8.2.0
-      open: 10.2.0
-      openapi-types: 12.1.3
-      pathe: 2.0.3
-      picocolors: 1.1.1
-      proper-lockfile: 4.1.2
-      signal-exit: 4.1.0
-      unenv: 2.0.0-rc.21
-      wrangler: 4.78.0(@cloudflare/workers-types@4.20260317.1)
-      ws: 8.18.3
-      yaml: 2.8.2
-    optionalDependencies:
-      '@aws-sdk/client-dynamodb': 3.984.0
-      '@aws-sdk/client-lambda': 3.984.0
-      '@aws-sdk/client-s3': 3.984.0
       '@aws-sdk/client-sqs': 3.984.0
       '@aws-sdk/client-sts': 3.398.0
       '@opennextjs/cloudflare': 1.18.0(next@16.1.6(@babel/core@7.29.0)(react-dom@19.2.3(react@19.2.3))(react@19.2.3))(wrangler@4.78.0(@cloudflare/workers-types@4.20260317.1))
@@ -10661,7 +10366,8 @@ snapshots:
       - utf-8-validate
       - workerd
 
-  ansi-colors@4.1.3: {}
+  ansi-colors@4.1.3:
+    optional: true
 
   ansi-regex@5.0.1: {}
 
@@ -10686,9 +10392,11 @@ snapshots:
     dependencies:
       tslib: 2.8.1
 
-  array-timsort@1.0.3: {}
+  array-timsort@1.0.3:
+    optional: true
 
-  asynckit@0.4.0: {}
+  asynckit@0.4.0:
+    optional: true
 
   attr-accept@2.2.5: {}
 
@@ -10726,12 +10434,14 @@ snapshots:
       type-is: 2.0.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   boolbase@1.0.0: {}
 
   bowser@2.13.1: {}
 
-  bowser@2.14.1: {}
+  bowser@2.14.1:
+    optional: true
 
   brace-expansion@2.0.2:
     dependencies:
@@ -10755,17 +10465,20 @@ snapshots:
     dependencies:
       run-applescript: 7.1.0
 
-  bytes@3.1.2: {}
+  bytes@3.1.2:
+    optional: true
 
   call-bind-apply-helpers@1.0.2:
     dependencies:
       es-errors: 1.3.0
       function-bind: 1.1.2
+    optional: true
 
   call-bound@1.0.4:
     dependencies:
       call-bind-apply-helpers: 1.0.2
       get-intrinsic: 1.3.0
+    optional: true
 
   caniuse-lite@1.0.30001785: {}
 
@@ -10825,13 +10538,15 @@ snapshots:
 
   cli-width@4.1.0: {}
 
-  client-only@0.0.1: {}
+  client-only@0.0.1:
+    optional: true
 
   cliui@9.0.1:
     dependencies:
       string-width: 7.2.0
       strip-ansi: 7.1.2
       wrap-ansi: 9.0.2
+    optional: true
 
   cloudflare@4.5.0:
     dependencies:
@@ -10844,6 +10559,7 @@ snapshots:
       node-fetch: 2.7.0
     transitivePeerDependencies:
       - encoding
+    optional: true
 
   clsx@2.1.1: {}
 
@@ -10856,8 +10572,10 @@ snapshots:
   combined-stream@1.0.8:
     dependencies:
       delayed-stream: 1.0.0
+    optional: true
 
-  commander@11.1.0: {}
+  commander@11.1.0:
+    optional: true
 
   commander@12.1.0: {}
 
@@ -10865,24 +10583,30 @@ snapshots:
 
   commander@14.0.3: {}
 
-  commander@2.20.3: {}
+  commander@2.20.3:
+    optional: true
 
   comment-json@4.6.2:
     dependencies:
       array-timsort: 1.0.3
       esprima: 4.0.1
+    optional: true
 
-  content-disposition@1.0.1: {}
+  content-disposition@1.0.1:
+    optional: true
 
-  content-type@1.0.5: {}
+  content-type@1.0.5:
+    optional: true
 
   convert-source-map@2.0.0: {}
 
   cookie-es@3.1.1: {}
 
-  cookie-signature@1.2.2: {}
+  cookie-signature@1.2.2:
+    optional: true
 
-  cookie@0.7.2: {}
+  cookie@0.7.2:
+    optional: true
 
   cookie@1.1.1: {}
 
@@ -10932,9 +10656,11 @@ snapshots:
 
   defu@6.1.4: {}
 
-  delayed-stream@1.0.0: {}
+  delayed-stream@1.0.0:
+    optional: true
 
-  depd@2.0.0: {}
+  depd@2.0.0:
+    optional: true
 
   detect-libc@2.1.2: {}
 
@@ -10960,7 +10686,8 @@ snapshots:
       domelementtype: 2.3.0
       domhandler: 5.0.3
 
-  dotenv@16.6.1: {}
+  dotenv@16.6.1:
+    optional: true
 
   drizzle-kit@0.31.8:
     dependencies:
@@ -10980,8 +10707,10 @@ snapshots:
       call-bind-apply-helpers: 1.0.2
       es-errors: 1.3.0
       gopd: 1.2.0
+    optional: true
 
-  duplexer@0.1.2: {}
+  duplexer@0.1.2:
+    optional: true
 
   eastasianwidth@0.2.0: {}
 
@@ -10991,28 +10720,27 @@ snapshots:
       '@noble/ciphers': 1.3.0
       '@noble/curves': 1.9.7
       '@noble/hashes': 1.8.0
+    optional: true
 
-  ee-first@1.1.1: {}
+  ee-first@1.1.1:
+    optional: true
 
   electron-to-chromium@1.5.331: {}
 
-  emoji-regex@10.6.0: {}
+  emoji-regex@10.6.0:
+    optional: true
 
   emoji-regex@8.0.0: {}
 
   emoji-regex@9.2.2: {}
 
-  encodeurl@2.0.0: {}
+  encodeurl@2.0.0:
+    optional: true
 
   encoding-sniffer@0.2.1:
     dependencies:
       iconv-lite: 0.6.3
       whatwg-encoding: 3.1.1
-
-  enhanced-resolve@5.18.4:
-    dependencies:
-      graceful-fs: 4.2.11
-      tapable: 2.3.0
 
   enhanced-resolve@5.20.1:
     dependencies:
@@ -11023,6 +10751,7 @@ snapshots:
     dependencies:
       ansi-colors: 4.1.3
       strip-ansi: 6.0.1
+    optional: true
 
   entities@4.5.0: {}
 
@@ -11034,13 +10763,16 @@ snapshots:
 
   error-stack-parser-es@1.0.5: {}
 
-  es-define-property@1.0.1: {}
+  es-define-property@1.0.1:
+    optional: true
 
-  es-errors@1.3.0: {}
+  es-errors@1.3.0:
+    optional: true
 
   es-object-atoms@1.1.1:
     dependencies:
       es-errors: 1.3.0
+    optional: true
 
   es-set-tostringtag@2.1.0:
     dependencies:
@@ -11048,6 +10780,7 @@ snapshots:
       get-intrinsic: 1.3.0
       has-tostringtag: 1.0.2
       hasown: 2.0.2
+    optional: true
 
   esbuild-register@3.6.0(esbuild@0.25.12):
     dependencies:
@@ -11137,6 +10870,7 @@ snapshots:
       '@esbuild/win32-arm64': 0.25.4
       '@esbuild/win32-ia32': 0.25.4
       '@esbuild/win32-x64': 0.25.4
+    optional: true
 
   esbuild@0.27.3:
     optionalDependencies:
@@ -11199,13 +10933,17 @@ snapshots:
 
   escalade@3.2.0: {}
 
-  escape-html@1.0.3: {}
+  escape-html@1.0.3:
+    optional: true
 
-  esprima@4.0.1: {}
+  esprima@4.0.1:
+    optional: true
 
-  etag@1.8.1: {}
+  etag@1.8.1:
+    optional: true
 
-  event-target-shim@5.0.1: {}
+  event-target-shim@5.0.1:
+    optional: true
 
   execa@5.1.1:
     dependencies:
@@ -11218,6 +10956,7 @@ snapshots:
       onetime: 5.1.2
       signal-exit: 3.0.7
       strip-final-newline: 2.0.0
+    optional: true
 
   execa@9.6.1:
     dependencies:
@@ -11266,6 +11005,7 @@ snapshots:
       vary: 1.1.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   exsolve@1.0.8: {}
 
@@ -11332,6 +11072,7 @@ snapshots:
       statuses: 2.0.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   find-process@2.0.0:
     dependencies:
@@ -11344,7 +11085,8 @@ snapshots:
       cross-spawn: 7.0.6
       signal-exit: 4.1.0
 
-  form-data-encoder@1.7.2: {}
+  form-data-encoder@1.7.2:
+    optional: true
 
   form-data@4.0.5:
     dependencies:
@@ -11353,26 +11095,33 @@ snapshots:
       es-set-tostringtag: 2.1.0
       hasown: 2.0.2
       mime-types: 2.1.35
+    optional: true
 
   formdata-node@4.4.1:
     dependencies:
       node-domexception: 1.0.0
       web-streams-polyfill: 4.0.0-beta.3
+    optional: true
 
-  forwarded@0.2.0: {}
+  forwarded@0.2.0:
+    optional: true
 
-  fresh@2.0.0: {}
+  fresh@2.0.0:
+    optional: true
 
-  fs.realpath@1.0.0: {}
+  fs.realpath@1.0.0:
+    optional: true
 
   fsevents@2.3.3:
     optional: true
 
-  function-bind@1.1.2: {}
+  function-bind@1.1.2:
+    optional: true
 
   gensync@1.0.0-beta.2: {}
 
-  get-caller-file@2.0.5: {}
+  get-caller-file@2.0.5:
+    optional: true
 
   get-east-asian-width@1.5.0: {}
 
@@ -11388,6 +11137,7 @@ snapshots:
       has-symbols: 1.1.0
       hasown: 2.0.2
       math-intrinsics: 1.1.0
+    optional: true
 
   get-nonce@1.0.1: {}
 
@@ -11395,22 +11145,19 @@ snapshots:
     dependencies:
       dunder-proto: 1.0.1
       es-object-atoms: 1.1.1
+    optional: true
 
-  get-stream@6.0.1: {}
+  get-stream@6.0.1:
+    optional: true
 
   get-stream@9.0.1:
     dependencies:
       '@sec-ant/readable-stream': 0.4.1
       is-stream: 4.0.1
 
-  get-tsconfig@4.13.0:
-    dependencies:
-      resolve-pkg-maps: 1.0.0
-
   get-tsconfig@4.14.0:
     dependencies:
       resolve-pkg-maps: 1.0.0
-    optional: true
 
   glob-parent@5.1.2:
     dependencies:
@@ -11433,6 +11180,7 @@ snapshots:
       minipass: 7.1.2
       package-json-from-dist: 1.0.1
       path-scurry: 2.0.1
+    optional: true
 
   glob@9.3.5:
     dependencies:
@@ -11440,14 +11188,17 @@ snapshots:
       minimatch: 8.0.4
       minipass: 4.2.8
       path-scurry: 1.11.1
+    optional: true
 
-  gopd@1.2.0: {}
+  gopd@1.2.0:
+    optional: true
 
   graceful-fs@4.2.11: {}
 
   gzip-size@6.0.0:
     dependencies:
       duplexer: 0.1.2
+    optional: true
 
   h3@2.0.1-rc.20:
     dependencies:
@@ -11456,15 +11207,18 @@ snapshots:
 
   has-flag@4.0.0: {}
 
-  has-symbols@1.1.0: {}
+  has-symbols@1.1.0:
+    optional: true
 
   has-tostringtag@1.0.2:
     dependencies:
       has-symbols: 1.1.0
+    optional: true
 
   hasown@2.0.2:
     dependencies:
       function-bind: 1.1.2
+    optional: true
 
   hono@4.11.3: {}
 
@@ -11482,14 +11236,17 @@ snapshots:
       setprototypeof: 1.2.0
       statuses: 2.0.2
       toidentifier: 1.0.1
+    optional: true
 
-  human-signals@2.1.0: {}
+  human-signals@2.1.0:
+    optional: true
 
   human-signals@8.0.1: {}
 
   humanize-ms@1.2.1:
     dependencies:
       ms: 2.1.3
+    optional: true
 
   iconv-lite@0.6.3:
     dependencies:
@@ -11499,13 +11256,15 @@ snapshots:
     dependencies:
       safer-buffer: 2.1.2
 
-  ignore@5.3.2: {}
+  ignore@5.3.2:
+    optional: true
 
   immediate@3.0.6: {}
 
   inherits@2.0.4: {}
 
-  ipaddr.js@1.9.1: {}
+  ipaddr.js@1.9.1:
+    optional: true
 
   is-binary-path@2.1.0:
     dependencies:
@@ -11531,9 +11290,11 @@ snapshots:
 
   is-plain-obj@4.1.0: {}
 
-  is-promise@4.0.0: {}
+  is-promise@4.0.0:
+    optional: true
 
-  is-stream@2.0.1: {}
+  is-stream@2.0.1:
+    optional: true
 
   is-stream@4.0.1: {}
 
@@ -11549,7 +11310,8 @@ snapshots:
 
   isexe@2.0.0: {}
 
-  isexe@3.1.1: {}
+  isexe@3.1.1:
+    optional: true
 
   jackspeak@3.4.3:
     dependencies:
@@ -11560,6 +11322,7 @@ snapshots:
   jackspeak@4.1.1:
     dependencies:
       '@isaacs/cliui': 8.0.2
+    optional: true
 
   jiti@2.6.1: {}
 
@@ -11592,87 +11355,38 @@ snapshots:
     dependencies:
       immediate: 3.0.6
 
-  lightningcss-android-arm64@1.30.2:
-    optional: true
-
   lightningcss-android-arm64@1.32.0:
-    optional: true
-
-  lightningcss-darwin-arm64@1.30.2:
     optional: true
 
   lightningcss-darwin-arm64@1.32.0:
     optional: true
 
-  lightningcss-darwin-x64@1.30.2:
-    optional: true
-
   lightningcss-darwin-x64@1.32.0:
-    optional: true
-
-  lightningcss-freebsd-x64@1.30.2:
     optional: true
 
   lightningcss-freebsd-x64@1.32.0:
     optional: true
 
-  lightningcss-linux-arm-gnueabihf@1.30.2:
-    optional: true
-
   lightningcss-linux-arm-gnueabihf@1.32.0:
-    optional: true
-
-  lightningcss-linux-arm64-gnu@1.30.2:
     optional: true
 
   lightningcss-linux-arm64-gnu@1.32.0:
     optional: true
 
-  lightningcss-linux-arm64-musl@1.30.2:
-    optional: true
-
   lightningcss-linux-arm64-musl@1.32.0:
-    optional: true
-
-  lightningcss-linux-x64-gnu@1.30.2:
     optional: true
 
   lightningcss-linux-x64-gnu@1.32.0:
     optional: true
 
-  lightningcss-linux-x64-musl@1.30.2:
-    optional: true
-
   lightningcss-linux-x64-musl@1.32.0:
-    optional: true
-
-  lightningcss-win32-arm64-msvc@1.30.2:
     optional: true
 
   lightningcss-win32-arm64-msvc@1.32.0:
     optional: true
 
-  lightningcss-win32-x64-msvc@1.30.2:
-    optional: true
-
   lightningcss-win32-x64-msvc@1.32.0:
     optional: true
-
-  lightningcss@1.30.2:
-    dependencies:
-      detect-libc: 2.1.2
-    optionalDependencies:
-      lightningcss-android-arm64: 1.30.2
-      lightningcss-darwin-arm64: 1.30.2
-      lightningcss-darwin-x64: 1.30.2
-      lightningcss-freebsd-x64: 1.30.2
-      lightningcss-linux-arm-gnueabihf: 1.30.2
-      lightningcss-linux-arm64-gnu: 1.30.2
-      lightningcss-linux-arm64-musl: 1.30.2
-      lightningcss-linux-x64-gnu: 1.30.2
-      lightningcss-linux-x64-musl: 1.30.2
-      lightningcss-win32-arm64-msvc: 1.30.2
-      lightningcss-win32-x64-msvc: 1.30.2
 
   lightningcss@1.32.0:
     dependencies:
@@ -11703,7 +11417,8 @@ snapshots:
 
   lru-cache@10.4.3: {}
 
-  lru-cache@11.2.4: {}
+  lru-cache@11.2.4:
+    optional: true
 
   lru-cache@5.1.1:
     dependencies:
@@ -11717,27 +11432,36 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  math-intrinsics@1.1.0: {}
+  math-intrinsics@1.1.0:
+    optional: true
 
-  media-typer@1.1.0: {}
+  media-typer@1.1.0:
+    optional: true
 
-  merge-descriptors@2.0.0: {}
+  merge-descriptors@2.0.0:
+    optional: true
 
-  merge-stream@2.0.0: {}
+  merge-stream@2.0.0:
+    optional: true
 
-  mime-db@1.52.0: {}
+  mime-db@1.52.0:
+    optional: true
 
-  mime-db@1.54.0: {}
+  mime-db@1.54.0:
+    optional: true
 
   mime-types@2.1.35:
     dependencies:
       mime-db: 1.52.0
+    optional: true
 
   mime-types@3.0.2:
     dependencies:
       mime-db: 1.54.0
+    optional: true
 
-  mimic-fn@2.1.0: {}
+  mimic-fn@2.1.0:
+    optional: true
 
   mimic-function@5.0.1: {}
 
@@ -11768,24 +11492,29 @@ snapshots:
   minimatch@10.1.1:
     dependencies:
       '@isaacs/brace-expansion': 5.0.0
+    optional: true
 
   minimatch@8.0.4:
     dependencies:
       brace-expansion: 2.0.2
+    optional: true
 
   minimatch@9.0.5:
     dependencies:
       brace-expansion: 2.0.2
 
-  minipass@4.2.8: {}
+  minipass@4.2.8:
+    optional: true
 
   minipass@7.1.2: {}
 
-  mkdirp@1.0.4: {}
+  mkdirp@1.0.4:
+    optional: true
 
   mnemonist@0.38.3:
     dependencies:
       obliterator: 1.6.1
+    optional: true
 
   ms@2.1.3: {}
 
@@ -11793,7 +11522,8 @@ snapshots:
 
   nanoid@3.3.11: {}
 
-  negotiator@1.0.0: {}
+  negotiator@1.0.0:
+    optional: true
 
   neverthrow@8.2.0:
     optionalDependencies:
@@ -11822,12 +11552,15 @@ snapshots:
     transitivePeerDependencies:
       - '@babel/core'
       - babel-plugin-macros
+    optional: true
 
-  node-domexception@1.0.0: {}
+  node-domexception@1.0.0:
+    optional: true
 
   node-fetch@2.7.0:
     dependencies:
       whatwg-url: 5.0.0
+    optional: true
 
   node-releases@2.0.37: {}
 
@@ -11836,6 +11569,7 @@ snapshots:
   npm-run-path@4.0.1:
     dependencies:
       path-key: 3.1.1
+    optional: true
 
   npm-run-path@6.0.0:
     dependencies:
@@ -11848,25 +11582,31 @@ snapshots:
 
   object-assign@4.1.1: {}
 
-  object-inspect@1.13.4: {}
+  object-inspect@1.13.4:
+    optional: true
 
-  object-treeify@1.1.33: {}
+  object-treeify@1.1.33:
+    optional: true
 
-  obliterator@1.6.1: {}
+  obliterator@1.6.1:
+    optional: true
 
   ohash@2.0.11: {}
 
   on-finished@2.4.1:
     dependencies:
       ee-first: 1.1.1
+    optional: true
 
   once@1.4.0:
     dependencies:
       wrappy: 1.0.2
+    optional: true
 
   onetime@5.1.2:
     dependencies:
       mimic-fn: 2.1.0
+    optional: true
 
   onetime@7.0.0:
     dependencies:
@@ -11911,7 +11651,8 @@ snapshots:
     dependencies:
       entities: 6.0.1
 
-  parseurl@1.3.3: {}
+  parseurl@1.3.3:
+    optional: true
 
   path-expression-matcher@1.2.0: {}
 
@@ -11928,10 +11669,12 @@ snapshots:
     dependencies:
       lru-cache: 11.2.4
       minipass: 7.1.2
+    optional: true
 
   path-to-regexp@6.3.0: {}
 
-  path-to-regexp@8.3.0: {}
+  path-to-regexp@8.3.0:
+    optional: true
 
   pathe@2.0.3: {}
 
@@ -11946,14 +11689,9 @@ snapshots:
       nanoid: 3.3.11
       picocolors: 1.1.1
       source-map-js: 1.2.1
+    optional: true
 
   postcss@8.5.12:
-    dependencies:
-      nanoid: 3.3.11
-      picocolors: 1.1.1
-      source-map-js: 1.2.1
-
-  postcss@8.5.6:
     dependencies:
       nanoid: 3.3.11
       picocolors: 1.1.1
@@ -11983,14 +11721,17 @@ snapshots:
     dependencies:
       forwarded: 0.2.0
       ipaddr.js: 1.9.1
+    optional: true
 
   qs@6.14.1:
     dependencies:
       side-channel: 1.1.0
+    optional: true
 
   radash@12.1.1: {}
 
-  range-parser@1.2.1: {}
+  range-parser@1.2.1:
+    optional: true
 
   raw-body@3.0.2:
     dependencies:
@@ -11998,6 +11739,7 @@ snapshots:
       http-errors: 2.0.1
       iconv-lite: 0.7.2
       unpipe: 1.0.0
+    optional: true
 
   react-dom@19.2.3(react@19.2.3):
     dependencies:
@@ -12097,6 +11839,7 @@ snapshots:
       path-to-regexp: 8.3.0
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   run-applescript@7.1.0: {}
 
@@ -12125,6 +11868,7 @@ snapshots:
       statuses: 2.0.2
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   seroval-plugins@1.5.2(seroval@1.5.2):
     dependencies:
@@ -12140,10 +11884,12 @@ snapshots:
       send: 1.2.1
     transitivePeerDependencies:
       - supports-color
+    optional: true
 
   setimmediate@1.0.5: {}
 
-  setprototypeof@1.2.0: {}
+  setprototypeof@1.2.0:
+    optional: true
 
   sharp@0.34.5:
     dependencies:
@@ -12186,6 +11932,7 @@ snapshots:
     dependencies:
       es-errors: 1.3.0
       object-inspect: 1.13.4
+    optional: true
 
   side-channel-map@1.0.1:
     dependencies:
@@ -12193,6 +11940,7 @@ snapshots:
       es-errors: 1.3.0
       get-intrinsic: 1.3.0
       object-inspect: 1.13.4
+    optional: true
 
   side-channel-weakmap@1.0.2:
     dependencies:
@@ -12201,6 +11949,7 @@ snapshots:
       get-intrinsic: 1.3.0
       object-inspect: 1.13.4
       side-channel-map: 1.0.1
+    optional: true
 
   side-channel@1.1.0:
     dependencies:
@@ -12209,6 +11958,7 @@ snapshots:
       side-channel-list: 1.0.0
       side-channel-map: 1.0.1
       side-channel-weakmap: 1.0.2
+    optional: true
 
   signal-exit@3.0.7: {}
 
@@ -12232,7 +11982,8 @@ snapshots:
 
   srvx@0.11.15: {}
 
-  statuses@2.0.2: {}
+  statuses@2.0.2:
+    optional: true
 
   stdin-discarder@0.3.1: {}
 
@@ -12253,6 +12004,7 @@ snapshots:
       emoji-regex: 10.6.0
       get-east-asian-width: 1.5.0
       strip-ansi: 7.1.2
+    optional: true
 
   string-width@8.2.0:
     dependencies:
@@ -12271,7 +12023,8 @@ snapshots:
     dependencies:
       ansi-regex: 6.2.2
 
-  strip-final-newline@2.0.0: {}
+  strip-final-newline@2.0.0:
+    optional: true
 
   strip-final-newline@4.0.0: {}
 
@@ -12288,6 +12041,7 @@ snapshots:
       react: 19.2.3
     optionalDependencies:
       '@babel/core': 7.29.0
+    optional: true
 
   supports-color@10.2.2: {}
 
@@ -12299,8 +12053,6 @@ snapshots:
 
   tailwind-merge@3.4.0: {}
 
-  tailwindcss@4.1.18: {}
-
   tailwindcss@4.2.2: {}
 
   tapable@2.3.0: {}
@@ -12311,6 +12063,7 @@ snapshots:
       acorn: 8.16.0
       commander: 2.20.3
       source-map-support: 0.5.21
+    optional: true
 
   tinyglobby@0.2.16:
     dependencies:
@@ -12321,11 +12074,14 @@ snapshots:
     dependencies:
       is-number: 7.0.0
 
-  toidentifier@1.0.1: {}
+  toidentifier@1.0.1:
+    optional: true
 
-  tr46@0.0.3: {}
+  tr46@0.0.3:
+    optional: true
 
-  ts-tqdm@0.8.6: {}
+  ts-tqdm@0.8.6:
+    optional: true
 
   tslib@1.14.1:
     optional: true
@@ -12351,12 +12107,14 @@ snapshots:
       content-type: 1.0.5
       media-typer: 1.1.0
       mime-types: 3.0.2
+    optional: true
 
   typescript@6.0.3: {}
 
   ufo@1.6.3: {}
 
-  undici-types@5.26.5: {}
+  undici-types@5.26.5:
+    optional: true
 
   undici-types@7.16.0: {}
 
@@ -12382,7 +12140,8 @@ snapshots:
 
   universal-user-agent@7.0.3: {}
 
-  unpipe@1.0.0: {}
+  unpipe@1.0.0:
+    optional: true
 
   unplugin@3.0.0:
     dependencies:
@@ -12396,7 +12155,8 @@ snapshots:
       escalade: 3.2.0
       picocolors: 1.1.1
 
-  urlpattern-polyfill@10.1.0: {}
+  urlpattern-polyfill@10.1.0:
+    optional: true
 
   use-callback-ref@1.3.3(@types/react@19.2.7)(react@19.2.3):
     dependencies:
@@ -12422,7 +12182,8 @@ snapshots:
   uuid@9.0.1:
     optional: true
 
-  vary@1.1.2: {}
+  vary@1.1.2:
+    optional: true
 
   vite@8.0.10(@types/node@25.0.3)(esbuild@0.25.12)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2):
     dependencies:
@@ -12461,9 +12222,11 @@ snapshots:
     optionalDependencies:
       vite: 8.0.10(@types/node@25.0.3)(esbuild@0.27.7)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2)
 
-  web-streams-polyfill@4.0.0-beta.3: {}
+  web-streams-polyfill@4.0.0-beta.3:
+    optional: true
 
-  webidl-conversions@3.0.1: {}
+  webidl-conversions@3.0.1:
+    optional: true
 
   webpack-virtual-modules@0.6.2: {}
 
@@ -12477,6 +12240,7 @@ snapshots:
     dependencies:
       tr46: 0.0.3
       webidl-conversions: 3.0.1
+    optional: true
 
   which@2.0.2:
     dependencies:
@@ -12485,6 +12249,7 @@ snapshots:
   which@4.0.0:
     dependencies:
       isexe: 3.1.1
+    optional: true
 
   workerd@1.20260310.1:
     optionalDependencies:
@@ -12536,8 +12301,10 @@ snapshots:
       ansi-styles: 6.2.3
       string-width: 7.2.0
       strip-ansi: 7.1.2
+    optional: true
 
-  wrappy@1.0.2: {}
+  wrappy@1.0.2:
+    optional: true
 
   ws@8.18.0: {}
 
@@ -12554,13 +12321,15 @@ snapshots:
       '@oozcitak/util': 10.0.0
       js-yaml: 4.1.1
 
-  y18n@5.0.8: {}
+  y18n@5.0.8:
+    optional: true
 
   yallist@3.1.1: {}
 
   yaml@2.8.2: {}
 
-  yargs-parser@22.0.0: {}
+  yargs-parser@22.0.0:
+    optional: true
 
   yargs@18.0.0:
     dependencies:
@@ -12570,6 +12339,7 @@ snapshots:
       string-width: 7.2.0
       y18n: 5.0.8
       yargs-parser: 22.0.0
+    optional: true
 
   yoctocolors@2.1.2: {}
 

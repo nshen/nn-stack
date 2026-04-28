@@ -19,7 +19,6 @@ catalog:
   "@orpc/tanstack-query": ^1.13.13
 
   # Cloudflare
-  "@opennextjs/cloudflare": ^1.18.0
   "@cloudflare/workers-types": ^4.20260317.1
   wrangler: ^4.78.0
   alchemy: ^0.90.1

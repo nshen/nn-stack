@@ -118,7 +118,7 @@ apps/tanstack/
 
 ## Images
 
-Use plain `<img>` tags (no `next/image`):
+Use plain `<img>` tags:
 
 ```tsx
 <img src={url} alt="description" className="h-full w-full object-cover" />

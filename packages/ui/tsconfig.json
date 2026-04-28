@@ -6,23 +6,15 @@
     "jsx": "preserve",
     "incremental": true,
     "noEmit": true,
-    "plugins": [
-      {
-        "name": "next"
-      }
-    ],
     "paths": {
       "@/*": ["./*"],
       "@nn-stack/ui/*": ["./src/*"]
     }
   },
   "include": [
-    "next-env.d.ts",
     "**/*.ts",
     "**/*.tsx",
-    ".next/types/**/*.ts",
-    "alchemy.run.ts",
-    ".next/dev/types/**/*.ts"
+    "alchemy.run.ts"
   ],
   "exclude": ["node_modules"]
 }
