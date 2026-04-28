@@ -10,9 +10,17 @@ const app = await alchemy(`${PROJECT_NAME}-tanstack`, {
     : undefined,
 });
 
+const tanstackDomain =
+  app.stage === 'prod'
+    ? 'nn.nshen.net'
+    : app.stage === 'dev'
+      ? 'dev.nn.nshen.net'
+      : undefined;
+
 export const tanstack = await TanStackStart('tanstack', {
   name: `${app.name}-${app.stage}`,
   adopt: true,
+  ...(tanstackDomain ? { domains: [tanstackDomain] } : {}),
 });
 
 console.log({ tanstack: tanstack.url });
