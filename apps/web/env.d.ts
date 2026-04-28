@@ -11,3 +11,4 @@ declare module 'cloudflare:workers' {
     export interface Env extends WebEnv, ApiEnv {}
   }
 }
+

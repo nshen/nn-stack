@@ -1,5 +1,4 @@
 import type { QueryClient } from '@tanstack/react-query';
-import { QueryClientProvider } from '@tanstack/react-query';
 import {
   HeadContent,
   Outlet,
@@ -30,22 +29,18 @@ export const Route = createRootRouteWithContext<{
 });
 
 function RootComponent() {
-  const { queryClient } = Route.useRouteContext();
-
   return (
     <html lang="en">
       <head>
         <HeadContent />
       </head>
       <body className="font-sans antialiased" suppressHydrationWarning>
-        <QueryClientProvider client={queryClient}>
-          <TooltipProvider>
-            <div className="min-h-svh w-full flex flex-col">
-              <Outlet />
-            </div>
-            <Toaster richColors />
-          </TooltipProvider>
-        </QueryClientProvider>
+        <TooltipProvider>
+          <div className="min-h-svh w-full flex flex-col">
+            <Outlet />
+          </div>
+          <Toaster richColors />
+        </TooltipProvider>
         <Scripts />
       </body>
     </html>

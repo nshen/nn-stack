@@ -1,6 +1,8 @@
 {
   "extends": "@nn-stack/config/tsconfig.base.json",
   "compilerOptions": {
+    "jsx": "react-jsx",
+    "noEmit": true,
     "paths": {
       "~/*": ["./src/*"],
       "@nn-stack/ui/*": ["../../packages/ui/src/*"]

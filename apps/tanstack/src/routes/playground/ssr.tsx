@@ -1,15 +1,13 @@
 import { createFileRoute } from '@tanstack/react-router';
-import { useQuery } from '@tanstack/react-query';
+import { useSuspenseQuery } from '@tanstack/react-query';
 import { orpc } from '~/lib/orpc';
 import { Card, CardContent, CardHeader, CardTitle } from '@nn-stack/ui/components/card';
 import { Badge } from '@nn-stack/ui/components/badge';
 import { SourceCodeButton } from '~/components/source-code-button';
 
 export const Route = createFileRoute('/playground/ssr')({
-  loader: async ({ context }) => {
-    // Prefetch data on the server via route loader
-    await context.queryClient.ensureQueryData(orpc.planet.list.queryOptions());
-  },
+  loader: ({ context }) =>
+    context.queryClient.ensureQueryData(orpc.planet.list.queryOptions()),
   component: SSRDemoPage,
 });
 
@@ -35,18 +33,16 @@ function SSRDemoPage() {
 }
 
 function PlanetsList() {
-  const { data: planets, isLoading } = useQuery(orpc.planet.list.queryOptions());
-
-  if (isLoading) return <div>Loading planets...</div>;
+  const { data: planets } = useSuspenseQuery(orpc.planet.list.queryOptions());
 
   return (
     <div className="space-y-4">
       <h2 className="text-xl font-semibold">Planets List (Hydrated)</h2>
-      {planets?.length === 0 ? (
+      {planets.length === 0 ? (
         <p>No planets found.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
-          {planets?.map((planet) => (
+          {planets.map((planet) => (
             <Card key={planet.id}>
               <CardHeader className="pb-2">
                 <CardTitle className="flex justify-between items-center text-lg">

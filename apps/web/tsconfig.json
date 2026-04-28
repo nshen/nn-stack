@@ -11,7 +11,6 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@nn-stack/ui/*": ["../../packages/ui/src/*"]

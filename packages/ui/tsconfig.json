@@ -11,12 +11,10 @@
         "name": "next"
       }
     ],
-    "baseUrl": ".",
     "paths": {
       "@/*": ["./*"],
       "@nn-stack/ui/*": ["./src/*"]
-    },
-    "types": ["@cloudflare/workers-types", "./env.d.ts"]
+    }
   },
   "include": [
     "next-env.d.ts",
