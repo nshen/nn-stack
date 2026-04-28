@@ -23,10 +23,5 @@ export default defineConfig({
     tsconfigPaths: true,
   },
   define: publicEnvDefine,
-  plugins: [
-    alchemy(),
-    tanstackStart({ target: 'cloudflare-module', customViteReactPlugin: true }),
-    viteReact(),
-    tailwindcss(),
-  ],
+  plugins: [alchemy(), tanstackStart(), viteReact(), tailwindcss()],
 });
