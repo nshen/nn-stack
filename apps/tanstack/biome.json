@@ -1,3 +1,11 @@
 {
-  "extends": ["../../biome.json"]
+  "$schema": "https://biomejs.dev/schemas/2.3.6/schema.json",
+  "extends": ["../../biome.json"],
+  "vcs": {
+    "enabled": false,
+    "useIgnoreFile": false
+  },
+  "files": {
+    "includes": ["**", "!dist", "!.alchemy", "!.wrangler", "!src/routeTree.gen.ts"]
+  }
 }
