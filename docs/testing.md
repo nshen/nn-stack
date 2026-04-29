@@ -260,9 +260,7 @@ These run **only when you ask Claude Code** (or another agent harness) — gener
 
 ### Step 1 — Plan: "test feature X"
 
-In Claude Code, ask in natural language. Examples:
-
-> "用 playwright-test-planner 探索 /playground/components/users，规划一份完整的测试计划。涵盖列表加载、添加用户、表单校验、错误状态。"
+In Claude Code, ask in natural language. Example:
 
 > "Use the planner agent to map the todo creation flow at /playground. Cover happy path, empty input validation, and the optimistic-update revert when the API errors."
 
@@ -278,8 +276,6 @@ The plan is **human-readable**, structured as `### Scenario` blocks with numbere
 ### Step 2 — Generate: "turn this plan into tests"
 
 Once you're happy with the plan:
-
-> "用 playwright-test-generator 把 specs/users.md 里的所有 scenario 生成测试文件。"
 
 > "Generate Playwright tests for each scenario in specs/todo-creation.md."
 
@@ -315,8 +311,6 @@ Selectors come from real browser exploration → robust by default (role-based, 
 ### Step 3 — Heal: "fix the failing tests"
 
 After UI changes, when `pnpm test:e2e` reports failures:
-
-> "playwright-test-healer 跑一下所有测试，把失败的修好。"
 
 > "Run the test healer — fix any selector drift in the e2e suite."
 
