@@ -1,12 +1,12 @@
 import alchemy from 'alchemy';
-import { Exec } from 'alchemy/os';
 import {
-  KVNamespace,
-  Worker,
-  D1Database,
-  R2Bucket,
   AccountId,
+  D1Database,
+  KVNamespace,
+  R2Bucket,
+  Worker,
 } from 'alchemy/cloudflare';
+import { Exec } from 'alchemy/os';
 
 import { CloudflareStateStore } from 'alchemy/state';
 

@@ -1,9 +1,9 @@
-import { z } from 'zod';
-import { os, ORPCError } from '@orpc/server';
-import type { Context } from './context';
-import { getS3Client } from './lib/s3';
 import { PutObjectCommand } from '@aws-sdk/client-s3';
 import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
+import { ORPCError, os } from '@orpc/server';
+import { z } from 'zod';
+import type { Context } from './context';
+import { getS3Client } from './lib/s3';
 
 const o = os.$context<Context>();
 
@@ -75,7 +75,7 @@ export const storageApi = {
       }
       const list = await context.env.BUCKET.list();
       const publicDomain = context.env.R2_PUBLIC_DOMAIN;
-      
+
       return list.objects.map((obj) => ({
         key: obj.key,
         size: obj.size,

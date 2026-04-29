@@ -1,10 +1,11 @@
-import { createFileRoute, Link, Outlet, useLocation } from '@tanstack/react-router';
 import { cn } from '@nn-stack/ui/lib/utils';
 import {
-  ArrowLeft,
-  FlaskConical,
-  ChevronRight,
-} from 'lucide-react';
+  createFileRoute,
+  Link,
+  Outlet,
+  useLocation,
+} from '@tanstack/react-router';
+import { ArrowLeft, ChevronRight, FlaskConical } from 'lucide-react';
 
 export const Route = createFileRoute('/playground')({
   component: PlaygroundLayout,
@@ -23,8 +24,8 @@ function PlaygroundLayout() {
             <Link
               to="/playground"
               className={cn(
-                "flex items-center gap-2 transition-colors hover:opacity-80",
-                !isIndex && "text-muted-foreground"
+                'flex items-center gap-2 transition-colors hover:opacity-80',
+                !isIndex && 'text-muted-foreground',
               )}
             >
               <FlaskConical className="w-6 h-6" />
@@ -43,18 +44,18 @@ function PlaygroundLayout() {
           </div>
           <p className="text-muted-foreground text-sm">
             {isIndex
-              ? "Component demos and integration patterns."
-              : "Explore and test the component implementation."}
+              ? 'Component demos and integration patterns.'
+              : 'Explore and test the component implementation.'}
           </p>
         </div>
 
         <div className="flex items-center gap-3">
           <Link
-            to={isIndex ? "/" : "/playground"}
+            to={isIndex ? '/' : '/playground'}
             className="text-sm font-medium text-muted-foreground hover:text-foreground transition-colors flex items-center gap-1.5 px-3 py-1.5 rounded-md hover:bg-muted"
           >
             <ArrowLeft size={16} />
-            {isIndex ? "Back to Console" : "Back to Playground"}
+            {isIndex ? 'Back to Console' : 'Back to Playground'}
           </Link>
         </div>
       </div>

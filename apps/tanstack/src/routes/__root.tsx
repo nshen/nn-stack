@@ -1,13 +1,13 @@
+import { Toaster } from '@nn-stack/ui/components/sonner';
+import { TooltipProvider } from '@nn-stack/ui/components/tooltip';
+import uiGlobalsCss from '@nn-stack/ui/styles/globals.css?url';
 import type { QueryClient } from '@tanstack/react-query';
 import {
+  createRootRouteWithContext,
   HeadContent,
   Outlet,
   Scripts,
-  createRootRouteWithContext,
 } from '@tanstack/react-router';
-import { TooltipProvider } from '@nn-stack/ui/components/tooltip';
-import { Toaster } from '@nn-stack/ui/components/sonner';
-import uiGlobalsCss from '@nn-stack/ui/styles/globals.css?url';
 import globalsCss from '~/styles/globals.css?url';
 
 export const Route = createRootRouteWithContext<{

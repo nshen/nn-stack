@@ -42,8 +42,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install
 
-      - name: Lint
-        run: pnpm exec biome lint .
+      - name: Lint + format + import-sort (biome ci)
+        run: pnpm exec biome ci
 
       - name: Type-check
         run: pnpm typecheck

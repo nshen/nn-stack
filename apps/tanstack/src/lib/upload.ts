@@ -6,7 +6,11 @@
  * @param onProgress Callback function that receives the upload progress (0-100).
  * @returns A Promise that resolves when the upload is complete, or rejects on error.
  */
-export const uploadFile = (url: string, file: File, onProgress?: (progress: number) => void): Promise<void> => {
+export const uploadFile = (
+  url: string,
+  file: File,
+  onProgress?: (progress: number) => void,
+): Promise<void> => {
   return new Promise((resolve, reject) => {
     const xhr = new XMLHttpRequest();
     xhr.open('PUT', url);

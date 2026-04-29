@@ -1,5 +1,5 @@
-@import '@fontsource-variable/geist';
-@import '@fontsource-variable/geist-mono';
+@import "@fontsource-variable/geist";
+@import "@fontsource-variable/geist-mono";
 
 html {
   scrollbar-gutter: stable;
@@ -7,8 +7,8 @@ html {
 
 body {
   font-family:
-    'Geist Variable', 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei',
-    'SimHei', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+    "Geist Variable", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei",
+    "SimHei", system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;

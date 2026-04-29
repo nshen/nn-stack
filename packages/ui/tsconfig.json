@@ -11,10 +11,6 @@
       "@nn-stack/ui/*": ["./src/*"]
     }
   },
-  "include": [
-    "**/*.ts",
-    "**/*.tsx",
-    "alchemy.run.ts"
-  ],
+  "include": ["**/*.ts", "**/*.tsx", "alchemy.run.ts"],
   "exclude": ["node_modules"]
 }
