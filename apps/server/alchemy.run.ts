@@ -16,7 +16,8 @@ console.log('Your Cloudflare Account ID is:', accountId);
 // Use CloudflareStateStore only if CLOUDFLARE_API_TOKEN is present (e.g., in CI/CD)
 // This allows the template to work out-of-the-box for local users.
 const stateStore = process.env.CLOUDFLARE_API_TOKEN
-  ? (scope: any) => new CloudflareStateStore(scope, { forceUpdate: true })
+  ? // biome-ignore lint/suspicious/noExplicitAny: alchemy scope type is internal
+    (scope: any) => new CloudflareStateStore(scope, { forceUpdate: true })
   : undefined;
 
 const PROJECT_NAME = 'nn-stack';
@@ -75,7 +76,7 @@ const BUCKET = await R2Bucket('BUCKET', {
 });
 
 if (hasR2Keys) {
-  console.log('Your Bucket dev domain: ' + BUCKET.devDomain); // [random-id].r2.dev
+  console.log(`Your Bucket dev domain: ${BUCKET.devDomain}`); // [random-id].r2.dev
 }
 
 const serverDomain =

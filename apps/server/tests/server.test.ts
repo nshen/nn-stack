@@ -47,6 +47,6 @@ describe('Todos CRUD (D1 integration)', () => {
 		const allTodos = todos as Array<{ id: number; text: string }>;
 		const found = allTodos.find((t) => t.id === todo.id);
 		expect(found).toBeTruthy();
-		expect(found!.text).toBe('Test todo');
+		expect(found?.text).toBe('Test todo');
 	});
 });
