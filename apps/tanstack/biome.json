@@ -3,12 +3,6 @@
   "extends": ["../../biome.json"],
   "root": false,
   "files": {
-    "includes": [
-      "**",
-      "!dist",
-      "!.alchemy",
-      "!.wrangler",
-      "!src/routeTree.gen.ts"
-    ]
+    "includes": ["!dist/", "!.alchemy/", "!.wrangler/", "!src/routeTree.gen.ts"]
   }
 }
