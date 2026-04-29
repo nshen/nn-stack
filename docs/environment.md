@@ -10,50 +10,98 @@
 > - The injection steps in `.github/workflows/deploy.yml`
 > - The `scripts/sync-secrets.sh` mapping table
 >
-> The minimum update is: add the variable to the relevant section below (Local Development defaults, Adding New Environment Variables walkthrough, or the sync table) so a fresh fork knows how to set it up. Out-of-sync env docs are the most common cause of "works on my machine" failures in this repo.
+> The minimum update is: add the variable to the **Variable Reference** table below, plus any other section that mentions it (defaults, sync table, examples). Out-of-sync env docs are the most common cause of "works on my machine" failures in this repo.
 >
 > If the change is rename/remove only, audit each section of this doc and remove stale references too.
 
+## TL;DR
+
+Three layers of configuration, each with a different lifecycle:
+
+| Layer | Where it lives | Who consumes it | Lifecycle |
+|---|---|---|---|
+| **Stage env files** (`.local.env` / `.dev.env` / `.prod.env`) | Per-app, gitignored | `alchemy --env-file` → Worker bindings | Edit → `pnpm sync:secrets` → CI injects → deploy |
+| **One-time GitHub Secrets** | GitHub repo Secrets only | CI workflow at deploy time | Set once via `gh secret set`, rotate rarely |
+| **Local-only env vars** | `.local.env` only | `alchemy dev` | Per-developer, never leave the machine |
+
+---
+
+## Variable Reference
+
+Every env variable used by this project. **If you add a variable, add a row here.**
+
+### Backend — `apps/server`
+
+| Variable | Required? | Goes in | Purpose | How to obtain |
+|---|---|---|---|---|
+| `CORS_ORIGIN` | ✅ Required | `.local.env` / `.dev.env` / `.prod.env` | Comma-separated allow-list for Hono CORS middleware. Bound to the worker as a `vars` binding. Local dev: `http://localhost:3000`. Stage dev: `https://dev.nn.nshen.net`. Prod: `https://nn.nshen.net`. | Decide based on deployed frontend URL. |
+| `R2_ACCESS_KEY_ID` | ⚠️ Optional | `.local.env` / `.dev.env` / `.prod.env` | Enables R2 storage routes (presigned uploads, listing, delete). Without it, R2 bindings are skipped and storage routes return errors. | Cloudflare dashboard → R2 → **Manage R2 API tokens** → **Create API token** with **Object Read & Write** scope on your buckets. Copy `Access Key ID`. |
+| `R2_SECRET_ACCESS_KEY` | ⚠️ Optional | `.local.env` / `.dev.env` / `.prod.env` | Pair of `R2_ACCESS_KEY_ID`. Required together. | Same dialog as above — copy `Secret Access Key` (shown only once at creation). |
+
+R2 also relies on these **derived bindings** that the server does NOT need in env files (alchemy fills them in):
+- `BUCKET` — the R2Bucket resource binding
+- `R2_ACCOUNT_ID` — your Cloudflare account ID, fetched at deploy time via `AccountId()`
+- `R2_BUCKET_NAME` — `${app.name}-bucket-${app.stage}`
+- `R2_PUBLIC_DOMAIN` — `BUCKET.devDomain` (the auto-issued `*.r2.dev` domain)
+
+### Frontend — `apps/tanstack`
+
+| Variable | Required? | Goes in | Purpose | How to obtain |
+|---|---|---|---|---|
+| `NEXT_PUBLIC_SERVER_URL` | ✅ Required | `.local.env` / `.dev.env` / `.prod.env` | Backend ORPC URL. **Inlined into the client bundle at build time** by `vite-plugin-environment` — the browser calls `${URL}/rpc`. | Local: `http://localhost:4000`. Dev stage: `https://dev.nn-server.nshen.net`. Prod: `https://nn-server.nshen.net`. |
+
+> ⚠️ **`NEXT_PUBLIC_*` is visible in the browser bundle.** Never put secrets behind this prefix.
+
+### One-time GitHub Secrets (not in stage env files)
+
+These are set once via `gh secret set` (or the GitHub UI), not via `pnpm sync:secrets`. They power the deploy pipeline itself, not the running Workers.
+
+| Secret | Required? | Purpose | How to obtain |
+|---|---|---|---|
+| `CLOUDFLARE_API_TOKEN` | ✅ Required | Lets `alchemy deploy` call the Cloudflare API to create/update Workers, D1, KV, R2, custom domains. | `pnpm alchemy login` then `pnpm dlx alchemy util create-cloudflare-token` (mirrors your OAuth scopes). For full access: `--god-token`. Manual: <https://dash.cloudflare.com/profile/api-tokens> with **Workers Scripts**, **Workers KV**, **Workers R2**, **D1** all set to *Edit*, plus **Zone → Workers Routes: Edit** for any zone whose domain you bind. |
+| `CLOUDFLARE_EMAIL` | ✅ Required | Used with `CLOUDFLARE_API_TOKEN` for the legacy CF API endpoints `CloudflareStateStore` hits at the account level. | Your Cloudflare login email. No generation step. |
+| `ALCHEMY_STATE_TOKEN` | ✅ Required | Authenticates against `CloudflareStateStore` — the Durable Object worker (`alchemy-state-service`) that persists deployment state across CI runs. Without it, alchemy can't read prior state and may try to recreate existing resources. | `openssl rand -hex 32`. Use the **same token across all projects** under the same Cloudflare account that share the state worker. |
+| `ALCHEMY_PASSWORD` | ⚠️ Optional | Encrypts values wrapped with `alchemy.secret(process.env.X)` at rest. **This project doesn't currently use `alchemy.secret()`** — sensitive values flow via `--env-file`. Only needed if you adopt that API. | `openssl rand -base64 32`. **Never change it after creating the first encrypted secret** — old encrypted values become unreadable. |
+
+---
+
 ## Env Files Per Stage
 
-Each app reads a different env file depending on the stage. None are committed (gitignored).
+| Stage | Command | env file | Notes |
+|---|---|---|---|
+| Local dev | `pnpm dev` | `apps/*/`.local.env` | Per-developer, gitignored. Never reaches CI. |
+| Cloudflare dev | `pnpm deploy:dev` | `apps/*/.dev.env` | Synced to GitHub Secret `ENV_*_DEV`, injected by CI on `dev` branch push. |
+| Cloudflare prod | `pnpm deploy:prod` | `apps/*/.prod.env` | Synced to GitHub Secret `ENV_*_PROD`, injected by CI on `main` branch push. |
 
-| Stage | Command | env file |
-|-------|---------|----------|
-| Local dev | `pnpm dev` | `.local.env` |
-| Cloudflare dev | `pnpm deploy:dev` | `.dev.env` |
-| Cloudflare prod | `pnpm deploy:prod` | `.prod.env` |
+All three are `.env`-format (key=value, no quotes needed). All three are gitignored. Only `*.env.example` files are committed.
+
+---
 
 ## Local Development
 
-Copy the example and fill in values:
+Copy each example and fill values:
 
 ```bash
-cp apps/server/.local.env.example apps/server/.local.env
-# Then create apps/tanstack/.local.env similarly.
+cp apps/server/.local.env.example  apps/server/.local.env
+cp apps/tanstack/.local.env.example apps/tanstack/.local.env
 ```
 
-Defaults:
-- **`apps/tanstack/.local.env`**: `NEXT_PUBLIC_SERVER_URL=http://localhost:4000`
-- **`apps/server/.local.env`**: `CORS_ORIGIN=http://localhost:3000`
+The defaults already work for `pnpm dev` (server on `:4000`, tanstack on `:3000`). Add your `R2_*` keys to `apps/server/.local.env` if you want to test R2 features locally.
 
-## Adding New Environment Variables
-
-1. **Do NOT manually edit `env.d.ts`** — auto-generated from `alchemy.run.ts`.
-2. Edit `alchemy.run.ts` in the relevant app:
-   - Locate the `bindings` object in the `Worker` configuration.
-   - Add your variable (e.g., `MY_VAR: process.env.MY_VAR || ''`).
-   - Define the variable in the app's `.local.env` for local development (and `.dev.env` / `.prod.env` for deploys).
-3. Run `pnpm dev` — `env.d.ts` is auto-regenerated for type safety.
+---
 
 ## Deployment
 
-Uses Alchemy for Cloudflare Workers deployment:
+Alchemy handles Cloudflare Workers deployment:
 
 ```bash
-pnpm run deploy:dev   # Development
-pnpm run deploy:prod  # Production
+pnpm run deploy:dev   # all apps to dev stage
+pnpm run deploy:prod  # all apps to prod stage
 ```
+
+CI runs the same commands automatically when you push to `dev` / `main` (see `.github/workflows/deploy.yml`).
+
+---
 
 ## Syncing stage env to CI
 
@@ -69,10 +117,10 @@ This calls `scripts/sync-secrets.sh`, which uploads four files via `gh secret se
 
 | Local file | GitHub Secret |
 |---|---|
-| `apps/server/.dev.env`   | `ENV_SERVER_DEV` |
-| `apps/server/.prod.env`  | `ENV_SERVER_PROD` |
-| `apps/tanstack/.dev.env` | `ENV_WEB_DEV` |
-| `apps/tanstack/.prod.env`| `ENV_WEB_PROD` |
+| `apps/server/.dev.env`    | `ENV_SERVER_DEV` |
+| `apps/server/.prod.env`   | `ENV_SERVER_PROD` |
+| `apps/tanstack/.dev.env`  | `ENV_WEB_DEV` |
+| `apps/tanstack/.prod.env` | `ENV_WEB_PROD` |
 
 Missing files are skipped with a warning (so you can sync only dev secrets if prod isn't set up yet).
 
@@ -96,74 +144,32 @@ apps/tanstack/.dev.env──[sync]──> ENV_WEB_DEV     ──[inject]─> app
 
 `.prod.env` follows the identical path with `ENV_*_PROD` and the `prod` stage.
 
-### Adding a new env var end-to-end
+---
 
-1. Add the binding in `alchemy.run.ts`
-2. Add the value to `.local.env` (local dev), `.dev.env` (dev stage), `.prod.env` (prod stage)
-3. `pnpm sync:secrets` to push `.dev.env` / `.prod.env` content to GitHub
-4. Push your branch — CI redeploys with the new binding
-5. Restart `pnpm dev` so `env.d.ts` regenerates with the new key
+## Adding a new env var end-to-end
 
-### One-time setup secrets
+1. **Add the binding** in the relevant `apps/*/alchemy.run.ts`:
+   ```ts
+   bindings: {
+     ...,
+     MY_VAR: process.env.MY_VAR || '',
+   }
+   ```
+2. **Add to all three stage files**:
+   - `apps/<app>/.local.env` (your local value)
+   - `apps/<app>/.dev.env` (dev stage value)
+   - `apps/<app>/.prod.env` (prod stage value)
+3. **Add to the example**: append a documented entry to `apps/<app>/.local.env.example`
+4. **Add to this doc**: update the **Variable Reference** table above
+5. **Sync to CI**: `pnpm sync:secrets`
+6. **Deploy**: push your branch — CI redeploys with the new binding
+7. **Restart `pnpm dev`**: `env.d.ts` regenerates so TS knows about `env.MY_VAR`
 
-These are set once and rarely rotate, so they're intentionally not in `sync:secrets`. Set them manually via `gh secret set` or the GitHub UI.
+For frontend (`apps/tanstack`), step 1 is different: the variable must be prefixed `NEXT_PUBLIC_` to be inlined into the client bundle (no alchemy binding needed for client-bundled values).
 
-#### `CLOUDFLARE_API_TOKEN`
+---
 
-**Purpose**: lets `alchemy deploy` call the Cloudflare API to create / update Workers, D1 databases, KV namespaces, R2 buckets, and custom domains.
-
-**How to get** (recommended — minimal scope):
-
-```bash
-pnpm dlx alchemy util create-cloudflare-token
-```
-
-This generates a token mirroring your local OAuth profile permissions (run `pnpm alchemy login` first if you haven't).
-
-For a full-access token (less secure but simpler):
-
-```bash
-pnpm dlx alchemy util create-cloudflare-token --god-token
-```
-
-Or create one manually at <https://dash.cloudflare.com/profile/api-tokens> with these permissions:
-- Account → Workers Scripts: Edit
-- Account → Workers KV Storage: Edit
-- Account → Workers R2 Storage: Edit
-- Account → D1: Edit
-- Zone → Workers Routes: Edit (only for the zones whose domains you bind)
-
-#### `ALCHEMY_STATE_TOKEN`
-
-**Purpose**: authenticates against the `CloudflareStateStore` — a Durable Object Worker (`alchemy-state-service`) that alchemy uses to persist deployment state across CI runs. Without persistent state, alchemy would think every deploy is the first one and try to create resources that already exist.
-
-**How to get**: any random 32-character hex string. The same token must be used by every CI deploy of this project, and across all your projects under the same Cloudflare account if they share the state worker.
-
-```bash
-openssl rand -hex 32
-```
-
-Then `gh secret set ALCHEMY_STATE_TOKEN` paste the value.
-
-#### `CLOUDFLARE_EMAIL`
-
-**Purpose**: used together with `CLOUDFLARE_API_TOKEN` for the few legacy Cloudflare API endpoints that still require email-based auth (mostly account-level operations the state store hits).
-
-**How to get**: it's the email address you log into Cloudflare with. No generation step.
-
-#### `ALCHEMY_PASSWORD` (optional, only if you use `alchemy.secret()`)
-
-**Purpose**: encrypts secrets stored in alchemy state (the `.alchemy/` directory locally, or the state store remotely). When you wrap a value with `alchemy.secret(process.env.X)` to bind it to a Worker, alchemy encrypts it at rest using this password.
-
-This project doesn't currently use `alchemy.secret()` — sensitive values flow through stage env files and `--env-file`. If you start using `alchemy.secret()`, generate a long random string:
-
-```bash
-openssl rand -base64 32
-```
-
-Set it as `ALCHEMY_PASSWORD` and never change it after creating the first secret (changing it makes existing encrypted values unreadable).
-
-### Bootstrapping a fresh fork
+## Bootstrapping a fresh fork
 
 ```bash
 # 1. Cloudflare auth (creates ~/.alchemy/profile)
@@ -175,11 +181,21 @@ pnpm dlx alchemy util create-cloudflare-token
 # 3. Generate the state token
 openssl rand -hex 32
 
-# 4. Set GitHub Secrets
-gh secret set CLOUDFLARE_API_TOKEN     # paste from step 2
-gh secret set CLOUDFLARE_EMAIL         # your CF login email
-gh secret set ALCHEMY_STATE_TOKEN      # paste from step 3
+# 4. Set the four GitHub Secrets that aren't in stage env files
+gh secret set CLOUDFLARE_API_TOKEN      # paste from step 2
+gh secret set CLOUDFLARE_EMAIL          # your CF login email
+gh secret set ALCHEMY_STATE_TOKEN       # paste from step 3
+# ALCHEMY_PASSWORD: skip unless you start using alchemy.secret()
 
-# 5. Create stage env files (.dev.env / .prod.env), then push them
+# 5. Create stage env files
+cp apps/server/.local.env.example  apps/server/.dev.env
+cp apps/tanstack/.local.env.example apps/tanstack/.dev.env
+# Edit them — change URLs, add R2 keys if needed
+# Repeat for .prod.env
+
+# 6. Upload stage env files to GitHub Secrets
 pnpm sync:secrets
+
+# 7. Push — CI deploys to dev / prod
+git push origin dev
 ```
