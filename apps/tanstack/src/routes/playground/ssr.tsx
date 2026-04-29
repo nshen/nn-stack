@@ -1,9 +1,14 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useSuspenseQuery } from '@tanstack/react-query';
-import { orpc } from '~/lib/orpc';
-import { Card, CardContent, CardHeader, CardTitle } from '@nn-stack/ui/components/card';
 import { Badge } from '@nn-stack/ui/components/badge';
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+} from '@nn-stack/ui/components/card';
+import { useSuspenseQuery } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
 import { SourceCodeButton } from '~/components/source-code-button';
+import { orpc } from '~/lib/orpc';
 
 export const Route = createFileRoute('/playground/ssr')({
   loader: ({ context }) =>
@@ -16,10 +21,13 @@ function SSRDemoPage() {
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">SSR & Hydration Demo</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            SSR & Hydration Demo
+          </h1>
           <p className="text-muted-foreground mt-2">
-            The data below is prefetched on the server and hydrated on the client.
-            View the page source to confirm the data is present in the HTML.
+            The data below is prefetched on the server and hydrated on the
+            client. View the page source to confirm the data is present in the
+            HTML.
           </p>
         </div>
         <SourceCodeButton path="apps/tanstack/src/routes/playground/ssr.tsx" />
@@ -52,7 +60,10 @@ function PlanetsList() {
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  Distance from Sun: <span className="font-medium text-foreground">{planet.distanceAu} AU</span>
+                  Distance from Sun:{' '}
+                  <span className="font-medium text-foreground">
+                    {planet.distanceAu} AU
+                  </span>
                 </p>
               </CardContent>
             </Card>

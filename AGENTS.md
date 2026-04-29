@@ -26,8 +26,12 @@ packages/
 
 ```bash
 pnpm dev                   # server + tanstack
-pnpm run lint              # lint all
-pnpm run format            # format all
+pnpm typecheck             # tsc --noEmit across all workspaces
+pnpm test                  # vitest (server integration tests)
+pnpm test:e2e              # playwright E2E (auto-starts dev server)
+pnpm lint                  # biome lint
+pnpm format                # biome check --write . (lint + format + import-sort)
+pnpm ci                    # biome ci (read-only, used in CI)
 ```
 
 ## Documentation

@@ -11,8 +11,9 @@
     "test": "pnpm -r test",
     "test:e2e": "pnpm --filter @nn-stack/tanstack run test:e2e",
     "typecheck": "pnpm -r typecheck",
+    "ci": "biome ci",
     "lint": "biome lint .",
-    "format": "biome format --write .",
+    "format": "biome check --write .",
     "sync:secrets": "bash scripts/sync-secrets.sh"
   },
   "description": "",

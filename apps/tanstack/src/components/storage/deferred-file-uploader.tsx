@@ -1,11 +1,8 @@
-import { useState, useCallback, useEffect, useRef } from 'react';
-import { useDropzone } from 'react-dropzone';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { orpc } from '~/lib/orpc';
-import { Button } from '@nn-stack/ui/components/button';
-import { Progress } from '@nn-stack/ui/components/progress';
-import { Card, CardContent } from '@nn-stack/ui/components/card';
-import { Alert, AlertTitle, AlertDescription } from '@nn-stack/ui/components/alert';
+import {
+  Alert,
+  AlertDescription,
+  AlertTitle,
+} from '@nn-stack/ui/components/alert';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -16,9 +13,25 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@nn-stack/ui/components/alert-dialog';
+import { Button } from '@nn-stack/ui/components/button';
+import { Card, CardContent } from '@nn-stack/ui/components/card';
+import { Progress } from '@nn-stack/ui/components/progress';
 import { toast } from '@nn-stack/ui/components/sonner';
-import { X, Upload, FileIcon, Trash2, Loader2, CheckCircle, AlertCircle, ExternalLink } from 'lucide-react';
 import { cn } from '@nn-stack/ui/lib/utils';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import {
+  AlertCircle,
+  CheckCircle,
+  ExternalLink,
+  FileIcon,
+  Loader2,
+  Trash2,
+  Upload,
+  X,
+} from 'lucide-react';
+import { useCallback, useEffect, useRef, useState } from 'react';
+import { useDropzone } from 'react-dropzone';
+import { orpc } from '~/lib/orpc';
 import { uploadFile } from '~/lib/upload';
 
 type FileStatus = 'idle' | 'uploading' | 'success' | 'error';
@@ -40,22 +53,28 @@ export function DeferredFileUploader() {
   const queryClient = useQueryClient();
 
   // Fetch existing files
-  const { data: remoteFiles, isLoading: isLoadingRemote, error: fetchError } = useQuery({
+  const {
+    data: remoteFiles,
+    isLoading: isLoadingRemote,
+    error: fetchError,
+  } = useQuery({
     ...orpc.storage.list.queryOptions(),
     retry: false,
   });
 
   // Mutations
   const presignMutation = useMutation(orpc.storage.presign.mutationOptions());
-  const deleteMutation = useMutation(orpc.storage.delete.mutationOptions({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: orpc.storage.list.key() });
-      toast.success('File deleted successfully');
-    },
-    onError: (error) => {
-      toast.error(`Failed to delete file: ${error.message}`);
-    }
-  }));
+  const deleteMutation = useMutation(
+    orpc.storage.delete.mutationOptions({
+      onSuccess: () => {
+        queryClient.invalidateQueries({ queryKey: orpc.storage.list.key() });
+        toast.success('File deleted successfully');
+      },
+      onError: (error) => {
+        toast.error(`Failed to delete file: ${error.message}`);
+      },
+    }),
+  );
 
   const handleDownload = (url: string | null) => {
     if (url) {
@@ -80,11 +99,17 @@ export function DeferredFileUploader() {
     onDrop,
     onDropRejected: (fileRejections) => {
       for (const rejection of fileRejections) {
-        const isTooLarge = rejection.errors.some((e) => e.code === 'file-too-large');
+        const isTooLarge = rejection.errors.some(
+          (e) => e.code === 'file-too-large',
+        );
         if (isTooLarge) {
-          toast.error(`File ${rejection.file.name} is too large. Max size is 1MB.`);
+          toast.error(
+            `File ${rejection.file.name} is too large. Max size is 1MB.`,
+          );
         } else {
-          toast.error(`File ${rejection.file.name} was rejected: ${rejection.errors[0]?.message}`);
+          toast.error(
+            `File ${rejection.file.name} was rejected: ${rejection.errors[0]?.message}`,
+          );
         }
       }
     },
@@ -122,14 +147,16 @@ export function DeferredFileUploader() {
     setIsUploading(true);
 
     try {
-      const filesToUpload = files.filter((f) => f.status === 'idle' || f.status === 'error');
+      const filesToUpload = files.filter(
+        (f) => f.status === 'idle' || f.status === 'error',
+      );
       if (filesToUpload.length === 0) return;
 
       const presignResult = await presignMutation.mutateAsync(
         filesToUpload.map((f) => ({
           filename: f.file.name,
           contentType: f.file.type,
-        }))
+        })),
       );
 
       await Promise.all(
@@ -139,16 +166,16 @@ export function DeferredFileUploader() {
 
           setFiles((prev) =>
             prev.map((f) =>
-              f.id === fileItem.id ? { ...f, status: 'uploading' } : f
-            )
+              f.id === fileItem.id ? { ...f, status: 'uploading' } : f,
+            ),
           );
 
           try {
             await uploadFile(presigned.url, fileItem.file, (progress) => {
               setFiles((prev) =>
                 prev.map((f) =>
-                  f.id === fileItem.id ? { ...f, progress } : f
-                )
+                  f.id === fileItem.id ? { ...f, progress } : f,
+                ),
               );
             });
 
@@ -163,11 +190,11 @@ export function DeferredFileUploader() {
             console.error('Upload failed for', fileItem.file.name, error);
             setFiles((prev) =>
               prev.map((f) =>
-                f.id === fileItem.id ? { ...f, status: 'error' } : f
-              )
+                f.id === fileItem.id ? { ...f, status: 'error' } : f,
+              ),
             );
           }
-        })
+        }),
       );
 
       queryClient.invalidateQueries({ queryKey: orpc.storage.list.key() });
@@ -207,16 +234,21 @@ export function DeferredFileUploader() {
         <div
           {...getRootProps()}
           className={cn(
-            "border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition-colors",
-            isDragActive ? "border-primary bg-primary/5" : "border-muted-foreground/25 hover:border-primary/50",
-            fetchError && "opacity-50 cursor-not-allowed"
+            'border-2 border-dashed rounded-lg p-10 text-center cursor-pointer transition-colors',
+            isDragActive
+              ? 'border-primary bg-primary/5'
+              : 'border-muted-foreground/25 hover:border-primary/50',
+            fetchError && 'opacity-50 cursor-not-allowed',
           )}
         >
           <input {...getInputProps()} />
           <Upload className="mx-auto h-12 w-12 text-muted-foreground mb-4" />
-          <p className="text-lg font-medium">Drag & drop files here, or click to select</p>
+          <p className="text-lg font-medium">
+            Drag & drop files here, or click to select
+          </p>
           <p className="text-sm text-muted-foreground mt-1">
-            Support for images and PDF (max 1MB). Files are queued before uploading.
+            Support for images and PDF (max 1MB). Files are queued before
+            uploading.
           </p>
         </div>
 
@@ -224,7 +256,12 @@ export function DeferredFileUploader() {
           <div className="space-y-4">
             <div className="flex items-center justify-between">
               <h3 className="text-lg font-semibold">Queue ({files.length})</h3>
-              <Button onClick={handleUpload} disabled={isUploading || files.every(f => f.status === 'success')}>
+              <Button
+                onClick={handleUpload}
+                disabled={
+                  isUploading || files.every((f) => f.status === 'success')
+                }
+              >
                 {isUploading ? (
                   <>
                     <Loader2 className="mr-2 h-4 w-4 animate-spin" />
@@ -257,7 +294,10 @@ export function DeferredFileUploader() {
                     <div className="flex-1 min-w-0 space-y-2">
                       <div className="flex items-start justify-between gap-2">
                         <div className="min-w-0 flex-1">
-                          <p className="font-medium truncate text-sm" title={file.file.name}>
+                          <p
+                            className="font-medium truncate text-sm"
+                            title={file.file.name}
+                          >
                             {file.file.name}
                           </p>
                           <p className="text-xs text-muted-foreground">
@@ -269,7 +309,10 @@ export function DeferredFileUploader() {
                           size="icon"
                           className="h-6 w-6 shrink-0 text-muted-foreground hover:text-destructive"
                           onClick={() => removeFile(file.id)}
-                          disabled={file.status === 'uploading' || file.status === 'success'}
+                          disabled={
+                            file.status === 'uploading' ||
+                            file.status === 'success'
+                          }
                         >
                           <X className="h-4 w-4" />
                         </Button>
@@ -279,7 +322,11 @@ export function DeferredFileUploader() {
                         <div className="space-y-1">
                           <Progress value={file.progress} className="h-2" />
                           <div className="flex justify-between text-xs text-muted-foreground">
-                            <span>{file.status === 'uploading' ? 'Uploading...' : file.status}</span>
+                            <span>
+                              {file.status === 'uploading'
+                                ? 'Uploading...'
+                                : file.status}
+                            </span>
                             <span>{file.progress}%</span>
                           </div>
                         </div>
@@ -300,7 +347,9 @@ export function DeferredFileUploader() {
       </div>
 
       <div className="border-t pt-8">
-        <h2 className="text-2xl font-bold tracking-tight mb-4">Uploaded Files (R2)</h2>
+        <h2 className="text-2xl font-bold tracking-tight mb-4">
+          Uploaded Files (R2)
+        </h2>
         {isLoadingRemote ? (
           <div className="flex items-center justify-center py-8">
             <Loader2 className="h-8 w-8 animate-spin text-muted-foreground" />
@@ -317,13 +366,17 @@ export function DeferredFileUploader() {
                       onClick={() => handleDownload(file.url)}
                     >
                       <div className="flex items-center gap-2 min-w-0">
-                        <p className="font-medium text-sm truncate group-hover:text-primary group-hover:underline flex-1 min-w-0" title={file.key}>
+                        <p
+                          className="font-medium text-sm truncate group-hover:text-primary group-hover:underline flex-1 min-w-0"
+                          title={file.key}
+                        >
                           {file.key}
                         </p>
                         <ExternalLink className="h-3 w-3 shrink-0 text-muted-foreground opacity-0 group-hover:opacity-100 transition-opacity" />
                       </div>
                       <p className="text-xs text-muted-foreground">
-                        {(file.size / 1024).toFixed(1)} KB • {new Date(file.uploadedAt).toLocaleDateString()}
+                        {(file.size / 1024).toFixed(1)} KB •{' '}
+                        {new Date(file.uploadedAt).toLocaleDateString()}
                       </p>
                     </button>
                     <Button
@@ -341,17 +394,25 @@ export function DeferredFileUploader() {
             ))}
           </div>
         ) : (
-          <p className="text-muted-foreground text-center py-8">No files uploaded yet.</p>
+          <p className="text-muted-foreground text-center py-8">
+            No files uploaded yet.
+          </p>
         )}
       </div>
 
-      <AlertDialog open={!!fileToDelete} onOpenChange={(open) => !open && setFileToDelete(null)}>
+      <AlertDialog
+        open={!!fileToDelete}
+        onOpenChange={(open) => !open && setFileToDelete(null)}
+      >
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
             <AlertDialogDescription>
-              This action cannot be undone. This will permanently delete the file
-              <span className="font-medium text-foreground mx-1">{fileToDelete}</span>
+              This action cannot be undone. This will permanently delete the
+              file
+              <span className="font-medium text-foreground mx-1">
+                {fileToDelete}
+              </span>
               from the storage.
             </AlertDialogDescription>
           </AlertDialogHeader>

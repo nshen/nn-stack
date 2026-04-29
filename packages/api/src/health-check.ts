@@ -1,4 +1,4 @@
-import { os, ORPCError } from '@orpc/server';
+import { ORPCError, os } from '@orpc/server';
 import type { Context } from './context';
 
 export const o = os.$context<Context>();
@@ -24,7 +24,10 @@ export const db = o.handler(({ context }) => {
 
 export const r2 = o.handler(({ context }) => {
   if (!context.env.BUCKET) {
-    throw new ORPCError('NOT_FOUND', { message: 'Missing server env: `R2_ACCESS_KEY_ID` and/or `R2_SECRET_ACCESS_KEY`.' });
+    throw new ORPCError('NOT_FOUND', {
+      message:
+        'Missing server env: `R2_ACCESS_KEY_ID` and/or `R2_SECRET_ACCESS_KEY`.',
+    });
   }
   return 'OK';
 });

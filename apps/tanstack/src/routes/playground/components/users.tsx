@@ -1,10 +1,5 @@
-import { createFileRoute } from '@tanstack/react-router';
-import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
-import { orpc } from '~/lib/orpc';
-import { useState } from 'react';
 import { Button } from '@nn-stack/ui/components/button';
-import { Input } from '@nn-stack/ui/components/input';
-import { Label } from '@nn-stack/ui/components/label';
+import { Card, CardContent } from '@nn-stack/ui/components/card';
 import {
   Dialog,
   DialogContent,
@@ -13,8 +8,13 @@ import {
   DialogHeader,
   DialogTitle,
 } from '@nn-stack/ui/components/dialog';
-import { Card, CardContent } from '@nn-stack/ui/components/card';
+import { Input } from '@nn-stack/ui/components/input';
+import { Label } from '@nn-stack/ui/components/label';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { createFileRoute } from '@tanstack/react-router';
+import { useState } from 'react';
 import { SourceCodeButton } from '~/components/source-code-button';
+import { orpc } from '~/lib/orpc';
 
 export const Route = createFileRoute('/playground/components/users')({
   component: UsersPlayground,
@@ -101,7 +101,9 @@ function UsersPlayground() {
     <div className="max-w-4xl mx-auto p-6 space-y-8">
       <div className="flex items-start justify-between">
         <div>
-          <h1 className="text-2xl font-semibold tracking-tight">User Management</h1>
+          <h1 className="text-2xl font-semibold tracking-tight">
+            User Management
+          </h1>
           <p className="text-muted-foreground mt-2">
             CRUD operations with Zod validation and ORPC.
           </p>
@@ -133,7 +135,9 @@ function UsersPlayground() {
                 >
                   <div className="min-w-0">
                     <p className="font-medium truncate">{user.name}</p>
-                    <p className="text-xs text-muted-foreground truncate">{user.email}</p>
+                    <p className="text-xs text-muted-foreground truncate">
+                      {user.email}
+                    </p>
                   </div>
                   <div className="flex gap-2 ml-4">
                     <Button
