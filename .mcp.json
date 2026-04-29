@@ -10,7 +10,7 @@
         "playwright",
         "run-test-mcp-server",
         "--config",
-        "apps/web/playwright.config.ts"
+        "apps/tanstack/playwright.config.ts"
       ]
     }
   }

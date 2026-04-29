@@ -21,7 +21,7 @@ describe('Server smoke test', () => {
     expect(await res.text()).toBe('Hello nn stack server!');
   });
 
-  it('GET /rpc/planet/list returns 8 planets', async () => {
+  it('POST /rpc/planet/list returns 8 planets', async () => {
     const { status, body } = await rpc('planet.list');
     expect(status).toBe(200);
     const planets = body as Array<{ name: string }>;
