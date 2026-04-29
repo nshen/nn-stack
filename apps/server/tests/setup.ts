@@ -1,15 +1,12 @@
 import { env } from 'cloudflare:workers';
 import { applyD1Migrations } from 'cloudflare:test';
 
-declare global {
+declare module 'cloudflare:workers' {
 	namespace Cloudflare {
 		interface Env {
-			DB: D1Database;
-			KV: KVNamespace;
-			CORS_ORIGIN: string;
-			TEST_MIGRATIONS: unknown[];
+			TEST_MIGRATIONS: Parameters<typeof applyD1Migrations>[1];
 		}
 	}
 }
 
-await applyD1Migrations(env.DB, env.TEST_MIGRATIONS as Parameters<typeof applyD1Migrations>[1]);
+await applyD1Migrations(env.DB, env.TEST_MIGRATIONS);

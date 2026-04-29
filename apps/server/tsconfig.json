@@ -7,6 +7,10 @@
     },
     "jsx": "react-jsx",
     "jsxImportSource": "hono/jsx",
-    "types": ["@cloudflare/workers-types", "./env.d.ts"]
+    "types": [
+      "@cloudflare/workers-types",
+      "@cloudflare/vitest-pool-workers/types",
+      "./env.d.ts"
+    ]
   }
 }
