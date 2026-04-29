@@ -6,7 +6,8 @@ const PROJECT_NAME = 'nn-stack';
 
 const app = await alchemy(`${PROJECT_NAME}-tanstack`, {
   stateStore: process.env.CLOUDFLARE_API_TOKEN
-    ? (scope: any) => new CloudflareStateStore(scope, { forceUpdate: true })
+    ? // biome-ignore lint/suspicious/noExplicitAny: alchemy scope type is internal
+      (scope: any) => new CloudflareStateStore(scope, { forceUpdate: true })
     : undefined,
 });
 

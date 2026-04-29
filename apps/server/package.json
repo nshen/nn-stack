@@ -9,6 +9,8 @@
     "destroy:dev": "alchemy destroy --stage dev",
     "destroy:prod": "alchemy destroy --stage prod",
     "destroy": "alchemy destroy",
+    "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "lint": "biome lint --write",
     "format": "biome format --write"
   },
@@ -21,11 +23,13 @@
   },
   "devDependencies": {
     "@biomejs/biome": "catalog:",
+    "@cloudflare/vitest-pool-workers": "catalog:",
     "@cloudflare/workers-types": "catalog:",
     "@nn-stack/config": "workspace:*",
     "@types/node": "catalog:",
     "alchemy": "catalog:",
     "drizzle-kit": "catalog:",
-    "typescript": "catalog:"
+    "typescript": "catalog:",
+    "vitest": "catalog:"
   }
 }
