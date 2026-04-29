@@ -48,8 +48,10 @@ jobs:
       - name: Unit / integration tests
         run: pnpm test
 
-      - name: Build tanstack
-        run: pnpm --filter tanstack build
+      # Note: tanstack build is exercised by `alchemy deploy` in the deploy
+      # job. Running `vite build` here would fail because alchemy's vite
+      # plugin requires .alchemy/local/wrangler.jsonc, generated only by
+      # alchemy dev/deploy.
 
   deploy:
     name: Deploy (${{ github.ref == 'refs/heads/main' && 'prod' || 'dev' }})
