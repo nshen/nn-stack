@@ -10,6 +10,7 @@
     "destroy:prod": "alchemy destroy --stage prod",
     "destroy": "alchemy destroy",
     "test": "vitest run",
+    "typecheck": "tsc --noEmit",
     "lint": "biome lint --write",
     "format": "biome format --write"
   },

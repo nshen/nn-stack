@@ -190,6 +190,9 @@ importers:
       '@cloudflare/vite-plugin':
         specifier: ^1.34.0
         version: 1.34.0(vite@8.0.10(@types/node@25.0.3)(esbuild@0.27.3)(jiti@2.6.1)(terser@5.16.9)(tsx@4.21.0)(yaml@2.8.2))(workerd@1.20260426.1)(wrangler@4.86.0(@cloudflare/workers-types@4.20260317.1))
+      '@cloudflare/workers-types':
+        specifier: 'catalog:'
+        version: 4.20260317.1
       '@nn-stack/config':
         specifier: workspace:*
         version: link:../../packages/config
@@ -342,6 +345,9 @@ importers:
       '@types/react-dom':
         specifier: 'catalog:'
         version: 19.2.3(@types/react@19.2.7)
+      typescript:
+        specifier: 'catalog:'
+        version: 6.0.3
 
 packages:
 

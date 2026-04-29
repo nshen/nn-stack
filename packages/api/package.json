@@ -15,6 +15,7 @@
   },
   "type": "module",
   "scripts": {
+    "typecheck": "tsc --noEmit",
     "lint": "biome lint --write",
     "format": "biome format --write"
   },

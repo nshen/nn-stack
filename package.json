@@ -10,6 +10,7 @@
     "destroy:prod": "pnpm run -r destroy:prod",
     "test": "pnpm -r test",
     "test:e2e": "pnpm --filter @nn-stack/tanstack run test:e2e",
+    "typecheck": "pnpm -r typecheck",
     "lint": "biome lint .",
     "format": "biome format --write .",
     "sync:secrets": "bash scripts/sync-secrets.sh"

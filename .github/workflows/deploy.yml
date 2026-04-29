@@ -45,6 +45,9 @@ jobs:
       - name: Lint
         run: pnpm exec biome lint .
 
+      - name: Type-check
+        run: pnpm typecheck
+
       - name: Unit / integration tests
         run: pnpm test
 
